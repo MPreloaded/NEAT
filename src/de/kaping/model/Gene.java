@@ -1,0 +1,70 @@
+package de.kaping.model;
+
+/*------------------------------------------------------------------------------
+ * Class Gene
+ * Stellt eine gewichtete Verbindung zwischen Neuronen dar.
+------------------------------------------------------------------------------*/
+public class Gene {
+	
+	private Neuron into;
+	private Neuron origin;
+	private double weight;
+	private boolean enabled;
+	
+	public Gene(Neuron origin, Neuron into)
+	{
+		super();
+		this.weight  = 0.;
+		this.enabled = true;
+		this.into    = into;
+		this.origin  = origin;
+	}
+	
+	/* Setzen einer neuen Gewichtung für die Verbindung */
+	public void setWeight(double weight)
+	{
+		this.weight = weight;
+	}
+	
+	/* Rückgabe der aktuellen Gewichtung */
+	public double getWeight()
+	{
+		return this.weight;
+	}
+	
+	/* Setzen, ob die Verbindung aktiv oder inaktiv ist */
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	/* Rückgabe, ob die aktuelle Verbindung aktiv ist */
+	public boolean getEnabled()
+	{
+		return this.enabled;
+	}
+	
+	/* Setzen eines neuen Zielneurons */
+	public void setInto(Neuron into)
+	{
+		this.into = into;
+	}
+	
+	/* Rückgabe auf welches Neuron die Verbindung zeigt */
+	public Neuron getInto()
+	{
+		return this.into;
+	}
+	
+	/* Setzen eines neuen Ursprungs */
+	public void setOrigin(Neuron origin)
+	{
+		this.origin = origin;
+	}
+	
+	/* Rückgabe aus welchem Neuron die Verbindung entspringt */
+	public Neuron getOrigin()
+	{
+		return this.origin;
+	}
+}

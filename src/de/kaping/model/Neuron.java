@@ -8,9 +8,10 @@ import java.util.List;
 ------------------------------------------------------------------------------*/
 public class Neuron {
 	
-	private int          type;
+	/* TODO: Change Type into enum */
+	private int        type; /* input, output, hidden */
 	private List<Gene> incoming;
-	private double       value;
+	private double     value;
 
 	public Neuron(int type) 
 	{

@@ -13,11 +13,16 @@ public class Gene {
 	
 	public Gene(Neuron origin, Neuron into)
 	{
+		this(origin,  into,  0.0);
+	}
+	
+	public Gene(Neuron origin, Neuron into, double weight)
+	{
 		super();
-		this.weight  = 0.;
 		this.enabled = true;
-		this.into    = into;
+		this.weight  = weight;
 		this.origin  = origin;
+		this.into    = into;
 	}
 	
 	/* Setzen einer neuen Gewichtung für die Verbindung */

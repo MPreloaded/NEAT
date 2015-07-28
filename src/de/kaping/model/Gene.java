@@ -72,4 +72,13 @@ public class Gene {
 	{
 		return this.origin;
 	}
+	
+	/* Überprüfung, ob zwei Genes identische Ursprünge und Ziele haben */
+	public boolean isEqual(Gene gene2)
+	{
+		if((this.origin == gene2.origin) && (this.into == gene2.into))
+			return true;
+		
+		return false;
+	}
 }

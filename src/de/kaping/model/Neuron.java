@@ -9,7 +9,7 @@ import java.util.List;
 public class Neuron {
 	
 	/* TODO: Change Type into enum */
-	private int        type; /* input, output, hidden */
+	private int        type; /* input, output, hidden, bias */
 	private List<Gene> incoming;
 	private double     value;
 
@@ -26,7 +26,7 @@ public class Neuron {
 	}
 	
 	/* Hinzufügen einer neuen eingehenden Verbindung */
-	public boolean setIncoming(Gene inc)
+	public boolean addIncoming(Gene inc)
 	{                                             
 		if(!incoming.contains(inc))
 			return incoming.add(inc);
@@ -38,9 +38,13 @@ public class Neuron {
 	/* Entfernen einer eingehenden Verbindung */
 	public boolean deleteIncoming(Gene inc)
 	{
-		boolean tmp = incoming.remove(inc);
-		
-		return tmp;
+		return incoming.remove(inc);
+	}
+	
+	/* Setzen einer Liste aller bestehenden Verbindungen */
+	public void setIncoming(List<Gene> incoming)
+	{
+		this.incoming = incoming;
 	}
 	
 	/* Rückgabe aller bestehenden Verbindungen */

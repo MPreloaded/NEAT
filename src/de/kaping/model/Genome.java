@@ -1,5 +1,6 @@
 package de.kaping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,12 +25,18 @@ public class Genome {
 		
 		/* TODO: Entfernen des Hardcoden */
 
+		rates    = new double[6];
 		rates[0] = 0.25;  /* Ändern aller Gewichtungen */
 		rates[1] = 2.0;   /* Hinzufügen von Verbindungen */
 		rates[2] = 0.5;   /* Trennen einer Verbindung durch Einfügen Neuron */
 		rates[3] = 0.4;   /* Hinzufügen von BIAS-Verbindung */
 	   rates[4] = 0.4;   /* Deaktivieren einer aktiven Verbindung */
 	   rates[5] = 0.2;   /* Aktivieren einer inaktiven Verbindung */
+	   
+	   neurons  = new ArrayList<Neuron>();
+	   genes    = new ArrayList<Gene>();
+	   fitness  = 0.0;
+	   adjustedFitness = 0.0;
 	}
 	
 	/* Setzen der aktuellen Fitness des Netzwerkes */
@@ -139,19 +146,7 @@ public class Genome {
 			}
 		}		
 	}
-	
-	/* Ändern der Raten zur Entwicklung verschiedenster Netzwerke */
-	private void alterRates()
-	{
-		/* 0.95 * 1.05263 ~= 1 
-		 * TODO: Vielleicht Hardcoding entfernen und einen Parameter einführen */
-		for(int i = 0; i < 6; i++)
-			if (Math.random() < 0.5)
-				rates[i] *= 0.95;
-			else
-				rates[i] *= 1.05263;
-	}
-	
+
 	/* Änderung aller Gewichtungen */
 	private void mutateConnections()
 	{
@@ -172,7 +167,40 @@ public class Genome {
 	/* Hinzufügen einer neuen Verbindung */
 	private void mutateLink(boolean bias)
 	{
+		Random rn = new Random();
+		Neuron neuron1 = neurons.get(rn.nextInt(neurons.size()));
+		Neuron neuron2 = neurons.get(rn.nextInt(neurons.size()));
+		Neuron origin, into;
 		
+		/* wenn beide zufälligen Neuronen Input sind, dann Abbruch */
+		if(neuron1.getType() == 0 && neuron2.getType() == 0)
+			return;
+		
+		/* sollte ein Neuron Input sein, so soll es der Origin werden */
+		if(neuron2.getType() == 0)
+		{
+			origin = neuron2;
+			into   = neuron1;
+		}
+		else
+		{
+			origin = neuron1;
+			into   = neuron2;
+		}
+		
+		if(bias)
+			origin = this.getBias();
+		
+		Gene newGene = new Gene(origin, into);
+		
+		/* Besteht diese Verbindung bereits, dann Abbruch */
+		for(int i = 0; i < genes.size(); i++)
+			if(newGene.isEqual(genes.get(i)))
+				return;
+			
+		/* Alle Tests erfolgreich: neue verbindung einrichten */
+		newGene.setWeight(rn.nextDouble()*4 - 2);
+		this.addGene(newGene);
 	}
 	
 	/* Trennen einer Verbindung durch Einfügen eines Neurons */
@@ -186,7 +214,7 @@ public class Genome {
 			return;
 		
 		gene.setEnabled(false);
-		Neuron newNeuron = new Neuron(2);
+		Neuron newNeuron = new Neuron(2 /* hidden */);
 		
 		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, gene.getWeight());
 		Gene newGene2 = new Gene(newNeuron, gene.getInto(), 1.0);
@@ -199,6 +227,56 @@ public class Genome {
 	/* (De-)Aktivieren einer (in-)aktiven Verbindung */
 	private void mutateEnable(boolean enable)
 	{
+		Random rn = new Random();
+		List<Gene> candidates = new ArrayList<Gene>();
 		
+		for(int i = 0; i < genes.size(); i++)
+			if (genes.get(i).getEnabled() == enable)
+				candidates.add(genes.get(i));
+		
+		/* Wenn es keine (in-)aktive Verbindung gibt, Abbruch */
+		if (candidates.size() == 0)
+			return;
+		
+		Gene gene = candidates.get(rn.nextInt(candidates.size()));
+		gene.setEnabled(!gene.getEnabled());
+	}
+	
+	/* Ändern der Raten zur Entwicklung verschiedenster Netzwerke */
+	private void alterRates()
+	{
+		/* 0.95 * 1.05263 ~= 1 
+		 * TODO: Vielleicht Hardcoding entfernen und einen Parameter einführen */
+		for(int i = 0; i < 6; i++)
+			if (Math.random() < 0.5)
+				rates[i] *= 0.95;
+			else
+				rates[i] *= 1.05263;
+	}
+	
+	
+	/* Suchen des Biasneurons innerhalb des Netzwerkes */
+	private Neuron getBias()
+	{
+		Neuron bias = null;
+		
+		/* Es sollte nur ein Biasneuron vorhanden sein. Sollten mehrere 
+		 * existieren, so wird das erste ausgewählt.
+		 */
+		for(int i = 0; i < neurons.size(); i++)
+			if(neurons.get(i).getType() == 3)
+			{
+				bias = neurons.get(i);
+				break;
+			}
+		
+		/* Eigentlich nicht nötig, zur Sicherheit */
+		if(bias == null)
+		{
+			bias = new Neuron(3);
+			this.addNeuron(bias);
+		}
+		
+		return bias;
 	}
 }

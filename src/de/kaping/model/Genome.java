@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/*------------------------------------------------------------------------------
- * Class Genome
- * Umfasst ein Netzwerk aus Neuronen und Verbindungen
-------------------------------------------------------------------------------*/
+/**
+ * Beschreibung eines Netzwerkes durch Zusammenfassung von Neuronen und Genes.
+ * Ein Netzwerk wird durch seine Performance bewertet (<code>fitness</code>).
+ * Zusätzlich werden die Mutierungsraten hier gespeichert und durch Aufrufe von 
+ * außen verändert.
+ * <p>
+ * Die <code>adjustedFitness</code> steht für eine veränderte, angepasste 
+ * Performance-Berwertung, die für die tatsächliche Auswahl überlebender 
+ * Netzwerke verwendet wird.
+ * @author MPreloaded
+ */
 public class Genome {
 	
 	private List<Neuron> neurons;
@@ -19,6 +26,9 @@ public class Genome {
 	/* Enthält alle Mutations-/ relevanten Raten für das Netzwerk*/
 	private double[]     rates;
 	
+	/**
+	 * Konstruktor
+	 */
 	public Genome()
 	{
 		super();
@@ -39,55 +49,84 @@ public class Genome {
 	   adjustedFitness = 0.0;
 	}
 	
-	/* Setzen der aktuellen Fitness des Netzwerkes */
+	/**
+	 * Setzt die aktuelle Bewertung des Netzwerkes neu.
+	 * @param fitness neue Bewertung
+	 */
 	public void setFitness(double fitness)
 	{
 		this.fitness = fitness;
 	}
 	
-	/* Rückgabe der aktuellen Fitness des Netzwerkes */
+	/**
+	 *  Gibt die aktuelle Bewertung des Netzwerkes zurück.
+	 *  @return aktuelle Bewertung
+	 */
 	public double getFitness()
 	{
 		return this.fitness;
 	}
 	
-	/* Setzen der gewichteten Fitness des Netzwerkes */
+	/**
+	 * Setzt die tatsächliche Bewertung des Netzwerkes neu.
+	 * @param fitness neue Bewertung
+	 */
 	public void setAdjustedFitness(double fitness)
 	{
 		this.adjustedFitness = fitness;
 	}
 	
-	/* Rückgabe der gewichteten Fitness des Netzwerkes */
+	/**
+	 * Gibt die tatsächliche Bewertung des Netzwerkes zurück.
+	 * @return tatsächliche Bewertung
+	 */
 	public double getAdjustedFitness()
 	{
 		return this.adjustedFitness;
 	}
 	
-	/* Setzen einer neuen Liste Neuronen */
+	/**
+	 * Setzt eine Liste von Neuronen des Netzwerkes.
+	 * Praktisch, falls ein Netzwerk kopiert werden soll.
+	 * @param neurons Liste von Neuronen
+	 */
 	public void setNeurons(List<Neuron> neurons)
 	{
 		this.neurons = neurons;
 	}
 	
-	/* Rückgabe der Liste aller Neuronen des Netzwerkes */
+	/**
+	 * Gibt eine Liste aller Neuronen des Netzwerkes zurück.
+	 * @return Liste aller Neuronen
+	 */
 	public List<Neuron> getNeurons()
 	{
 		return this.neurons;
 	}
 	
-	/* Setzen einer neuen Liste Verbindungen */
+	/**
+	 * Setzt eine Liste von Verbindungen des Netzwerkes.
+	 * @param genes Liste von Verbindungen
+	 */
 	public void setGenes(List<Gene> genes)
 	{
 		this.genes = genes;
 	}
 	
-	/* Rückgabe der Liste aller Verbindungen des Netzwerkes */
+	/**
+	 * Gibt eine Liste aller Verbindungen des Netzwerkes zurück.
+	 * @return Liste aller Verbindungen
+	 */
 	public List<Gene> getGenes()
 	{
 		return this.genes;
 	}
 	
-	/* Hinzufügen einer neuen Verbindung zum Netzwerk */
+	/**
+	 * Fügt eine einzelne Verbindung zum Netzwerk hinzu.
+	 * @param gene neue Verbindung
+	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
+	 */
 	public boolean addGene(Gene gene)
 	{
 		if(!genes.contains(gene))
@@ -98,7 +137,11 @@ public class Genome {
 		return false;				
 	}
 	
-	/* Hinzufügen eines neuen Neurons zum Netzwerk */
+	/** 
+	 * Fügt ein neues Neuron zum Netzwerk hinzu.
+	 * @param neuron neues Neuron
+	 * @return Wahrheitswert, ob Neuron hinzugefügt werden konnte
+	 */
 	public boolean addNeuron(Neuron neuron)
 	{
 		if(!neurons.contains(neuron))
@@ -107,7 +150,20 @@ public class Genome {
 		return false;
 	}
 	
-	/* Ausführen eines Mutationszyklus */
+	/**
+	 * Führt einen Mutationszyklus aus.
+	 * Das bedeutet:
+	 * <ul>
+	 * <li>Verändern der Mutationsraten (Zufällig erhöhen oder verringern)</li>
+	 * <li>Durch Zufall auswählen, ob die jeweiligen Mutationen ausgeführt werden
+	 * </li>
+	 * <li>Linkmutation (Hinzufügen neuer Verbindungen) </li>
+	 * <li>Neuronmutation (Trennen einer Verbindung in zwei) </li>
+	 * <li>Biasmutation (Hinzufügen neuer Verbindung ausgehend vom Biasneuron) </li>
+	 * <li>Disablemutation (Deaktivieren einer aktiven Verbindung) </li>
+	 * <li>Enablemutation (Aktivieren einer inaktiven Verbindung) </li>
+	 * </ul>
+	 */
 	public void mutateGenome()
 	{
 		/* erst Raten modifizieren... */

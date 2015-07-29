@@ -15,7 +15,7 @@ import java.util.Random;
  * Netzwerke verwendet wird.
  * @author MPreloaded
  */
-public class Genome {
+public class Genome implements Comparable<Genome>{
 	
 	private List<Neuron> neurons;
 	private List<Gene>   genes;
@@ -334,5 +334,24 @@ public class Genome {
 		}
 		
 		return bias;
+	}
+
+	@Override
+	/**
+	 * Vergleicht die Bewertungen der beiden Netzwerke.
+	 * Gibt 1 zurück, wenn die Bewertung dieses Netzwerkes besser ist als die 
+	 * von <code>o</code>, -1 wenn schlechter und 0 wenn identisch. 
+	 */
+	public int compareTo(Genome o)
+	{
+		/* TODO: fitness oder adjustedFitness ? */
+		double deltaFitness = this.fitness - o.getFitness();
+		
+		if(deltaFitness > 0)
+			return 1;
+		else if (deltaFitness < 0)
+			return -1;
+		else
+			return 0;
 	}
 }

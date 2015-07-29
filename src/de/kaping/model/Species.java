@@ -46,7 +46,7 @@ public class Species {
 	/**
 	 * Setzt einen Floatingpointwert als aktuell höchste Fitness eines Netzwerkes
 	 * innerhalb dieser Spezies.
-	 * @param topFitness
+	 * @param topFitness neue höchste Bewertung
 	 */
 	public void setTopFitness(double topFitness) 
 	{
@@ -67,7 +67,7 @@ public class Species {
 	 * Setzen des aktuellen Stagnationsindexes, der angibt, inwieweit sich 
 	 * innerhalb der Spezies in den letzten Generationen eine Verbesserung 
 	 * eingestellt hat.
-	 * @param staleness
+	 * @param staleness neuer Stagnationsindex
 	 */
 	public void setStaleness(double staleness) 
 	{
@@ -87,7 +87,7 @@ public class Species {
 	/**
 	 * Setzt die durchschnittliche Bewertung der Netzwerke innerhalb dieser 
 	 * Spezies.
-	 * @param averageFitness
+	 * @param averageFitness neue durchschnittliche Bewertung
 	 */
 	public void setAverageFitness(double averageFitness) 
 	{
@@ -129,7 +129,7 @@ public class Species {
 	/**
 	 * Entfernen eines bestimmten Netzwerkes aus der Liste aller Netzwerke dieser 
 	 * Spezies.
-	 * TODO: Wenn letztes Netzwerk --> Löschen von Spezies (?)
+	 * TODO: Wenn letztes Netzwerk, dann Löschen von Spezies (?)
 	 * @param genome zu entfernendes Netzwerk aus dieser Spezies
 	 * @return Wahrheitswert, ob Netzwerk entfernt werden konnte
 	 */

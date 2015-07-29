@@ -1,5 +1,6 @@
 package de.kaping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** 
@@ -66,7 +67,11 @@ public class Neuron {
 		super();
 		this.type     = type;
 		this.value    = value;
-		this.incoming = inc;
+		
+		if(inc != null)
+			this.incoming = inc;
+		else
+			this.incoming = new ArrayList<Gene>();
 	}
 	
 	/**

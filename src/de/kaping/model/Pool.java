@@ -1,11 +1,16 @@
 package de.kaping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/*------------------------------------------------------------------------------
- * Class Pool
- * Umfasst ein Netzwerk aus Neuronen und Verbindungen
-------------------------------------------------------------------------------*/
+/**
+ * Zusammenfassung aller Netzwerke zu einer Population.
+ * Sorgt dafür, dass Operationen über die gesamte Population durchgeführt werden 
+ * können, und somit sichergestellt werden kann, dass sich die Population in die
+ * richtige Richtung entwickelt.
+ * 
+ * @author MPreloaded
+ */
 public class Pool {
 	
 	private List<Species> species;
@@ -16,72 +21,117 @@ public class Pool {
 	private double        topFitness;
 	private int           generation;
 	
+	/**
+	 * Konstruktor
+	 */
 	public Pool()
 	{
 		super();
+		this.currentGenome  = 0;
+		this.currentSpecies = 0;
+		this.topFitness     = 0;
+		this.generation     = 0;
+		
+		this.species        = new ArrayList<Species>();
 	}
 	
-	/* Rückgabe aller im Pool vorhandenen Spezien */
+	/**
+	 * Gibt alle Spezies der Population innerhalb dieser Generation zurück.
+	 * @return Liste aller Spezies
+	 */
 	public List<Species> getSpecies()
 	{
 		return species;
 	}
 	
-	/* Setzen aller Spezien für den Pool */
+	/**
+	 * Setzt die Liste aller Spezies für die Population neu.
+	 * VORSICHT! Kann bei falscher Anwendung die Population resetten.
+	 * @param species neue Liste von Spezies
+	 */
 	public void setSpecies(List<Species> species)
 	{
 		this.species = species;
 	}
 
-	/* Rückgabe der aktuell ausgewählten Spezies */
+	/**
+	 * Gibt die aktuell in der Simulation zu bearbeitende Species aus.
+	 * @return zu simulierende Species
+	 */
 	public int getCurrentSpecies()
 	{
 		return currentSpecies;
 	}
 
-	/* Setzen der ausgewählten Spezies */
+	/** 
+	 * Setzt die aktuell zu simulierenden Spezies neu.
+	 * @param currentSpecies zu simulierende Species
+	 */
 	public void setCurrentSpecies(int currentSpecies)
 	{
 		this.currentSpecies = currentSpecies;
 	}
 
-	/* Rückgabe des aktuellen Netzwerkes */
+	/**
+	 * Gibt das aktuell in der Simulation zu bearbeitende Netzwerk aus.
+	 * @return zu simulierendes Netzwerk
+	 */
 	public int getCurrentGenome()
 	{
 		return currentGenome;
 	}
 
-	/* Setzen des aktuellen Netzwerkes */
+	/**
+	 * Setzen des aktuell zu simulierende Netzwerk.
+	 * @param currentGenome zu simulierendes Netzwerk
+	 */
 	public void setCurrentGenome(int currentGenome)
 	{
 		this.currentGenome = currentGenome;
 	}
 
-	/* Rückgabe der höchsten Fitness im Pool */
+	/**
+	 * Gibt die Bewertung des erfolgreichsten Netzwerkes der Population aus.
+	 * @return beste Bewertung eines Netzwerkes der Population
+	 */
 	public double getTopFitness()
 	{
 		return topFitness;
 	}
 
-	/* Setzen der höchsten Fitness im Pool */
+	/**
+	 * Setzt eine neue Bewertung als höchste innerhalb der Population.
+	 * @param topFitness neue höchste Bewertung
+	 */
 	public void setTopFitness(double topFitness)
 	{
 		this.topFitness = topFitness;
 	}
 
-	/* Rückgabe der aktuellen Generationsnummer */
+	/**
+	 * Gibt die aktuelle Generationsnummer zurück.
+	 * @return Generationsnummer
+	 */
 	public int getGeneration()
 	{
 		return generation;
 	}
 
-	/* Setzen der aktuellen Generationsnummer */
+	/**
+	 * Setzt die Generationsnummer neu.
+	 * @param generation neue Generationsnummer
+	 */
 	public void setGeneration(int generation)
 	{
 		this.generation = generation;
 	}
 	
-	/* Hinzufügen einer Spezies zum Pool */
+	/**
+	 * Fügt eine neue Spezies zur Population hinzu.
+	 * TODO: Abfrage, ob maxPopulation überschritten wird.
+	 * @param species neue Spezies
+	 * @return Wahrheitswert, ob Spezies hinzugefügt werden konnte
+	 */
 	public boolean addSpecies(Species species)
 	{
 		if(!this.species.contains(species))

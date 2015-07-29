@@ -272,8 +272,8 @@ public class Genome {
 		gene.setEnabled(false);
 		Neuron newNeuron = new Neuron(2 /* hidden */);
 		
-		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, gene.getWeight());
-		Gene newGene2 = new Gene(newNeuron, gene.getInto(), 1.0);
+		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, 1.0);
+		Gene newGene2 = new Gene(newNeuron, gene.getInto(), gene.getWeight());
 		
 		this.addGene(newGene1);
 		this.addGene(newGene2);

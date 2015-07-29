@@ -1,13 +1,19 @@
 package de.kaping.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/*------------------------------------------------------------------------------
- * Class Species
- * Enthält verschiedene, ähnliche Netzwerke und fasst sie zusammen
- * Durch Species werden Innovationen, die erst durch weitere Evolution zu einer
- * besseren Lösung führen geschützt.
-------------------------------------------------------------------------------*/
+/** 
+ * Zusammenfassung verschiedener Netzwerke einer gewissen Ähnlichkeit zu einer
+ * Spezies.
+ * Spezien dienen dazu verschiedene Evolutionen zu schützen, die in der ersten 
+ * Generation noch nicht zu einer Verbesserung führen, aber vielleicht in einer
+ * späteren dafür zu einem gewaltigen Schritt. Somit müssen sich diese Netzwerke
+ * zum Anfang nicht im Kontext der gesamten Population beweisen, sondern 
+ * zunächst nur im Umfeld ihrer Spezies.
+ * 
+ * @author MPreloaded
+ */
 public class Species {
 	
 	private List<Genome> genomes;
@@ -16,61 +22,102 @@ public class Species {
 	private double       staleness;
 	private double       averageFitness;
 	
+	/**
+	 * Konstruktor
+	 */
 	public Species()
 	{
 		super();
+		this.topFitness     = 0;
+		this.staleness      = 0;
+		this.averageFitness = 0;
+		this.genomes        = new ArrayList<Genome>();
 	}
 
-	/* Rückgabe der bisher höchsten Fitness innerhalb der Spezies */
+	/**
+	 * Gibt die höchste Fitness eines Netzwerkes dieser Spezies zurück.
+	 * @return höchste Fitness
+	 */
 	public double getTopFitness() 
 	{
 		return topFitness;
 	}
 
-	/* Setzen der höchsten Fitness innerhalb der Spezies */
+	/**
+	 * Setzt einen Floatingpointwert als aktuell höchste Fitness eines Netzwerkes
+	 * innerhalb dieser Spezies.
+	 * @param topFitness
+	 */
 	public void setTopFitness(double topFitness) 
 	{
 		this.topFitness = topFitness;
 	}
 
-	/* Rückgabe der Staleness (Variable um darzustellen, ob längere Zeit keine 
-	 * Verbesserung aufgetaucht ist */
+	/**
+	 * Gibt zurück, inwieweit sich die höchste Bewertung innerhalb der Spezies 
+	 * in den letzten Generationen verbessert hat.
+	 * @return Stagnationsindex
+	 */
 	public double getStaleness() 
 	{
 		return staleness;
 	}
 	
-	/* Setzen der Staleness (Erklärung beim Getter) */
+	/**
+	 * Setzen des aktuellen Stagnationsindexes, der angibt, inwieweit sich 
+	 * innerhalb der Spezies in den letzten Generationen eine Verbesserung 
+	 * eingestellt hat.
+	 * @param staleness
+	 */
 	public void setStaleness(double staleness) 
 	{
 		this.staleness = staleness;
 	}
 
-	/* Rückgabe der durchschnittlichen Fitness innerhalb der Spezies */
+	/**
+	 * Gibt die durchschnittliche Bewertung der Netzwerke inenrhalb dieser 
+	 * Spezies zurück.
+	 * @return durchschnittliche Bewertung
+	 */
 	public double getAverageFitness() 
 	{
 		return averageFitness;
 	}
 
-	/* Setzen der durchschnittlichen Fitness innerhalb der Spezies */
+	/**
+	 * Setzt die durchschnittliche Bewertung der Netzwerke innerhalb dieser 
+	 * Spezies.
+	 * @param averageFitness
+	 */
 	public void setAverageFitness(double averageFitness) 
 	{
 		this.averageFitness = averageFitness;
 	}
 
-	/* Rückgabe aller Netzwerke innerhalb der Spezies */
+	/**
+	 * Gibt eine Liste aller in dieser Spezies gruppierten Netzwerke zurück.
+	 * @return Liste der Netzwerke dieser Spezies
+	 */
 	public List<Genome> getGenomes()
 	{
 		return genomes;
 	}
 
-	/* Setzen einer Liste von Netzwerken für die Spezies */
+	/**
+	 * Setzt eine neue Liste von Netzwerken für diese Spezies.
+	 * @param genomes neue Liste von Netzwerken für diese Spezies
+	 */
 	public void setGenomes(List<Genome> genomes)
 	{
 		this.genomes = genomes;
 	}
 	
-	/* Hinzufügen eines Netzwerkes zur Spezies */
+	/**
+	 * Fügt ein Netzwerk zu dieser Spezies hinzu. Eine Kontrolle, ob das Netzwerk
+	 * den Ähnlichkeitsgrad der Spezies erfüllt passiert nicht.
+	 * @param genome neues Netzwerk
+	 * @return Wahrheitswert, ob Netzwerk hinzugefügt werden konnte
+	 */
 	public boolean addGenome(Genome genome)
 	{
 		if(!genomes.contains(genome))
@@ -79,7 +126,13 @@ public class Species {
 		return false;
 	}
 	
-	/* Entfernene eines Netzwerkes aus der Spezies */
+	/**
+	 * Entfernen eines bestimmten Netzwerkes aus der Liste aller Netzwerke dieser 
+	 * Spezies.
+	 * TODO: Wenn letztes Netzwerk --> Löschen von Spezies (?)
+	 * @param genome zu entfernendes Netzwerk aus dieser Spezies
+	 * @return Wahrheitswert, ob Netzwerk entfernt werden konnte
+	 */
 	public boolean deleteGenome(Genome genome)
 	{
 		return genomes.remove(genome);

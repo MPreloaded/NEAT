@@ -151,6 +151,31 @@ public class Genome implements Comparable<Genome>{
 	}
 	
 	/**
+	 * Kopiert dieses Netzwerk.
+	 * @return kopiertes Objekt
+	 */
+	public Genome copyGenome()
+	{
+		Genome copy = new Genome();
+		
+		copy.setNeurons(neurons);
+		copy.setGenes(genes);
+		
+		return copy;
+	}
+	
+	/**
+	 * Kombiniert dieses Netzwerk mit einem zweiten, um ein neues Netzwerk zu 
+	 * erzeugen.
+	 * @param gen2 zweites Netzwerk zur Kombination
+	 * @return neu generiertes Netzwerk
+	 */
+	public Genome matchGenomes(Genome gen2)
+	{
+		return null;
+	}
+	
+	/**
 	 * Führt einen Mutationszyklus aus.
 	 * Das bedeutet:
 	 * <ul>

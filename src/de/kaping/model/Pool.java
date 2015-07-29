@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class Pool {
 	
+	private final int StaleSpecies = 15;
+	private final int Population   = 300;
+	
 	private List<Species> species;
 	
 	private int           currentSpecies;
@@ -138,6 +141,85 @@ public class Pool {
 			return this.species.add(species);
 		
 		return false;
+	}
+	
+	/**
+	 * Entfernt stagnierende Spezies und setzt den Index für danach existierende
+	 * neu.
+	 */
+	public void removeStaleSpecies()
+	{
+		for (Species spe : species)
+		{
+			spe.getGenomes().sort(null);
+			
+			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness())
+			{
+				spe.setTopFitness(spe.getGenomes().get(0).getFitness());
+				spe.setStaleness(0);
+			}
+			else
+			{
+				spe.setStaleness(spe.getStaleness() + 1);
+			}
+			
+			/* Entferne nur stagnierende, die nicht die beste Species sind */
+			if(spe.getStaleness() > StaleSpecies && !(spe.getTopFitness() >= 
+																	this.topFitness))
+			{
+				species.remove(spe);
+			}
+		}			
+	}
+	
+	/**
+	 * Entfernt bei vielen Species die schwächsten.
+	 */
+	public void removeWeakSpecies()
+	{
+		double total = getTotalAverageFitness();
+		
+		for (Species spe : species)
+		{
+			spe.getGenomes().sort(null);
+			
+			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness())
+				spe.setTopFitness(spe.getGenomes().get(0).getFitness());
+			
+			double strength = (spe.getAverageFitness() / total * Population);
+			
+			if (strength < 1.)
+				species.remove(spe);
+		}
+	}
+	
+	/**
+	 * Sucht innerhalb der Population nach einer geeigneten Species oder erstellt
+	 * gegebenenfalls eine neue.
+	 * @param child einzuteilendes Netzwerk
+	 */
+	public void addChildToSpecies(Genome child)
+	{
+		for(Species s : species)
+			if (s.isSameSpecies(child))
+			{
+				s.addGenome(child);
+				return;
+			}
+		
+		Species newSpecies = new Species();
+		newSpecies.addGenome(child);
+	}
+		
+	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
+	private double getTotalAverageFitness()
+	{
+		double sum = 0.;
+		
+		for(Species s : species)
+			sum += s.getAverageFitness();
+
+		return sum;
 	}
 
 }

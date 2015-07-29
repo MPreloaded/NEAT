@@ -2,6 +2,7 @@ package de.kaping.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /** 
  * Zusammenfassung verschiedener Netzwerke einer gewissen Ähnlichkeit zu einer
@@ -16,10 +17,13 @@ import java.util.List;
  */
 public class Species {
 	
+	/* TODO: Hardcoding entfernen */
+	private final double CrossOverChance = 0.75;
+	
 	private List<Genome> genomes;
 	
 	private double       topFitness;
-	private double       staleness;
+	private int          staleness;
 	private double       averageFitness;
 	
 	/**
@@ -58,18 +62,18 @@ public class Species {
 	 * in den letzten Generationen verbessert hat.
 	 * @return Stagnationsindex
 	 */
-	public double getStaleness() 
+	public int getStaleness() 
 	{
 		return staleness;
 	}
 	
 	/**
-	 * Setzen des aktuellen Stagnationsindexes, der angibt, inwieweit sich 
+	 * Setzt den aktuellen Stagnationsindex, der angibt, inwieweit sich 
 	 * innerhalb der Spezies in den letzten Generationen eine Verbesserung 
 	 * eingestellt hat.
 	 * @param staleness neuer Stagnationsindex
 	 */
-	public void setStaleness(double staleness) 
+	public void setStaleness(int staleness) 
 	{
 		this.staleness = staleness;
 	}
@@ -127,7 +131,7 @@ public class Species {
 	}
 	
 	/**
-	 * Entfernen eines bestimmten Netzwerkes aus der Liste aller Netzwerke dieser 
+	 * Entfernt ein bestimmtes Netzwerk aus der Liste aller Netzwerke dieser 
 	 * Spezies.
 	 * TODO: Wenn letztes Netzwerk, dann Löschen von Spezies (?)
 	 * @param genome zu entfernendes Netzwerk aus dieser Spezies
@@ -136,6 +140,81 @@ public class Species {
 	public boolean deleteGenome(Genome genome)
 	{
 		return genomes.remove(genome);
+	}
+	
+	/**
+	 * Berechnet die durchschnittliche Bewertung aller Netzwerke dieser Spezies 
+	 * und speichert sie in <code>averageFitness</code>.
+	 */
+	public void calculateAverageFitness()
+	{
+		double sum = 0.;
+		
+		for(Genome gen : this.genomes)
+			sum += gen.getFitness();
+		
+		this.averageFitness = sum / genomes.size();
+	}
+	
+	/**
+	 * Entfernt die schlechtesten Netzwerke der Spezies.
+	 * @param leaveOne Gibt an, ob die Hälfte oder alle bis auf ein Netzwerk 
+	 *        entfernt werden
+	 */
+	public void removeWeakGenomes(boolean leaveOne)
+	{
+		/* die obere Hälfte (aufgerundet) wird behalten */
+		int keep = (this.genomes.size() / 2) + (this.genomes.size() % 2);
+		
+		if(leaveOne)
+			keep = 1;
+		
+		this.genomes.sort(null);
+		
+		this.genomes = this.genomes.subList(0, keep);
+	}
+	
+	/**
+	 * Erzeugt ein neues Netzwerk auf Basis dieser Spezies.
+	 * Per Zufall wird ausgewählt, ob dabei zwei Netzwerke zusammengeführt werden
+	 * oder nur ein einzelnes Netzwerk als Basis dient. 
+	 * Auf jeden Fall wird am Ende ein Mutationszyklus durchlaufen.
+	 * @return
+	 */
+	public Genome breedChild()
+	{
+		Random rn    = new Random();
+		Genome child = null;
+		
+		if(Math.random() < CrossOverChance)
+		{
+			Genome parent1 = genomes.get(rn.nextInt(genomes.size()));
+			Genome parent2 = genomes.get(rn.nextInt(genomes.size()));
+			
+			child = parent1.matchGenomes(parent2);
+		}
+		else
+		{
+			Genome parent1 = genomes.get(rn.nextInt(genomes.size()));
+			
+			child = parent1.copyGenome();
+		}
+		
+		child.mutateGenome();
+		
+		return child;
+	}
+	
+	/**
+	 * Prüft, ob ein gegebenes Netzwerk ähnlich genug ist, um Teil des Netzwerkes 
+	 * zu sein. Hierbei wird immer nur die Ähnlichkeit zu einem Netzwerk der 
+	 * Species geprüft.
+	 * @param genome zu prüfende Netzwerk
+	 * @return Wahrheitswert, ob Netzwerk ähnlich genug ist
+	 */
+	public boolean isSameSpecies(Genome genome)
+	{
+		return true;
 	}
 
 }

@@ -14,7 +14,7 @@ package de.kaping.model;
  * 
  * @author MPreloaded
  */
-public class Gene {
+public class Gene implements Comparable<Gene>{
 	
 	private Neuron into;
 	private Neuron origin;
@@ -163,5 +163,25 @@ public class Gene {
 			return true;
 		
 		return false;
+	}
+
+	@Override
+	/**
+	 * Vergleicht zwei Verbindungen und sortiert die niedrigste Innovationsnummer 
+	 * an erste Stelle.
+	 * @param o zu vergleichende Verbindung
+	 * @return -1 wenn diese kleiner, 1 wenn größer, 0 wenn gleich
+	 */
+	public int compareTo(Gene o)
+	{
+		int deltaInno = this.historicalMarking - o.getHistoricalMarking();
+		
+		if(deltaInno > 0)
+			return 1;
+		else if(deltaInno < 0)
+			return -1;
+		else
+			return 0;
+			
 	}
 }

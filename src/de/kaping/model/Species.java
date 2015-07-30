@@ -19,6 +19,9 @@ public class Species {
 	
 	/* TODO: Hardcoding entfernen */
 	private final double CrossOverChance = 0.75;
+	private final double DeltaDisjoint   = 2.0;
+	private final double DeltaWeight     = 0.4;
+	private final double DeltaThreshold  = 1.0;
 	
 	private List<Genome> genomes;
 	
@@ -214,7 +217,13 @@ public class Species {
 	 */
 	public boolean isSameSpecies(Genome genome)
 	{
-		return true;
+		genomes.sort(null);
+		Genome speciesGenome = genomes.get(0);
+		
+		double deltaD = genome.deltaStructure(speciesGenome) * DeltaDisjoint;
+		double deltaW = genome.deltaWeight(speciesGenome) * DeltaWeight;
+		
+		return ((deltaD + deltaW) < DeltaThreshold);
 	}
 
 }

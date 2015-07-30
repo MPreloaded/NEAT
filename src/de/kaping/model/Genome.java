@@ -227,6 +227,77 @@ public class Genome implements Comparable<Genome>{
 			}
 		}		
 	}
+	
+	/**
+	 * Berechnet einen Wert, in wieweit sich zwei Netzwerke in ihrer Struktur
+	 * unterscheiden.
+	 * @param gen2 zweites Netzwerk
+	 * @return Strukturunterscheidungsgrad
+	 */
+	public double deltaStructure(Genome gen2)
+	{
+		int structuralDifferences = 0;
+		int size1                 = this.genes.size();
+		int size2                 = gen2.getGenes().size();
+		double n                  = (double) Math.max(size1, size2);
+		
+		this.genes.sort(null);
+		gen2.getGenes().sort(null);
+		
+		/* Berechne die maximale Innovationsnummer */
+		int maxInn = Math.max(this.genes.get(size1-1).getHistoricalMarking(), 
+							gen2.getGenes().get(size2-1).getHistoricalMarking());
+		
+		boolean[] inn1 = new boolean[maxInn];
+		boolean[] inn2 = new boolean[maxInn];
+		
+		for(Gene g : this.genes)
+			inn1[g.getHistoricalMarking() - 1] = true;
+		for(Gene g : gen2.getGenes())
+			inn2[g.getHistoricalMarking() - 1] = true;
+		
+		for(int i = 0; i < maxInn; i++)
+			if(inn1[i] != inn2[i])
+				structuralDifferences++;
+		
+		return structuralDifferences / n;
+	}
+	
+	/**
+	 * Berechnet einen Wert, in wieweit sich bei übereinstimmenden Verbindungen
+	 * zwischen zwei Netzwerken die Gewichtungen im Durchschnitt unterscheiden.
+	 * @param gen2 zweites Netzwerk
+	 * @return durchschnittlicher Gewichtungsunterschied
+	 */
+	public double deltaWeight(Genome gen2)
+	{
+		double deltaWeight = 0.;
+		int size1          = this.genes.size();
+		int size2          = gen2.getGenes().size();
+		int    n           = 0;
+		
+		this.genes.sort(null);
+		gen2.getGenes().sort(null);
+		
+		/* Berechne die maximale Innovationsnummer */
+		int maxInn = Math.max(this.genes.get(size1-1).getHistoricalMarking(), 
+							gen2.getGenes().get(size2-1).getHistoricalMarking()) + 1;
+		
+		Gene[] inn = new Gene[maxInn];
+		
+		for(Gene g : gen2.getGenes())
+			inn[g.getHistoricalMarking()] = g;
+		
+		for(Gene g : this.genes)
+			if(inn[g.getHistoricalMarking()] != null)
+			{
+				Gene g2 = inn[g.getHistoricalMarking()];
+				deltaWeight += Math.abs(g.getWeight() - g2.getWeight());
+				n++;
+			}
+		
+		return deltaWeight / n;
+	}
 
 	/* Änderung aller Gewichtungen */
 	private void mutateConnections()
@@ -364,8 +435,9 @@ public class Genome implements Comparable<Genome>{
 	@Override
 	/**
 	 * Vergleicht die Bewertungen der beiden Netzwerke.
-	 * Gibt 1 zurück, wenn die Bewertung dieses Netzwerkes besser ist als die 
-	 * von <code>o</code>, -1 wenn schlechter und 0 wenn identisch. 
+	 * Gibt -1 zurück, wenn die Bewertung dieses Netzwerkes besser ist als die 
+	 * von <code>o</code>, 1 wenn schlechter und 0 wenn identisch. Somit
+	 * wird sicher gestellt, dass die höchste Fitness an erster Stelle steht.
 	 */
 	public int compareTo(Genome o)
 	{
@@ -373,9 +445,9 @@ public class Genome implements Comparable<Genome>{
 		double deltaFitness = this.fitness - o.getFitness();
 		
 		if(deltaFitness > 0)
-			return 1;
-		else if (deltaFitness < 0)
 			return -1;
+		else if (deltaFitness < 0)
+			return 1;
 		else
 			return 0;
 	}

@@ -2,6 +2,7 @@ package de.kaping.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Zusammenfassung aller Netzwerke zu einer Population.
@@ -260,6 +261,46 @@ public class Pool {
 		gen.setHistoricalMarking(this.newInnovation());
 		this.addNewGene(gen);
 	}
+	
+	/**
+	 * Leitet eine neue Generation ein.
+	 */
+	public void newGeneration()
+	{
+		Random rn = new Random();
+		
+		List<Genome> newGen = new ArrayList<Genome>();
+		
+		for(Species s : species)
+			s.removeWeakGenomes(false);
+		
+		this.removeStaleSpecies();
+		this.removeWeakSpecies();
+		
+		double total = getTotalAverageFitness();
+		
+		for(Species s : species)
+		{
+			int breed = (int)(s.getAverageFitness() / total * Population) - 1;
+			for(int i = 0; i < breed; i++)
+				newGen.add(s.breedChild());
+		}
+		
+		for(Species s : species)
+			s.removeWeakGenomes(true);
+		
+		/* Fülle restliche Plätze auf */
+		while(newGen.size() + species.size() < Population)
+		{
+			Species s = species.get(rn.nextInt(species.size()));
+			newGen.add(s.breedChild());
+		}
+		
+		for(Genome child : newGen)
+			this.addChildToSpecies(child);
+		
+		this.generation++;
+	}
 		
 	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
 	private double getTotalAverageFitness()
@@ -267,8 +308,10 @@ public class Pool {
 		double sum = 0.;
 		
 		for(Species s : species)
-			sum += s.getAverageFitness();
-
+		{				
+			sum += s.calculateAverageFitness();
+		}
+		
 		return sum;
 	}
 	

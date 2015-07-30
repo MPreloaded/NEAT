@@ -82,7 +82,7 @@ public class Species {
 	}
 
 	/**
-	 * Gibt die durchschnittliche Bewertung der Netzwerke inenrhalb dieser 
+	 * Gibt die durchschnittliche Bewertung der Netzwerke innerhalb dieser 
 	 * Spezies zurück.
 	 * @return durchschnittliche Bewertung
 	 */
@@ -147,9 +147,11 @@ public class Species {
 	
 	/**
 	 * Berechnet die durchschnittliche Bewertung aller Netzwerke dieser Spezies 
-	 * und speichert sie in <code>averageFitness</code>.
+	 * und speichert sie in <code>averageFitness</code>. Zusätzlich wird der Wert
+	 * auch zurückgegeben.
+	 * @return durchschnittliche Bewertung
 	 */
-	public void calculateAverageFitness()
+	public double calculateAverageFitness()
 	{
 		double sum = 0.;
 		
@@ -157,6 +159,8 @@ public class Species {
 			sum += gen.getFitness();
 		
 		this.averageFitness = sum / genomes.size();
+		
+		return averageFitness;
 	}
 	
 	/**
@@ -189,7 +193,7 @@ public class Species {
 		Random rn    = new Random();
 		Genome child = null;
 		
-		if(Math.random() < CrossOverChance)
+		if(Math.random() < CrossOverChance && genomes.size() > 1)
 		{
 			Genome parent1 = genomes.get(rn.nextInt(genomes.size()));
 			Genome parent2 = genomes.get(rn.nextInt(genomes.size()));

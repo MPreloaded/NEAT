@@ -123,6 +123,25 @@ public class Genome implements Comparable<Genome>{
 	}
 	
 	/**
+	 * Setzt die Mutationsraten für dieses Netzwerk neu.
+	 * @param rates neue Mutationsraten
+	 */
+	public void setRates(double[] rates)
+	{
+		if(rates.length == 6)
+			this.rates = rates;
+	}
+	
+	/**
+	 * Gibt die aktuellen Mutationsraten zurück.
+	 * @return Mutationsraten
+	 */
+	public double[] getRates()
+	{
+		return rates;
+	}
+	
+	/**
 	 * Fügt eine einzelne Verbindung zum Netzwerk hinzu.
 	 * @param gene neue Verbindung
 	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
@@ -160,6 +179,7 @@ public class Genome implements Comparable<Genome>{
 		
 		copy.setNeurons(neurons);
 		copy.setGenes(genes);
+		copy.setRates(rates);
 		
 		return copy;
 	}
@@ -172,7 +192,48 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public Genome matchGenomes(Genome gen2)
 	{
-		return null;
+		Genome child  = new Genome();
+		/* Bestimmung besseres und schlechteres Netzwerk */
+		Genome h      = (this.fitness > gen2.getFitness())? this: gen2;
+		Genome l      = (this.fitness > gen2.getFitness())? gen2: this;
+
+		int size1          = h.genes.size();
+		int size2          = l.getGenes().size();
+		
+		h.getGenes().sort(null);
+		l.getGenes().sort(null);
+		
+		/* Berechne die maximale Innovationsnummer */
+		int maxInn = Math.max(h.getGenes().get(size1-1).getHistoricalMarking(), 
+							l.getGenes().get(size2-1).getHistoricalMarking()) + 1;
+		
+		Gene[] inn = new Gene[maxInn];
+		
+		for(Gene g : l.getGenes())
+			inn[g.getHistoricalMarking()] = g;
+		
+		/* Füge Verbindungen aus beiden Netzwerken dem neuen hinzu. Disjoint- und
+		 * Excess-Verbindungen nur vom besseren */
+		for(Gene g : h.getGenes())
+			if(inn[g.getHistoricalMarking()] != null && Math.random() < 0.5 && 
+					inn[g.getHistoricalMarking()].getEnabled())
+			{
+				child.addGene(inn[g.getHistoricalMarking()]);
+			}
+			else
+				child.addGene(g);
+		
+		
+		for(Gene g : child.getGenes())
+		{
+			child.addNeuron(g.getOrigin());
+			child.addNeuron(g.getInto());
+		}
+		
+		/* neues Netzwerk bekommt Mutationsraten vom besseren Netzwerk */
+		child.setRates(h.getRates());
+
+		return child;
 	}
 	
 	/**

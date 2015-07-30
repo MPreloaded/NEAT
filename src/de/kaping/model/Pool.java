@@ -45,6 +45,49 @@ public class Pool {
 	}
 	
 	/**
+	 * Initialisiert eine Population mit <code>input</code> Inputneuronen und 
+	 * output Outputneuronen. Die Liste der zurückgegebenen Neuronen enthält 
+	 * zunächst alle Inputneuronen (index 0 - (input-1) dann das Biasneuron
+	 * (index input) und zuletzt die Ouputneuronen (index (input + 1) - 
+	 * (input + output)). Werte der Inputneuronen sind Standardmäßig auf 1, und
+	 * die der Outputneuronen auf 0 gesetzt.
+	 * @param input Anzahl Inputneuronen
+	 * @param output Anzahl Outputneuronen
+	 * @return Liste der erstellten Neuronen, um Werte zu übertragen und zu 
+	 * empfangen
+	 */
+	public List<Neuron> initializePool(int input, int output)
+	{
+		List<Neuron> neurons = new ArrayList<Neuron>();
+		
+		/* Inputneuronen */
+		for(int i = 0; i < input; i++)
+		{
+			Neuron in = new Neuron(0, 1.);
+			neurons.add(in);
+		}
+		
+		/*Biasneuron */
+		Neuron bias = new Neuron(3, 1.);
+		neurons.add(bias);
+		
+		/* Outputneuronen */
+		for(int i = 0; i < output; i++)
+		{
+			Neuron out = new Neuron(1, 0.);
+			neurons.add(out);
+		}
+		
+		for(int i = 0; i < Population; i++)
+		{
+			Genome genome = new Genome(neurons, true);
+			this.addChildToSpecies(genome);
+		}
+		
+		return neurons;
+	}
+	
+	/**
 	 * Gibt alle Spezies der Population innerhalb dieser Generation zurück.
 	 * @return Liste aller Spezies
 	 */

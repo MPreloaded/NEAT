@@ -31,10 +31,29 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public Genome()
 	{
+		this(new ArrayList<Neuron>(), false);
+	}
+	
+	/**
+	 * Konstruktor mit Liste von Anfangsneuronen.
+	 * @param neurons Anfangsneuronen
+	 */
+	public Genome(List<Neuron> neurons)
+	{
+		this(neurons, false);
+	}
+	
+	/**
+	 * Konstruktor mit Liste von Anfangsneuronen, der bei basic = true eine 
+	 * Mutation durchführt.
+	 * @param neurons
+	 * @param basic
+	 */
+	public Genome(List<Neuron> neurons, boolean basic)
+	{
 		super();
 		
 		/* TODO: Entfernen des Hardcoden */
-
 		rates    = new double[6];
 		rates[0] = 0.25;  /* Ändern aller Gewichtungen */
 		rates[1] = 2.0;   /* Hinzufügen von Verbindungen */
@@ -47,6 +66,9 @@ public class Genome implements Comparable<Genome>{
 	   genes    = new ArrayList<Gene>();
 	   fitness  = 0.0;
 	   adjustedFitness = 0.0;
+	   
+	   if(basic)
+	   	this.mutateGenome();
 	}
 	
 	/**

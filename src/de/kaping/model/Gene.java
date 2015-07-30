@@ -20,6 +20,7 @@ public class Gene {
 	private Neuron origin;
 	private double weight;
 	private boolean enabled;
+	private int historicalMarking;
 	
 	/**
 	 * Standard Konstruktor
@@ -53,6 +54,7 @@ public class Gene {
 		this.weight  = weight;
 		this.origin  = origin;
 		this.into    = into;
+		this.historicalMarking = 0;
 	}
 	
 	/**
@@ -131,7 +133,25 @@ public class Gene {
 	}
 	
 	/**
-	 * Überprüfen, ob ein zweites Gene die gleiche verbindung darstellt.
+	 * Setzt die Innovationsnummer des Genes.
+	 * @param hMar Innovationsnummer
+	 */
+	public void setHistoricalMarking(int hMar)
+	{
+		this.historicalMarking = hMar;
+	}
+	
+	/**
+	 * Gibt die Innovationsnummer zurück
+	 * @return Innovationsnummer
+	 */
+	public int getHistoricalMarking()
+	{
+		return this.historicalMarking;
+	}
+	
+	/**
+	 * Überprüfen, ob ein zweites Gene die gleiche Verbindung darstellt.
 	 * Implementiert, da <code>equals</code> auf Objektgleichheit prüft, hier
 	 * aber nur überprüft werden soll, ob der Ursprung und das Ziel identisch sind.
 	 * @param gene2 Zweite Verbindung, deren Ähnlichkeit überprüft werden soll

@@ -23,6 +23,9 @@ public class Pool {
 	
 	private double        topFitness;
 	private int           generation;
+	private int           historicalMarking;
+	
+	private List<Gene>    generationMarkings;
 	
 	/**
 	 * Konstruktor
@@ -30,12 +33,14 @@ public class Pool {
 	public Pool()
 	{
 		super();
-		this.currentGenome  = 0;
-		this.currentSpecies = 0;
-		this.topFitness     = 0;
-		this.generation     = 0;
+		this.currentGenome     = 0;
+		this.currentSpecies    = 0;
+		this.topFitness        = 0;
+		this.generation        = 0;
+		this.historicalMarking = 0;
 		
-		this.species        = new ArrayList<Species>();
+		this.species            = new ArrayList<Species>();
+		this.generationMarkings = new ArrayList<Gene>();
 	}
 	
 	/**
@@ -130,6 +135,28 @@ public class Pool {
 	}
 	
 	/**
+	 * Erhöht die aktuelle Innovationsnummer, da eine neue Verbindung vorkommt.
+	 * @return neue Innovationsnummer
+	 */
+	public int newInnovation()
+	{
+		return ++this.historicalMarking;
+	}
+	
+	/**
+	 * Fügt eine neue Verbindung in die Liste aller neuen Verbindungen dieser 
+	 * Generation ein.
+	 * @param gen neue Verbindung
+	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
+	 */
+	public boolean addNewGene(Gene gen)
+	{
+		if (!generationMarkings.contains(gen))
+			return generationMarkings.add(gen);
+		return false;
+	}
+	
+	/**
 	 * Fügt eine neue Spezies zur Population hinzu.
 	 * TODO: Abfrage, ob maxPopulation überschritten wird.
 	 * @param species neue Spezies
@@ -210,6 +237,29 @@ public class Pool {
 		Species newSpecies = new Species();
 		newSpecies.addGenome(child);
 	}
+	
+	/**
+	 * Kontrolliert, ob die Verbindung innerhalb dieser Generation bereits 
+	 * aufgetreten ist und verteilt die gleiche, oder eine neue Innovationsnummer
+	 * @param gen neue Verbindung
+	 */
+	public void defineHistoricalMarking(Gene gen)
+	{
+		/* durchsuche alle neuen Verbindungen dieser Generation */
+		for (Gene g : generationMarkings)
+		{
+			if (gen.isEqual(g))
+			{
+				gen.setHistoricalMarking(g.getHistoricalMarking());
+				return;
+			}	
+		}
+		
+		/* erstes Auftreten der Verbindung: neue Innovationsnummer und einfügen
+		 * in Liste der neuen Verbindungen dieser Generation. */
+		gen.setHistoricalMarking(this.newInnovation());
+		this.addNewGene(gen);
+	}
 		
 	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
 	private double getTotalAverageFitness()
@@ -221,5 +271,5 @@ public class Pool {
 
 		return sum;
 	}
-
+	
 }

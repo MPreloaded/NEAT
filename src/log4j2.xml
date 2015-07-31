@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+	
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%-7p [%d{HH:mm:ss.SSS, dd.MM.yy}]: %m%n"/>
+			<Filters>
+				<!-- Hier Filter einfügen, falls benötigt -->
+			</Filters>
+		</Console>
+		<File name="File" filename="logs/neat.log" append="false">
+			<PatternLayout pattern="%-7p [%d{HH:mm:ss.SSS, dd.MM.yy}]: %m%n"/>
+			<Filters>
+				<!-- Hier Filter einfügen, falls benötigt -->
+			</Filters>
+		</File>
+	</Appenders>
+	
+	<Loggers>
+		
+		<Root level="trace">
+			<AppenderRef ref="Console" level="warn" />
+			<AppenderRef ref="File" />
+		</Root>
+		
+	</Loggers>
+</Configuration>

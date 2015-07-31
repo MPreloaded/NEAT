@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /** 
  * Zusammenfassung verschiedener Netzwerke einer gewissen Ähnlichkeit zu einer
  * Spezies.
@@ -16,6 +19,9 @@ import java.util.Random;
  * @author MPreloaded
  */
 public class Species {
+	
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager.getLogger();
 	
 	/* TODO: Hardcoding entfernen */
 	private final double CrossOverChance = 0.75;

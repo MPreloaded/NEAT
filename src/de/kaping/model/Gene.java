@@ -1,5 +1,8 @@
 package de.kaping.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Erzeugt gewichtete Verbindungen zwischen Neuronen.
  * Die Verbindungen sind das Herzstück des Netzwerkes. Durch die Verbindung von
@@ -15,6 +18,9 @@ package de.kaping.model;
  * @author MPreloaded
  */
 public class Gene implements Comparable<Gene>{
+	
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager.getLogger();
 	
 	private Neuron into;
 	private Neuron origin;

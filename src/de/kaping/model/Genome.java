@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Beschreibung eines Netzwerkes durch Zusammenfassung von Neuronen und Genes.
  * Ein Netzwerk wird durch seine Performance bewertet (<code>fitness</code>).
@@ -16,6 +19,9 @@ import java.util.Random;
  * @author MPreloaded
  */
 public class Genome implements Comparable<Genome>{
+	
+	@SuppressWarnings("unused")
+	private static final Logger log = LogManager.getLogger();
 	
 	private List<Neuron> neurons;
 	private List<Gene>   genes;
@@ -285,7 +291,7 @@ public class Genome implements Comparable<Genome>{
 		{
 			double rate = rates[i];
 			
-			while(rate > 1.)
+			while(rate > 0.)
 			{
 				if(Math.random() < rate)
 				{
@@ -294,7 +300,8 @@ public class Genome implements Comparable<Genome>{
 					case 1:
 						mutateLink(false);     break;
 					case 2:
-						mutateNode();          break;
+						if(this.genes.size() > 0)
+						  mutateNode();        break;
 					case 3:
 						mutateLink(true);      break;
 					case 4:
@@ -322,27 +329,25 @@ public class Genome implements Comparable<Genome>{
 		int structuralDifferences = 0;
 		int size1                 = this.genes.size();
 		int size2                 = gen2.getGenes().size();
-		double n                  = (double) Math.max(size1, size2);
-		
-		this.genes.sort(null);
-		gen2.getGenes().sort(null);
+		double n                  = Math.max(size1, size2);
 		
 		/* Berechne die maximale Innovationsnummer */
-		int maxInn = Math.max(this.genes.get(size1-1).getHistoricalMarking(), 
-							gen2.getGenes().get(size2-1).getHistoricalMarking());
+		int maxInn = Pool.getInstance().getHistoricalMarking();
 		
-		boolean[] inn1 = new boolean[maxInn];
-		boolean[] inn2 = new boolean[maxInn];
+		boolean[] inn1 = new boolean[maxInn +1];
+		boolean[] inn2 = new boolean[maxInn +1];
 		
 		for(Gene g : this.genes)
-			inn1[g.getHistoricalMarking() - 1] = true;
+			inn1[g.getHistoricalMarking()] = true;
 		for(Gene g : gen2.getGenes())
-			inn2[g.getHistoricalMarking() - 1] = true;
+			inn2[g.getHistoricalMarking()] = true;
 		
 		for(int i = 0; i < maxInn; i++)
 			if(inn1[i] != inn2[i])
 				structuralDifferences++;
 		
+		if(n < 0.5)
+			n = 1.0;
 		return structuralDifferences / n;
 	}
 	
@@ -355,18 +360,12 @@ public class Genome implements Comparable<Genome>{
 	public double deltaWeight(Genome gen2)
 	{
 		double deltaWeight = 0.;
-		int size1          = this.genes.size();
-		int size2          = gen2.getGenes().size();
 		int    n           = 0;
 		
-		this.genes.sort(null);
-		gen2.getGenes().sort(null);
-		
 		/* Berechne die maximale Innovationsnummer */
-		int maxInn = Math.max(this.genes.get(size1-1).getHistoricalMarking(), 
-							gen2.getGenes().get(size2-1).getHistoricalMarking()) + 1;
+		int maxInn = Pool.getInstance().getHistoricalMarking();
 		
-		Gene[] inn = new Gene[maxInn];
+		Gene[] inn = new Gene[maxInn +1];
 		
 		for(Gene g : gen2.getGenes())
 			inn[g.getHistoricalMarking()] = g;
@@ -379,6 +378,8 @@ public class Genome implements Comparable<Genome>{
 				n++;
 			}
 		
+		if(n == 0)
+			n = 1;
 		return deltaWeight / n;
 	}
 
@@ -405,11 +406,15 @@ public class Genome implements Comparable<Genome>{
 		Random rn = new Random();
 		Neuron neuron1 = neurons.get(rn.nextInt(neurons.size()));
 		Neuron neuron2 = neurons.get(rn.nextInt(neurons.size()));
+		
+		Type t1 = neuron1.getType();
+		Type t2 = neuron2.getType();
+		
 		Neuron origin, into;
 		
 		/* wenn beide zufälligen Neuronen Input oder Output sind, dann Abbruch */
-		if(neuron1.getType() == Type.INPUT && neuron2.getType() == Type.INPUT ||
-			  neuron1.getType() == Type.OUTPUT && neuron2.getType() == Type.OUTPUT)
+		if((t1==Type.INPUT || t1==Type.BIAS) && (t2==Type.INPUT || t2==Type.BIAS) 
+				|| t1 == Type.OUTPUT && t2 == Type.OUTPUT)
 			return;
 		
 		/* sollte ein Neuron Input sein, so soll es der Origin werden, ein 
@@ -437,6 +442,9 @@ public class Genome implements Comparable<Genome>{
 			
 		/* Alle Tests erfolgreich: neue verbindung einrichten */
 		newGene.setWeight(rn.nextDouble()*4 - 2);
+		
+		Pool.getInstance().defineHistoricalMarking(newGene);
+		
 		this.addGene(newGene);
 	}
 	
@@ -447,14 +455,19 @@ public class Genome implements Comparable<Genome>{
 		Gene gene = genes.get(rn.nextInt(genes.size()));
 		
 		/* bei inaktiver Verbindung wird die Mutierung abgebrochen */
-		if(!gene.getEnabled())
+		if(gene.getEnabled() == false)
+		{
 			return;
-		
+		}
+			
 		gene.setEnabled(false);
 		Neuron newNeuron = new Neuron(Type.HIDDEN);
 		
 		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, 1.0);
 		Gene newGene2 = new Gene(newNeuron, gene.getInto(), gene.getWeight());
+		
+		Pool.getInstance().defineHistoricalMarking(newGene1);
+		Pool.getInstance().defineHistoricalMarking(newGene2);
 		
 		this.addGene(newGene1);
 		this.addGene(newGene2);

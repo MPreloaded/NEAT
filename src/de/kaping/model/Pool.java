@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Zusammenfassung aller Netzwerke zu einer Population.
  * Sorgt dafür, dass Operationen über die gesamte Population durchgeführt werden 
@@ -14,8 +17,12 @@ import java.util.Random;
  */
 public class Pool {
 	
+	private static final Logger log = LogManager.getLogger();
+	
 	private final int StaleSpecies = 15;
-	private final int Population   = 300;
+	private final int Population   = 20;
+	
+	private static Pool instance;
 	
 	private List<Species> species;
 	
@@ -31,7 +38,7 @@ public class Pool {
 	/**
 	 * Konstruktor
 	 */
-	public Pool()
+	private Pool()
 	{
 		super();
 		this.currentGenome     = 0;
@@ -58,6 +65,7 @@ public class Pool {
 	 */
 	public List<Neuron> initializePool(int input, int output)
 	{
+		log.trace("ENTER "+this.getClass().getName()+".initializePool()");
 		List<Neuron> neurons = new ArrayList<Neuron>();
 		
 		/* Inputneuronen */
@@ -84,6 +92,7 @@ public class Pool {
 			this.addChildToSpecies(genome);
 		}
 		
+		log.trace(" EXIT "+this.getClass().getName()+".initializePool()");
 		return neurons;
 	}
 	
@@ -184,7 +193,17 @@ public class Pool {
 	 */
 	public int newInnovation()
 	{
+		log.debug("   Neue Innovation!");
 		return ++this.historicalMarking;
+	}
+
+	/**
+	 * Gibt die aktuelle Innovationsnummer zurück.
+	 * @return Innovationsnummer
+	 */
+	public int getHistoricalMarking()
+	{
+		return this.historicalMarking;
 	}
 	
 	/**
@@ -272,14 +291,16 @@ public class Pool {
 	public void addChildToSpecies(Genome child)
 	{
 		for(Species s : species)
+		{
 			if (s.isSameSpecies(child))
 			{
 				s.addGenome(child);
 				return;
 			}
-		
+		}
 		Species newSpecies = new Species();
 		newSpecies.addGenome(child);
+		this.addSpecies(newSpecies);
 	}
 	
 	/**
@@ -310,6 +331,7 @@ public class Pool {
 	 */
 	public void newGeneration()
 	{
+		log.trace("ENTER "+this.getClass().getName()+".newGeneration()");
 		Random rn = new Random();
 		
 		List<Genome> newGen = new ArrayList<Genome>();
@@ -343,6 +365,7 @@ public class Pool {
 			this.addChildToSpecies(child);
 		
 		this.generation++;
+		log.trace(" EXIT "+this.getClass().getName()+".newGeneration()");
 	}
 		
 	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
@@ -356,6 +379,14 @@ public class Pool {
 		}
 		
 		return sum;
+	}
+	
+	public static Pool getInstance()
+	{
+		if(instance == null)
+			instance = new Pool();
+		
+		return instance;
 	}
 	
 }

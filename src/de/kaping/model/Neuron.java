@@ -3,6 +3,9 @@ package de.kaping.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /** 
  * Erzeugt Neuronen für das Netzwerk, die jeweils einen Knoten darstellen.
  * Die einzelnen Neuronen können dabei Input, Hidden, Bias oder Outputneuronen
@@ -22,6 +25,8 @@ import java.util.List;
  * @author MPreloaded
  */
 public class Neuron {
+	
+	private static final Logger log = LogManager.getLogger();
 	
 	private Type       type;
 	private List<Gene> incoming;
@@ -63,6 +68,9 @@ public class Neuron {
 	public Neuron(Type type, double value, List<Gene> inc)
 	{
 		super();
+		
+		log.trace("   Create new Neuron.");
+		
 		this.type     = type;
 		this.value    = value;
 		

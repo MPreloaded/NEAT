@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class Neuron {
 	
-	
 	private Type       type;
 	private List<Gene> incoming;
 	private double     value;

@@ -54,18 +54,18 @@ public class Genome implements Comparable<Genome>{
 		super();
 		
 		/* TODO: Entfernen des Hardcoden */
-		rates    = new double[6];
-		rates[0] = 0.25;  /* Ändern aller Gewichtungen */
-		rates[1] = 2.0;   /* Hinzufügen von Verbindungen */
-		rates[2] = 0.5;   /* Trennen einer Verbindung durch Einfügen Neuron */
-		rates[3] = 0.4;   /* Hinzufügen von BIAS-Verbindung */
-	   rates[4] = 0.4;   /* Deaktivieren einer aktiven Verbindung */
-	   rates[5] = 0.2;   /* Aktivieren einer inaktiven Verbindung */
+		this.rates    = new double[6];
+		this.rates[0] = 0.25;  /* Ändern aller Gewichtungen */
+		this.rates[1] = 2.0;   /* Hinzufügen von Verbindungen */
+		this.rates[2] = 0.5;   /* Trennen einer Verbindung durch Einfügen Neuron*/
+		this.rates[3] = 0.4;   /* Hinzufügen von BIAS-Verbindung */
+		this.rates[4] = 0.4;   /* Deaktivieren einer aktiven Verbindung */
+		this.rates[5] = 0.2;   /* Aktivieren einer inaktiven Verbindung */
 	   
-	   neurons  = new ArrayList<Neuron>();
-	   genes    = new ArrayList<Gene>();
-	   fitness  = 0.0;
-	   adjustedFitness = 0.0;
+	   this.neurons  = neurons;
+	   this.genes    = new ArrayList<Gene>();
+	   this.fitness  = 0.0;
+	   this.adjustedFitness = 0.0;
 	   
 	   if(basic)
 	   	this.mutateGenome();

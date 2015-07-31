@@ -25,7 +25,7 @@ public class Neuron {
 	
 	
 	/* TODO: Change Type into enum */
-	private int        type; /* input, output, hidden, bias */
+	private Type       type;
 	private List<Gene> incoming;
 	private double     value;
 
@@ -34,14 +34,14 @@ public class Neuron {
 	 */
 	public Neuron()
 	{
-		this(-1, 0., null);
+		this(Type.UNDEFINED, 0., null);
 	}
 	
 	/**
 	 * Konstruktor, der den Typ des Neurons bereits festlegt
 	 * @param type Typ des Neurons
 	 */
-	public Neuron(int type) 
+	public Neuron(Type type) 
 	{
 		this(type, 0., null);
 	}
@@ -51,7 +51,7 @@ public class Neuron {
 	 * @param type Typ des Neurons
 	 * @param value Wert des Neurons
 	 */
-	public Neuron(int type, double value)
+	public Neuron(Type type, double value)
 	{
 		this(type, value, null);
 	}
@@ -62,7 +62,7 @@ public class Neuron {
 	 * @param value Wert des Neurons
 	 * @param inc Eingehende Verbindungen des Neurons
 	 */
-	public Neuron(int type, double value, List<Gene> inc)
+	public Neuron(Type type, double value, List<Gene> inc)
 	{
 		super();
 		this.type     = type;
@@ -142,8 +142,17 @@ public class Neuron {
 	 * Gibt den Typen eines Neurons zurück (Input, Hidden, Bias, Output)
 	 * @return Typ des Neurons
 	 */
-	public int getType()
+	public Type getType()
 	{
 		return this.type;
+	}
+	
+	/**
+	 * Setzt den Typ eines Neurons
+	 * @param type neuer Typ des Neurons
+	 */
+	public void setType(Type type)
+	{
+		this.type = type;		
 	}
 }

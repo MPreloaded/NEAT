@@ -407,12 +407,14 @@ public class Genome implements Comparable<Genome>{
 		Neuron neuron2 = neurons.get(rn.nextInt(neurons.size()));
 		Neuron origin, into;
 		
-		/* wenn beide zufälligen Neuronen Input sind, dann Abbruch */
-		if(neuron1.getType() == 0 && neuron2.getType() == 0)
+		/* wenn beide zufälligen Neuronen Input oder Output sind, dann Abbruch */
+		if(neuron1.getType() == Type.INPUT && neuron2.getType() == Type.INPUT ||
+			  neuron1.getType() == Type.OUTPUT && neuron2.getType() == Type.OUTPUT)
 			return;
 		
-		/* sollte ein Neuron Input sein, so soll es der Origin werden */
-		if(neuron2.getType() == 0)
+		/* sollte ein Neuron Input sein, so soll es der Origin werden, ein 
+		 * Outputneuron sollte das Ziel werden */
+		if(neuron2.getType() == Type.INPUT || neuron1.getType() == Type.OUTPUT)
 		{
 			origin = neuron2;
 			into   = neuron1;
@@ -449,7 +451,7 @@ public class Genome implements Comparable<Genome>{
 			return;
 		
 		gene.setEnabled(false);
-		Neuron newNeuron = new Neuron(2 /* hidden */);
+		Neuron newNeuron = new Neuron(Type.HIDDEN);
 		
 		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, 1.0);
 		Gene newGene2 = new Gene(newNeuron, gene.getInto(), gene.getWeight());
@@ -499,7 +501,7 @@ public class Genome implements Comparable<Genome>{
 		 * existieren, so wird das erste ausgewählt.
 		 */
 		for(int i = 0; i < neurons.size(); i++)
-			if(neurons.get(i).getType() == 3)
+			if(neurons.get(i).getType() == Type.BIAS)
 			{
 				bias = neurons.get(i);
 				break;
@@ -508,7 +510,7 @@ public class Genome implements Comparable<Genome>{
 		/* Eigentlich nicht nötig, zur Sicherheit */
 		if(bias == null)
 		{
-			bias = new Neuron(3);
+			bias = new Neuron(Type.BIAS);
 			this.addNeuron(bias);
 		}
 		

@@ -63,18 +63,18 @@ public class Pool {
 		/* Inputneuronen */
 		for(int i = 0; i < input; i++)
 		{
-			Neuron in = new Neuron(0, 1.);
+			Neuron in = new Neuron(Type.INPUT, 1.);
 			neurons.add(in);
 		}
 		
 		/*Biasneuron */
-		Neuron bias = new Neuron(3, 1.);
+		Neuron bias = new Neuron(Type.BIAS, 1.);
 		neurons.add(bias);
 		
 		/* Outputneuronen */
 		for(int i = 0; i < output; i++)
 		{
-			Neuron out = new Neuron(1, 0.);
+			Neuron out = new Neuron(Type.OUTPUT, 0.);
 			neurons.add(out);
 		}
 		

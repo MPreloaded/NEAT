@@ -24,7 +24,6 @@ import java.util.List;
 public class Neuron {
 	
 	
-	/* TODO: Change Type into enum */
 	private Type       type;
 	private List<Gene> incoming;
 	private double     value;

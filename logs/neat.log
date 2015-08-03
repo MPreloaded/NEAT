@@ -1,261 +1,71 @@
-TRACE   [15:25:33.346, 31.07.15]: ENTER de.kaping.model.Pool.initializePool()
-TRACE   [15:25:33.349, 31.07.15]:    Create new Neuron.
-TRACE   [15:25:33.349, 31.07.15]:    Create new Neuron.
-TRACE   [15:25:33.349, 31.07.15]:    Create new Neuron.
-TRACE   [15:25:33.349, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.350, 31.07.15]:   new Species!
-DEBUG   [15:25:33.351, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.351, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.351, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.351, 31.07.15]:    added
-DEBUG   [15:25:33.351, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.351, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.351, 31.07.15]:    added
-DEBUG   [15:25:33.351, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.351, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.351, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]: new: 2 species: 0 diff: 1
-DEBUG   [15:25:33.352, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.352, 31.07.15]:   new Species!
-DEBUG   [15:25:33.352, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.352, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.352, 31.07.15]:    added
-TRACE   [15:25:33.352, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.352, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.352, 31.07.15]: new: 1 species: 0 diff: 1
-DEBUG   [15:25:33.352, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.352, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.352, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.353, 31.07.15]:   new Species!
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.353, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.353, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.353, 31.07.15]:    added
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.353, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.353, 31.07.15]: new: 2 species: 0 diff: 1
-DEBUG   [15:25:33.353, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.353, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.353, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.353, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.353, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.353, 31.07.15]:   new Species!
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.353, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.353, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.354, 31.07.15]: new: 3 species: 0 diff: 3
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.354, 31.07.15]: new: 3 species: 2 diff: 3
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.03826493700554874, deltaW: 0.03826493700554874
-DEBUG   [15:25:33.354, 31.07.15]: new: 3 species: 1 diff: 4
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.354, 31.07.15]: new: 3 species: 2 diff: 5
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.354, 31.07.15]:   new Species!
-DEBUG   [15:25:33.354, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.354, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.354, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.354, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.354, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.354, 31.07.15]: new: 2 species: 0 diff: 2
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.354, 31.07.15]: new: 2 species: 2 diff: 4
-DEBUG   [15:25:33.354, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 1 diff: 3
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 2 diff: 4
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 3 diff: 5
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]:   new Species!
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 0 diff: 1
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 3 diff: 4
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.355, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.355, 31.07.15]:   new Species!
-DEBUG   [15:25:33.356, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.356, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.356, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.356, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 0 diff: 2
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 2 diff: 2
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.7228367583479287, deltaW: 0.7228367583479287
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 1 diff: 3
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 2 diff: 4
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 3 diff: 5
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 2 diff: 4
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.356, 31.07.15]: new: 2 species: 2 diff: 4
-DEBUG   [15:25:33.356, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.357, 31.07.15]:   new Species!
-DEBUG   [15:25:33.357, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.357, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.357, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.357, 31.07.15]:    added
-DEBUG   [15:25:33.357, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.357, 31.07.15]: new: 2 species: 0 diff: 1
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.358, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.358, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.358, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.358, 31.07.15]: new: 2 species: 3 diff: 2
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.9099289030045474, deltaW: 0.9099289030045474
-DEBUG   [15:25:33.358, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.358, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.359, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.359, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.359, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.359, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.359, 31.07.15]:   new Species!
-DEBUG   [15:25:33.359, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.359, 31.07.15]: new: 1 species: 0 diff: 0
-DEBUG   [15:25:33.359, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.359, 31.07.15]:    added
-DEBUG   [15:25:33.359, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.359, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.359, 31.07.15]: new: 3 species: 0 diff: 2
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 1 diff: 3
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 3 diff: 5
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.360, 31.07.15]:   new Species!
-DEBUG   [15:25:33.360, 31.07.15]: new: 1 species: 0 diff: 1
-DEBUG   [15:25:33.360, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 1 diff: 2
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 3 diff: 4
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 3 diff: 3
-DEBUG   [15:25:33.361, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.361, 31.07.15]:   new Species!
-DEBUG   [15:25:33.361, 31.07.15]: new: 1 species: 0 diff: 1
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 1 diff: 2
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 3 diff: 4
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 2 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 3 diff: 3
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]: new: 1 species: 1 diff: 2
-DEBUG   [15:25:33.362, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.362, 31.07.15]:   new Species!
-DEBUG   [15:25:33.363, 31.07.15]:    Neue Innovation!
-TRACE   [15:25:33.363, 31.07.15]:    Create new Neuron.
-DEBUG   [15:25:33.363, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.363, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.363, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.363, 31.07.15]: new: 3 species: 0 diff: 2
-DEBUG   [15:25:33.363, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.363, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.363, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.363, 31.07.15]: new: 3 species: 1 diff: 3
-DEBUG   [15:25:33.363, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.363, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.363, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.363, 31.07.15]: new: 3 species: 3 diff: 5
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 2 diff: 4
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 3 diff: 5
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 1 diff: 3
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]: new: 3 species: 1 diff: 3
-DEBUG   [15:25:33.364, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.364, 31.07.15]:   new Species!
-DEBUG   [15:25:33.364, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.364, 31.07.15]:    Neue Innovation!
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 0 diff: 1
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 3 diff: 4
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.365, 31.07.15]: new: 2 species: 2 diff: 3
-DEBUG   [15:25:33.365, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.366, 31.07.15]: new: 2 species: 3 diff: 4
-DEBUG   [15:25:33.366, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.366, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.366, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.366, 31.07.15]: new: 2 species: 1 diff: 2
-DEBUG   [15:25:33.366, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.366, 31.07.15]: new: 2 species: 3 diff: 4
-DEBUG   [15:25:33.366, 31.07.15]: deltaD: 0.0, deltaW: 0.0
-DEBUG   [15:25:33.366, 31.07.15]:   new Species!
-TRACE   [15:25:33.366, 31.07.15]:  EXIT de.kaping.model.Pool.initializePool()
+TRACE   [14:58:15.502, 03.08.15]: ENTER de.kaping.brain.model.Pool.initializePool()
+TRACE   [14:58:15.506, 03.08.15]:    Create new Neuron.
+TRACE   [14:58:15.506, 03.08.15]:    Create new Neuron.
+TRACE   [14:58:15.506, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.508, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.509, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.509, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.509, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.509, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.511, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.511, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.511, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.511, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.512, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.512, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.513, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.513, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.513, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.514, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.514, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.514, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.515, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.515, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.516, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.516, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.516, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.517, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.517, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.518, 03.08.15]:    Create new Neuron.
+DEBUG   [14:58:15.518, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.518, 03.08.15]:    Neue Innovation!
+DEBUG   [14:58:15.518, 03.08.15]:    Neue Innovation!
+TRACE   [14:58:15.518, 03.08.15]:  EXIT de.kaping.brain.model.Pool.initializePool()
+DEBUG   [14:58:15.518, 03.08.15]: Pool initialized with 20 species

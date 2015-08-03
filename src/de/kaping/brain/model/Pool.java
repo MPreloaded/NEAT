@@ -105,7 +105,8 @@ public class Pool {
 			ObservableList<Neuron> ownNeurons = FXCollections
 				.observableArrayList();
 			for (Neuron n : neurons)
-			ownNeurons.add(n);
+				ownNeurons.add(n);
+			
 			Genome genome = new Genome(ownNeurons, true);
 			this.addChildToSpecies(genome);
 		}

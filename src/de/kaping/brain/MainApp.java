@@ -25,7 +25,7 @@ public class MainApp extends Application {
 	private Pool myPool = Pool.getInstance();
 
 	@Override
-	public void start(Stage primaryStage)
+	public void start(Stage primaryStage) throws InterruptedException
 	{
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("NEAT Brain - unstableSandbox");
@@ -111,5 +111,11 @@ public class MainApp extends Application {
 	public static void main(String[] args)
 	{
 		launch(args);
+	}
+	
+	public void newGeneration()
+	{
+		myPool.newGeneration();
+		showPoolOverview();
 	}
 }

@@ -28,7 +28,7 @@ public class Pool {
 	private static final Logger log = LogManager.getLogger();
 
 	private final int StaleSpecies = 15;
-	private final int Population = 10000;
+	private final int Population = 20;
 
 	private static Pool instance;
 

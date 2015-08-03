@@ -2,6 +2,7 @@ package de.kaping.brain.view;
 
 import de.kaping.brain.MainApp;
 import de.kaping.brain.model.Species;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -25,7 +26,7 @@ public class PoolOverviewController {
 	private Label fitnessCodeLabel;
 
 	// Reference to the main application.
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private MainApp mainApp;
 
 	/**
@@ -48,6 +49,12 @@ public class PoolOverviewController {
 			.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		genomeColumn.setCellValueFactory(
 			cellData -> cellData.getValue().countGenomesProperty().asString());
+	}
+	
+	@FXML
+	protected void handleNewButtonAction(ActionEvent event)
+	{
+		mainApp.newGeneration();
 	}
 
 	/**

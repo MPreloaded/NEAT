@@ -49,7 +49,7 @@
                   </GridPane>
                   <Button layoutX="304.0" layoutY="559.0" mnemonicParsing="false" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   <Button layoutX="363.0" layoutY="559.0" mnemonicParsing="false" text="Edit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="80.0" />
-                  <Button layoutX="394.0" layoutY="563.0" mnemonicParsing="false" text="New" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="123.0" />
+                  <Button layoutX="394.0" layoutY="563.0" mnemonicParsing="false" text="New" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="123.0" onAction="#handleNewButtonAction" />
                </children>
             </AnchorPane>
         </items>

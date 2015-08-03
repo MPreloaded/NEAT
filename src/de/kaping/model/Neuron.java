@@ -31,48 +31,72 @@ public class Neuron {
 	private Type       type;
 	private List<Gene> incoming;
 	private double     value;
+	private int        innovation;
 
 	/**
 	 * Konstruktor
 	 */
 	public Neuron()
 	{
-		this(Type.UNDEFINED, 0., null);
+		this(Type.UNDEFINED, 0., null, -1);
 	}
 	
 	/**
-	 * Konstruktor, der den Typ des Neurons bereits festlegt
+	 * Konstruktor, der den Typ des Neurons bereits festlegt.
 	 * @param type Typ des Neurons
 	 */
 	public Neuron(Type type) 
 	{
-		this(type, 0., null);
+		this(type, 0., null, -1);
 	}
 
 	/**
-	 * Konstruktor, der sowohl Typ als auch Wert des Neurons festlegt
+	 * Konstruktor, der sowohl Typ als auch Wert des Neurons festlegt.
 	 * @param type Typ des Neurons
 	 * @param value Wert des Neurons
 	 */
 	public Neuron(Type type, double value)
 	{
-		this(type, value, null);
+		this(type, value, null, -1);
 	}
 	
 	/**
-	 * Konstruktor, der Typ, Wert und eingehende Verbindungen festlegt
+	 * Konstruktor, der Typ und Ursprung dieses Neurons festlegt.
+	 * @param type Type des Neurons
+	 * @param innovation Ursprung des Neurons
+	 */
+	public Neuron(Type type, int innovation)
+	{
+		this(type, 0., null, innovation);
+	}
+	
+	/**
+	 * Konstruktor, der Typ, Wert und eingehende Verbindungen festlegt.
 	 * @param type Typ des Neurons
 	 * @param value Wert des Neurons
 	 * @param inc Eingehende Verbindungen des Neurons
 	 */
 	public Neuron(Type type, double value, List<Gene> inc)
 	{
+		this(type, value, inc, -1);
+	}
+	
+	/**
+	 * Konstruktor, der bei Entstehung von Hiddennodes verwendet werden sollte.
+	 * @param type Typ des Neurons
+	 * @param value Wert des Neurons
+	 * @param inc Eingehende Verbindungen des Neurons
+	 * @param innovation Ursprung des Neurons
+	 */
+	public Neuron(Type type, double value, List<Gene> inc, int innovation)
+	{
 		super();
 		
 		log.trace("   Create new Neuron.");
 		
-		this.type     = type;
-		this.value    = value;
+		this.type       = type;
+		this.value      = value;
+		this.setInnovation(innovation);
 		
 		if(inc != null)
 			this.incoming = inc;
@@ -160,5 +184,24 @@ public class Neuron {
 	public void setType(Type type)
 	{
 		this.type = type;		
+	}
+
+	/**
+	 * Gibt den der Innovation dieses Neurons zurück. <code>-1</code> heißt, dass
+	 * das Neuron nicht durch die Aufteilung einer Verbindung entstanden ist.
+	 * @return Innovationsnummer der ursprünglichen Verbindung
+	 */
+	public int getInnovation()
+	{
+		return innovation;
+	}
+
+	/**
+	 * Setzt die Innovationsnummer dieses Neurons um.
+	 * @param innovation neue Innovationsnummer
+	 */
+	public void setInnovation(int innovation)
+	{
+		this.innovation = innovation;
 	}
 }

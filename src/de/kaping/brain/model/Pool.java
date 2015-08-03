@@ -7,6 +7,13 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * Zusammenfassung aller Netzwerke (Genomes) zu einer Population.
  * Sorgt dafür, dass Operationen über die gesamte Population durchgeführt werden 
@@ -24,16 +31,16 @@ public class Pool {
 	
 	private static Pool instance;
 	
-	private List<Species> species;
+	private ObservableList<Species> species;
 	
-	private int           currentSpecies;
-	private int           currentGenome;
+	private IntegerProperty currentSpecies;
+	private IntegerProperty currentGenome;
 	
-	private double        topFitness;
-	private int           generation;
-	private int           historicalMarking;
+	private DoubleProperty  topFitness;
+	private IntegerProperty generation;
+	private IntegerProperty historicalMarking;
 	
-	private List<Gene>    generationMarkings;
+	private ObservableList<Gene> generationMarkings;
 	
 	/**
 	 * Konstruktor
@@ -41,14 +48,14 @@ public class Pool {
 	private Pool()
 	{
 		super();
-		this.currentGenome     = 0;
-		this.currentSpecies    = 0;
-		this.topFitness        = 0;
-		this.generation        = 0;
-		this.historicalMarking = 0;
+		this.currentGenome     = new SimpleIntegerProperty(0);
+		this.currentSpecies    = new SimpleIntegerProperty(0);
+		this.topFitness        = new SimpleDoubleProperty(0.0);
+		this.generation        = new SimpleIntegerProperty(0);
+		this.historicalMarking = new SimpleIntegerProperty(0);
 		
-		this.species            = new ArrayList<Species>();
-		this.generationMarkings = new ArrayList<Gene>();
+		this.species            = FXCollections.observableArrayList();
+		this.generationMarkings = FXCollections.observableArrayList();
 	}
 	
 	/**
@@ -63,10 +70,10 @@ public class Pool {
 	 * @return Liste der erstellten Neuronen, um Werte zu übertragen und zu 
 	 * empfangen
 	 */
-	public List<Neuron> initializePool(int input, int output)
+	public ObservableList<Neuron> initializePool(int input, int output)
 	{
 		log.trace("ENTER "+this.getClass().getName()+".initializePool()");
-		List<Neuron> neurons = new ArrayList<Neuron>();
+		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
 		
 		/* Inputneuronen */
 		for(int i = 0; i < input; i++)
@@ -100,7 +107,7 @@ public class Pool {
 	 * Gibt alle Spezies der Population innerhalb dieser Generation zurück.
 	 * @return Liste aller Spezies
 	 */
-	public List<Species> getSpecies()
+	public ObservableList<Species> getSpecies()
 	{
 		return species;
 	}
@@ -110,7 +117,7 @@ public class Pool {
 	 * VORSICHT! Kann bei falscher Anwendung die Population resetten.
 	 * @param species neue Liste von Spezies
 	 */
-	public void setSpecies(List<Species> species)
+	public void setSpecies(ObservableList<Species> species)
 	{
 		this.species = species;
 	}
@@ -121,7 +128,7 @@ public class Pool {
 	 */
 	public int getCurrentSpecies()
 	{
-		return currentSpecies;
+		return currentSpecies.get();
 	}
 
 	/** 
@@ -130,7 +137,7 @@ public class Pool {
 	 */
 	public void setCurrentSpecies(int currentSpecies)
 	{
-		this.currentSpecies = currentSpecies;
+		this.currentSpecies.set(currentSpecies);
 	}
 
 	/**
@@ -139,7 +146,7 @@ public class Pool {
 	 */
 	public int getCurrentGenome()
 	{
-		return currentGenome;
+		return currentGenome.get();
 	}
 
 	/**
@@ -148,7 +155,7 @@ public class Pool {
 	 */
 	public void setCurrentGenome(int currentGenome)
 	{
-		this.currentGenome = currentGenome;
+		this.currentGenome.set(currentGenome);
 	}
 
 	/**
@@ -157,7 +164,7 @@ public class Pool {
 	 */
 	public double getTopFitness()
 	{
-		return topFitness;
+		return topFitness.get();
 	}
 
 	/**
@@ -166,7 +173,7 @@ public class Pool {
 	 */
 	public void setTopFitness(double topFitness)
 	{
-		this.topFitness = topFitness;
+		this.topFitness.set(topFitness);
 	}
 
 	/**
@@ -175,7 +182,7 @@ public class Pool {
 	 */
 	public int getGeneration()
 	{
-		return generation;
+		return generation.get();
 	}
 
 	/**
@@ -184,7 +191,7 @@ public class Pool {
 	 */
 	public void setGeneration(int generation)
 	{
-		this.generation = generation;
+		this.generation.set(generation);
 	}
 	
 	/**
@@ -194,7 +201,8 @@ public class Pool {
 	public int newInnovation()
 	{
 		log.debug("   Neue Innovation!");
-		return ++this.historicalMarking;
+		this.historicalMarking.set(this.historicalMarking.get()+1);
+		return this.historicalMarking.get();
 	}
 
 	/**
@@ -203,7 +211,7 @@ public class Pool {
 	 */
 	public int getHistoricalMarking()
 	{
-		return this.historicalMarking;
+		return this.historicalMarking.get();
 	}
 	
 	/**
@@ -255,7 +263,7 @@ public class Pool {
 			
 			/* Entferne nur stagnierende, die nicht die beste Species sind */
 			if(spe.getStaleness() > StaleSpecies && !(spe.getTopFitness() >= 
-																	this.topFitness))
+																	this.topFitness.get()))
 			{
 				species.remove(spe);
 			}
@@ -364,7 +372,7 @@ public class Pool {
 		for(Genome child : newGen)
 			this.addChildToSpecies(child);
 		
-		this.generation++;
+		this.generation.set(this.generation.get()+1);
 		log.trace(" EXIT "+this.getClass().getName()+".newGeneration()");
 	}
 		

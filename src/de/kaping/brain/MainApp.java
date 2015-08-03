@@ -2,7 +2,14 @@ package de.kaping.brain;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.kaping.brain.model.Pool;
+import de.kaping.brain.model.Species;
+import de.kaping.brain.view.PoolOverviewController;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -11,8 +18,11 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
+	private static final Logger log = LogManager.getLogger();
     private Stage primaryStage;
     private BorderPane rootLayout;
+    
+    private Pool myPool = Pool.getInstance();
 
     @Override
     public void start(Stage primaryStage) {
@@ -22,6 +32,15 @@ public class MainApp extends Application {
         initRootLayout();
 
         showPoolOverview();
+    }
+    
+    public MainApp() {
+    	myPool.initializePool(1,1);
+    	log.debug("Pool initialized with "+myPool.getSpecies().size()+" species");
+    }
+    
+    public ObservableList<Species> getPoolSpecies() {
+    	return myPool.getSpecies();
     }
 
     /**
@@ -55,6 +74,11 @@ public class MainApp extends Application {
 
             // Set pool overview into the center of root layout.
             rootLayout.setCenter(personOverview);
+            
+            // Give the controller access to the main app.
+            PoolOverviewController controller = loader.getController();
+            controller.setMainApp(this);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

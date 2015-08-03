@@ -8,9 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -29,8 +28,8 @@ public class Genome implements Comparable<Genome>{
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	
-	private ListProperty<Neuron> neurons;
-	private ListProperty<Gene>   genes;
+	private ObservableList<Neuron> neurons;
+	private ObservableList<Gene>   genes;
 	
 	private DoubleProperty       fitness;
 	private DoubleProperty adjustedFitness;
@@ -43,7 +42,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public Genome()
 	{
-		this(new SimpleListProperty<Neuron>(), false);
+		this(FXCollections.observableArrayList(), false);
 	}
 	
 	/**
@@ -74,8 +73,9 @@ public class Genome implements Comparable<Genome>{
 		this.rates[4] = new SimpleDoubleProperty(0.4);   /* Deaktivieren einer aktiven Verbindung */
 		this.rates[5] = new SimpleDoubleProperty(0.2);   /* Aktivieren einer inaktiven Verbindung */
 	   
-	   this.neurons.set(neurons);
-	   this.genes = new SimpleListProperty<Gene>();
+		this.neurons = FXCollections.observableArrayList();
+	   this.neurons = neurons;
+	   this.genes = FXCollections.observableArrayList();
 	   this.fitness = new SimpleDoubleProperty(0.0);
 	   this.adjustedFitness = new SimpleDoubleProperty(0.0);
 	   
@@ -126,7 +126,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public void setNeurons(ObservableList<Neuron> neurons)
 	{
-		this.neurons.set(neurons);
+		this.neurons = neurons;
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public ObservableList<Neuron> getNeurons()
 	{
-		return this.neurons.get();
+		return this.neurons;
 	}
 	
 	/**
@@ -144,7 +144,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public void setGenes(ObservableList<Gene> genes)
 	{
-		this.genes.set(genes);
+		this.genes = genes;
 	}
 	
 	/**
@@ -153,7 +153,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public ObservableList<Gene> getGenes()
 	{
-		return this.genes.get();
+		return this.genes;
 	}
 	
 	/**
@@ -228,8 +228,8 @@ public class Genome implements Comparable<Genome>{
 	{
 		Genome child  = new Genome();
 		/* Bestimmung besseres und schlechteres Netzwerk */
-		Genome h      = (this.fitness > gen2.getFitness())? this: gen2;
-		Genome l      = (this.fitness > gen2.getFitness())? gen2: this;
+		Genome h      = (this.fitness.get() > gen2.getFitness())? this: gen2;
+		Genome l      = (this.fitness.get() > gen2.getFitness())? gen2: this;
 
 		int size1          = h.genes.size();
 		int size2          = l.getGenes().size();
@@ -290,12 +290,12 @@ public class Genome implements Comparable<Genome>{
 		this.alterRates();
 		
 		/* ... dann gegebenenfalls Mutierungen durchführen */
-		if(Math.random() < rates[0])
+		if(Math.random() < rates[0].get())
 			this.mutateConnections();
 		
 		for(int i = 1; i < 6; i++)
 		{
-			double rate = rates[i];
+			double rate = rates[i].get();
 			
 			while(rate > 0.)
 			{
@@ -505,9 +505,9 @@ public class Genome implements Comparable<Genome>{
 		 * TODO: Vielleicht Hardcoding entfernen und einen Parameter einführen */
 		for(int i = 0; i < 6; i++)
 			if (Math.random() < 0.5)
-				rates[i] *= 0.95;
+				rates[i].set(rates[i].get() * 0.95);
 			else
-				rates[i] *= 1.05263;
+				rates[i].set(rates[i].get() * 1.05263);
 	}
 	
 	
@@ -546,7 +546,7 @@ public class Genome implements Comparable<Genome>{
 	public int compareTo(Genome o)
 	{
 		/* TODO: fitness oder adjustedFitness ? */
-		double deltaFitness = this.fitness - o.getFitness();
+		double deltaFitness = this.fitness.get() - o.getFitness();
 		
 		if(deltaFitness > 0)
 			return -1;

@@ -4,10 +4,8 @@ import java.util.Random;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -24,19 +22,20 @@ public class Species {
     private final DoubleProperty topFitness;
     private final DoubleProperty averageFitness;
     private final IntegerProperty staleness;
+    private final IntegerProperty countGenomes;
     
     private final DoubleProperty CrossOverChance;
     private final DoubleProperty DeltaDisjoint;
     private final DoubleProperty DeltaWeight;
     private final DoubleProperty DeltaThreshold;    
-    
-    private final ListProperty<Genome> genomes;
+     
+    private ObservableList<Genome> genomes;
 
     /**
      * Default constructor.
      */
     public Species() {
-        this(0.0, 0, 0.0, "#");
+        this(0.0, 0, 0.0, String.valueOf((int) (Math.random()*100000)));
     }
 
     /**
@@ -51,7 +50,8 @@ public class Species {
         this.topFitness = new SimpleDoubleProperty(topFitness);
         this.staleness = new SimpleIntegerProperty(staleness);
         this.averageFitness = new SimpleDoubleProperty(averagefitness);
-        this.genomes = new SimpleListProperty<Genome>();
+        this.genomes = FXCollections.observableArrayList();
+        this.countGenomes = new SimpleIntegerProperty(genomes.size());
 
         /* TODO: Hardcoding entfernen */
         this.CrossOverChance = new SimpleDoubleProperty(0.75);
@@ -79,6 +79,7 @@ public class Species {
     public StringProperty idProperty() {
         return ID;
     }
+    
     
     /**
 	 * Gibt die höchste Fitness eines Netzwerkes dieser Spezies zurück.
@@ -147,11 +148,20 @@ public class Species {
     }
     
     /**
+	 * Ermittelt wieviele Genomes dieser Spezies angehören
+	 * @return Anzahl der Genomes dieser Spezies
+	 */
+    public IntegerProperty countGenomesProperty(){
+    	this.countGenomes.set(this.genomes.size());
+    	return countGenomes;
+    }
+    
+    /**
 	 * Gibt eine Liste aller in dieser Spezies gruppierten Netzwerke zurück.
 	 * @return Liste der Netzwerke dieser Spezies
 	 */
     public ObservableList<Genome> getGenomes() {
-        return genomes.get();
+        return genomes;
     }
 
     /**
@@ -159,11 +169,7 @@ public class Species {
 	 * @param genomes neue Liste von Netzwerken für diese Spezies
 	 */
     public void setGenomes(ObservableList<Genome> genomes) {
-        this.genomes.set(genomes);
-    }
-
-    public ListProperty<Genome> genomesProperty() {
-        return genomes;
+        this.genomes = genomes;
     }
     
     /**
@@ -225,7 +231,7 @@ public class Species {
 		
 		this.genomes.sort(null);
 		
-		this.genomes.set(FXCollections.observableList(this.genomes.subList(0, keep)));
+		this.genomes = FXCollections.observableList(this.genomes.subList(0, keep));
 	}
 	
 	/**

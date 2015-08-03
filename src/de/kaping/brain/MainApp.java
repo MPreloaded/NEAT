@@ -9,6 +9,7 @@ import de.kaping.brain.model.Pool;
 import de.kaping.brain.model.Species;
 import de.kaping.brain.view.PoolOverviewController;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,11 +23,10 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private Pool myPool = Pool.getInstance();
+	public Pool myPool = Pool.getInstance();
 
 	@Override
-	public void start(Stage primaryStage)
-	{
+	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("NEAT Brain - unstableSandbox");
 
@@ -35,25 +35,33 @@ public class MainApp extends Application {
 		showPoolOverview();
 	}
 
-	public MainApp()
-	{
-		myPool.initializePool(2, 1);
+	public MainApp() {
+		myPool.initializePool(2, 2);
 		log.debug(
 			"Pool initialized with " + myPool.getSpecies().size() + " species");
 	}
 
-	public ObservableList<Species> getPoolSpecies()
-	{
+	/**
+	 * Ruft newGeneration auf, nachdem der entsprechende Button geklickt wurde
+	 * (wird vom PoolOverviewController aufgerufen)
+	 */
+	public void execNewGeneration() {
+		myPool.newGeneration();
+		for (Species s : myPool.getSpecies()) {
+			IntegerProperty i = s.countGenomesProperty();
+			log.debug("NewGen Count for "+s.getID()+": "+i.get());
+		}
+	}
+
+	public ObservableList<Species> getPoolSpecies() {
 		return myPool.getSpecies();
 	}
 
 	/**
 	 * Initializes the root layout.
 	 */
-	public void initRootLayout()
-	{
-		try
-		{
+	public void initRootLayout() {
+		try {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
 			loader
@@ -64,9 +72,7 @@ public class MainApp extends Application {
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -74,10 +80,8 @@ public class MainApp extends Application {
 	/**
 	 * Shows the pool overview inside the root layout.
 	 */
-	public void showPoolOverview()
-	{
-		try
-		{
+	public void showPoolOverview() {
+		try {
 			// Load pool overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(
@@ -91,9 +95,7 @@ public class MainApp extends Application {
 			PoolOverviewController controller = loader.getController();
 			controller.setMainApp(this);
 
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -103,13 +105,11 @@ public class MainApp extends Application {
 	 * 
 	 * @return
 	 */
-	public Stage getPrimaryStage()
-	{
+	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		launch(args);
 	}
 }

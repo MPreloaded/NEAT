@@ -70,7 +70,7 @@ public class Species {
 
 		/* TODO: Hardcoding entfernen */
 		this.CrossOverChance = new SimpleDoubleProperty(0.75);
-		this.DeltaDisjoint = new SimpleDoubleProperty(0.3);
+		this.DeltaDisjoint = new SimpleDoubleProperty(1.3);
 		this.DeltaWeight = new SimpleDoubleProperty(0.4);
 		this.DeltaThreshold = new SimpleDoubleProperty(1.0);
 	}

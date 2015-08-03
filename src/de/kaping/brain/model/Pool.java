@@ -28,7 +28,7 @@ public class Pool {
 	private static final Logger log = LogManager.getLogger();
 
 	private final int StaleSpecies = 15;
-	private final int Population = 10000;
+	private final int Population = 100;
 
 	private static Pool instance;
 
@@ -228,6 +228,10 @@ public class Pool {
 	public void setGeneration(int generation)
 	{
 		this.generation.set(generation);
+	}
+	
+	public IntegerProperty getGenerationProperty() {
+		return this.generation;
 	}
 
 	/**

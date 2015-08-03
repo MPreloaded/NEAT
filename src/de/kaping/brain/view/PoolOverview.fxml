@@ -35,6 +35,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="ID" />
@@ -45,11 +46,16 @@
                         <Label fx:id="neuronsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="genesLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="fitnessCodeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Staleness" GridPane.rowIndex="4" />
+                        <Label fx:id="stalenessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <Button layoutX="304.0" layoutY="559.0" mnemonicParsing="false" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   <Button layoutX="363.0" layoutY="559.0" mnemonicParsing="false" text="Edit" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="80.0" />
-                  <Button layoutX="394.0" layoutY="563.0" mnemonicParsing="false" text="New" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="123.0" />
+                  <Button layoutX="394.0" layoutY="563.0" mnemonicParsing="false" onAction="#handleNewGeneration" text="New Generation" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" />
+                  <Label fx:id="generationLabel" layoutX="515.0" layoutY="14.0" text="0000" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Label layoutX="477.0" layoutY="6.0" text="Generation:" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" />
+                  <Accordion layoutX="-96.0" layoutY="224.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>

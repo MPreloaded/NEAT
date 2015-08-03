@@ -8,7 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,12 +30,14 @@ public class Genome implements Comparable<Genome> {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
+	private static int maxID;
 
 	private ObservableList<Neuron> neurons;
 	private ObservableList<Gene> genes;
 
 	private DoubleProperty fitness;
 	private DoubleProperty adjustedFitness;
+	private IntegerProperty ID;
 
 	/* Enthält alle Mutations-/ relevanten Raten für das Netzwerk */
 	private DoubleProperty[] rates;
@@ -66,6 +70,8 @@ public class Genome implements Comparable<Genome> {
 	public Genome(ObservableList<Neuron> neurons, boolean basic)
 	{
 		super();
+		this.ID = new SimpleIntegerProperty(maxID+1);
+		maxID++;
 
 		/* TODO: Entfernen des Hardcoden */
 		this.rates = new SimpleDoubleProperty[6];
@@ -92,6 +98,18 @@ public class Genome implements Comparable<Genome> {
 			this.mutateGenome();
 	}
 
+	/**
+	 * Gibt die eindeutige ID des Genoms zurück
+	 * @return
+	 */
+	public int getID(){
+		return this.ID.get();
+	}
+	
+	public IntegerProperty getIDProperty(){
+		return this.ID;
+	}
+	
 	/**
 	 * Setzt die aktuelle Bewertung des Netzwerkes neu.
 	 * 

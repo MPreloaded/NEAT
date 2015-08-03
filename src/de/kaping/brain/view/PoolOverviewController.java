@@ -9,17 +9,22 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class PoolOverviewController {
+	// Species Table:
 	@FXML
 	private TableView<Species> poolTable;
 	@FXML
 	private TableColumn<Species, String> speciesColumn;
 	@FXML
 	private TableColumn<Species, String> genomeColumn;
+	// Genome Table:
 	@FXML
 	private TableView<Genome> genomeTable;
 	@FXML
 	private TableColumn<Genome, String> genomeDetailColumn;
 
+	// Labels für Anzeige von Details zu selektierter Species/Genome
+	@FXML
+	private Label headLabel;
 	@FXML
 	private Label generationLabel;
 	@FXML
@@ -50,21 +55,29 @@ public class PoolOverviewController {
 	@FXML
 	private void initialize() {
 		// Initialize the person table with the two columns.
-		speciesColumn
-			.setCellValueFactory(cellData -> cellData.getValue().idProperty());
+		speciesColumn.setCellValueFactory(
+			cellData -> cellData.getValue().getIDProperty().asString());
 		genomeColumn.setCellValueFactory(
 			cellData -> cellData.getValue().countGenomesProperty().asString());
+		genomeDetailColumn.setCellValueFactory(
+			cellData -> cellData.getValue().getIDProperty().asString());
 		// Clear person details.
 		showSpeciesDetails(null);
 
-		// Listen for selection changes and show the person details when
+		// Listen for selection changes in poolTable and show the person details when
 		// changed.
 		poolTable.getSelectionModel().selectedItemProperty().addListener(
 			(observable, oldValue, newValue) -> showSpeciesDetails(newValue));
+		
+		// Listen for selection changes in genomeTable and show the person details when
+		// changed.
+		genomeTable.getSelectionModel().selectedItemProperty().addListener(
+			(observable, oldValue, newValue) -> showGenomeDetails(newValue));
 	}
 
 	/**
-	 * Zeigt eine Liste aller Genome der ausgewählten Spezies an
+	 * Zeigt eine Liste aller Genome der ausgewählten Spezies an sowie einige
+	 * Details zur ausgewählten Spezies
 	 * 
 	 * @param species,
 	 *           welche die Daten bereitstellt
@@ -72,19 +85,40 @@ public class PoolOverviewController {
 	private void showSpeciesDetails(Species species) {
 		if (species != null) {
 			// Labels mit Daten füllen, Genome zur Auswahl anzeigen
-			idLabel.setText(species.getID());
+			headLabel.setText("SPECIES");
+			idLabel.setText(String.valueOf(species.getID()));
 			neuronsLabel.setText("");
 			genesLabel.setText("");
 			fitnessCodeLabel
 				.setText(String.valueOf(species.getAverageFitness()));
 			stalenessLabel.setText(String.valueOf(species.getStaleness()));
+			genomeTable.setItems(species.getGenomes());
 		} else {
 			// Labels und Listen clearen
+			headLabel.setText("");
 			idLabel.setText("");
 			neuronsLabel.setText("");
 			genesLabel.setText("");
 			fitnessCodeLabel.setText("");
 			stalenessLabel.setText("");
+			genomeTable.setItems(null);
+		}
+	}
+
+	/**
+	 * Zeigt Details zum ausgewählten Genome an
+	 * 
+	 * @param genome
+	 */
+	private void showGenomeDetails(Genome genome) {
+		if (genome != null) {
+			// Labels mit Daten füllen, Genome zur Auswahl anzeigen
+			headLabel.setText("GENOME");
+			idLabel.setText(String.valueOf(genome.getID()));
+			neuronsLabel.setText(String.valueOf(genome.getNeurons().size()));
+			genesLabel.setText(String.valueOf(genome.getGenes().size()));
+			fitnessCodeLabel
+				.setText(String.valueOf(genome.getAdjustedFitness()));
 		}
 	}
 

@@ -29,8 +29,9 @@ public class Species {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
+	private static int maxID;
 
-	private final StringProperty ID;
+	private final IntegerProperty ID;
 	private final DoubleProperty topFitness;
 	private final DoubleProperty averageFitness;
 	private final IntegerProperty staleness;
@@ -61,7 +62,8 @@ public class Species {
 	public Species(double topFitness, int staleness, double averagefitness,
 			String ID)
 	{
-		this.ID = new SimpleStringProperty(ID);
+		this.ID = new SimpleIntegerProperty(maxID+1);
+		maxID++;
 		this.topFitness = new SimpleDoubleProperty(topFitness);
 		this.staleness = new SimpleIntegerProperty(staleness);
 		this.averageFitness = new SimpleDoubleProperty(averagefitness);
@@ -80,22 +82,12 @@ public class Species {
 	 * 
 	 * @return ID der Spezies
 	 */
-	public String getID()
+	public int getID()
 	{
 		return ID.get();
 	}
 
-	/**
-	 * Setzt einen String als ID dieser Spezies
-	 * 
-	 * @param ID neue ID
-	 */
-	public void setID(String ID)
-	{
-		this.ID.set(ID);
-	}
-
-	public StringProperty idProperty()
+	public IntegerProperty getIDProperty()
 	{
 		return ID;
 	}

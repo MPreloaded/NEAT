@@ -1,4 +1,4 @@
-package de.kaping.model;
+package de.kaping.brain.model;
 
 /**
  * Eine Enumeration, für die verschiedenen Typen von Neuronen.

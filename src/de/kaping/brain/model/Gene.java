@@ -1,4 +1,4 @@
-package de.kaping.model;
+package de.kaping.brain.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

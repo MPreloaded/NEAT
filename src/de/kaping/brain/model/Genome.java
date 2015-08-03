@@ -1,4 +1,4 @@
-package de.kaping.model;
+package de.kaping.brain.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,12 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ObservableList;
 
 /**
  * Beschreibung eines Netzwerkes durch Zusammenfassung von Neuronen und Genes.
@@ -23,28 +29,28 @@ public class Genome implements Comparable<Genome>{
 	@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	
-	private List<Neuron> neurons;
-	private List<Gene>   genes;
+	private ListProperty<Neuron> neurons;
+	private ListProperty<Gene>   genes;
 	
-	private double       fitness;
-	private double       adjustedFitness;
+	private DoubleProperty       fitness;
+	private DoubleProperty adjustedFitness;
 	
 	/* Enthält alle Mutations-/ relevanten Raten für das Netzwerk*/
-	private double[]     rates;
+	private DoubleProperty[]     rates;
 	
 	/**
 	 * Konstruktor
 	 */
 	public Genome()
 	{
-		this(new ArrayList<Neuron>(), false);
+		this(new SimpleListProperty<Neuron>(), false);
 	}
 	
 	/**
 	 * Konstruktor mit Liste von Anfangsneuronen.
 	 * @param neurons Anfangsneuronen
 	 */
-	public Genome(List<Neuron> neurons)
+	public Genome(ObservableList<Neuron> neurons)
 	{
 		this(neurons, false);
 	}
@@ -55,23 +61,23 @@ public class Genome implements Comparable<Genome>{
 	 * @param neurons
 	 * @param basic
 	 */
-	public Genome(List<Neuron> neurons, boolean basic)
+	public Genome(ObservableList<Neuron> neurons, boolean basic)
 	{
 		super();
 		
 		/* TODO: Entfernen des Hardcoden */
-		this.rates    = new double[6];
-		this.rates[0] = 0.25;  /* Ändern aller Gewichtungen */
-		this.rates[1] = 2.0;   /* Hinzufügen von Verbindungen */
-		this.rates[2] = 0.5;   /* Trennen einer Verbindung durch Einfügen Neuron*/
-		this.rates[3] = 0.4;   /* Hinzufügen von BIAS-Verbindung */
-		this.rates[4] = 0.4;   /* Deaktivieren einer aktiven Verbindung */
-		this.rates[5] = 0.2;   /* Aktivieren einer inaktiven Verbindung */
+		this.rates    = new SimpleDoubleProperty[6];
+		this.rates[0] = new SimpleDoubleProperty(.25);  /* Ändern aller Gewichtungen */
+		this.rates[1] = new SimpleDoubleProperty(2.0);   /* Hinzufügen von Verbindungen */
+		this.rates[2] = new SimpleDoubleProperty(0.5);   /* Trennen einer Verbindung durch Einfügen Neuron*/
+		this.rates[3] = new SimpleDoubleProperty(0.4);   /* Hinzufügen von BIAS-Verbindung */
+		this.rates[4] = new SimpleDoubleProperty(0.4);   /* Deaktivieren einer aktiven Verbindung */
+		this.rates[5] = new SimpleDoubleProperty(0.2);   /* Aktivieren einer inaktiven Verbindung */
 	   
-	   this.neurons  = neurons;
-	   this.genes    = new ArrayList<Gene>();
-	   this.fitness  = 0.0;
-	   this.adjustedFitness = 0.0;
+	   this.neurons.set(neurons);
+	   this.genes = new SimpleListProperty<Gene>();
+	   this.fitness = new SimpleDoubleProperty(0.0);
+	   this.adjustedFitness = new SimpleDoubleProperty(0.0);
 	   
 	   if(basic)
 	   	this.mutateGenome();
@@ -83,7 +89,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public void setFitness(double fitness)
 	{
-		this.fitness = fitness;
+		this.fitness.set(fitness);
 	}
 	
 	/**
@@ -92,7 +98,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public double getFitness()
 	{
-		return this.fitness;
+		return this.fitness.get();
 	}
 	
 	/**
@@ -101,7 +107,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public void setAdjustedFitness(double fitness)
 	{
-		this.adjustedFitness = fitness;
+		this.adjustedFitness.set(fitness);
 	}
 	
 	/**
@@ -110,7 +116,7 @@ public class Genome implements Comparable<Genome>{
 	 */
 	public double getAdjustedFitness()
 	{
-		return this.adjustedFitness;
+		return this.adjustedFitness.get();
 	}
 	
 	/**
@@ -118,43 +124,43 @@ public class Genome implements Comparable<Genome>{
 	 * Praktisch, falls ein Netzwerk kopiert werden soll.
 	 * @param neurons Liste von Neuronen
 	 */
-	public void setNeurons(List<Neuron> neurons)
+	public void setNeurons(ObservableList<Neuron> neurons)
 	{
-		this.neurons = neurons;
+		this.neurons.set(neurons);
 	}
 	
 	/**
 	 * Gibt eine Liste aller Neuronen des Netzwerkes zurück.
 	 * @return Liste aller Neuronen
 	 */
-	public List<Neuron> getNeurons()
+	public ObservableList<Neuron> getNeurons()
 	{
-		return this.neurons;
+		return this.neurons.get();
 	}
 	
 	/**
 	 * Setzt eine Liste von Verbindungen des Netzwerkes.
 	 * @param genes Liste von Verbindungen
 	 */
-	public void setGenes(List<Gene> genes)
+	public void setGenes(ObservableList<Gene> genes)
 	{
-		this.genes = genes;
+		this.genes.set(genes);
 	}
 	
 	/**
 	 * Gibt eine Liste aller Verbindungen des Netzwerkes zurück.
 	 * @return Liste aller Verbindungen
 	 */
-	public List<Gene> getGenes()
+	public ObservableList<Gene> getGenes()
 	{
-		return this.genes;
+		return this.genes.get();
 	}
 	
 	/**
 	 * Setzt die Mutationsraten für dieses Netzwerk neu.
 	 * @param rates neue Mutationsraten
 	 */
-	public void setRates(double[] rates)
+	public void setRates(DoubleProperty[] rates)
 	{
 		if(rates.length == 6)
 			this.rates = rates;
@@ -164,7 +170,7 @@ public class Genome implements Comparable<Genome>{
 	 * Gibt die aktuellen Mutationsraten zurück.
 	 * @return Mutationsraten
 	 */
-	public double[] getRates()
+	public DoubleProperty[] getRates()
 	{
 		return rates;
 	}

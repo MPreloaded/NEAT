@@ -1,4 +1,4 @@
-package de.kaping.model;
+package de.kaping.brain.model;
 
 import java.util.ArrayList;
 import java.util.List;

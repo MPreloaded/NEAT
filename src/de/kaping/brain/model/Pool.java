@@ -1,4 +1,4 @@
-package de.kaping.model;
+package de.kaping.brain.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Zusammenfassung aller Netzwerke zu einer Population.
+ * Zusammenfassung aller Netzwerke (Genomes) zu einer Population.
  * Sorgt dafür, dass Operationen über die gesamte Population durchgeführt werden 
  * können, und somit sichergestellt werden kann, dass sich die Population in die
  * richtige Richtung entwickelt.

@@ -166,8 +166,7 @@ public class Gene implements Comparable<Gene>{
 	public boolean isEqual(Gene gene2)
 	{
 		if((this.origin == gene2.origin) && (this.into == gene2.into))
-			return true;
-		
+			return true;		
 		return false;
 	}
 

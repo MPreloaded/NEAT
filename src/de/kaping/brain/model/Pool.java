@@ -28,10 +28,9 @@ public class Pool {
 	private static final Logger log = LogManager.getLogger();
 
 	private final int StaleSpecies = 15;
+	private final int Population = 10000;
 
 	private static Pool instance;
-
-	private IntegerProperty population;
 
 	private IntegerProperty currentSpecies;
 	private IntegerProperty currentGenome;
@@ -75,15 +74,12 @@ public class Pool {
 	 * @return Liste der erstellten Neuronen, um Werte zu übertragen und zu
 	 *         empfangen
 	 */
-	public ObservableList<Neuron> initializePool(int input, int output, int pop)
+	public ObservableList<Neuron> initializePool(int input, int output)
 	{
 		log.trace("ENTER " + this.getClass().getName() + ".initializePool()");
 
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
 		int inn = -1;
-
-		/* Setzen der Population auf die gegebene Anzahl */
-		this.population.set(pop);
 
 		/* Inputneuronen */
 		for (int i = 0; i < input; i++)
@@ -103,7 +99,7 @@ public class Pool {
 			neurons.add(out);
 		}
 
-		for (int i = 0; i < pop; i++)
+		for (int i = 0; i < Population; i++)
 		{
 			/* Erstelle eigene Liste für jedes Netzwerk */
 			ObservableList<Neuron> ownNeurons = FXCollections
@@ -116,6 +112,21 @@ public class Pool {
 
 		log.trace(" EXIT " + this.getClass().getName() + ".initializePool()");
 		return neurons;
+	}
+
+	/**
+	 * Simuliert alle Netzwerke innerhalb der Population und weißt ihnen eine
+	 * Bewertung zu.
+	 * 
+	 * @param function Implementierung einer Bewertungsfunktion
+	 * @param args weitere Argumente, die an die Bewertungsfunktion übergeben
+	 *           werden
+	 */
+	public void evaluateGenomes(AbstractFunction function, Object[] args)
+	{
+		for (Species s : this.species)
+			for (Genome g : s.getGenomes())
+			g.setFitness(function.evaluateNetwork(g, args));
 	}
 
 	/**
@@ -348,8 +359,7 @@ public class Pool {
 			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness())
 			spe.setTopFitness(spe.getGenomes().get(0).getFitness());
 
-			double strength = (spe.getAverageFitness() / total
-				* population.get());
+			double strength = (spe.getAverageFitness() / total * Population);
 
 			if (strength < 1.)
 			species.remove(spe);
@@ -426,8 +436,7 @@ public class Pool {
 
 		for (Species s : species)
 		{
-			int breed = (int) (s.getAverageFitness() / total * population.get())
-				- 1;
+			int breed = (int) (s.getAverageFitness() / total * Population) - 1;
 			for (int i = 0; i < breed; i++)
 			newGen.add(s.breedChild());
 		}
@@ -436,7 +445,7 @@ public class Pool {
 			s.removeWeakGenomes(true);
 
 		/* Fülle restliche Plätze auf */
-		while (newGen.size() + species.size() < population.get())
+		while (newGen.size() + species.size() < Population)
 		{
 			Species s = species.get(rn.nextInt(species.size()));
 			newGen.add(s.breedChild());

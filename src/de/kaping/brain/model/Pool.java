@@ -41,6 +41,7 @@ public class Pool {
 	private IntegerProperty historicalMarking;
 	
 	private ObservableList<Gene> generationMarkings;
+	private List<Neuron>  newNeurons;
 	
 	/**
 	 * Konstruktor
@@ -56,6 +57,8 @@ public class Pool {
 		
 		this.species            = FXCollections.observableArrayList();
 		this.generationMarkings = FXCollections.observableArrayList();
+		
+		this.newNeurons         = new ArrayList<Neuron>();
 	}
 	
 	/**
@@ -73,29 +76,35 @@ public class Pool {
 	public ObservableList<Neuron> initializePool(int input, int output)
 	{
 		log.trace("ENTER "+this.getClass().getName()+".initializePool()");
+		
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
+		int inn = -1;
 		
 		/* Inputneuronen */
 		for(int i = 0; i < input; i++)
 		{
-			Neuron in = new Neuron(Type.INPUT, 1.);
+			Neuron in = new Neuron(Type.INPUT, 1., null, inn--);
 			neurons.add(in);
 		}
 		
 		/*Biasneuron */
-		Neuron bias = new Neuron(Type.BIAS, 1.);
+		Neuron bias = new Neuron(Type.BIAS, 1., null, inn--);
 		neurons.add(bias);
 		
 		/* Outputneuronen */
 		for(int i = 0; i < output; i++)
 		{
-			Neuron out = new Neuron(Type.OUTPUT, 0.);
+			Neuron out = new Neuron(Type.OUTPUT, 0., null, inn--);
 			neurons.add(out);
 		}
 		
 		for(int i = 0; i < Population; i++)
 		{
-			Genome genome = new Genome(neurons, true);
+			/* Erstelle eigene Liste für jedes Netzwerk */
+			ObservableList<Neuron> ownNeurons = FXCollections.observableArrayList();
+			for(Neuron n : neurons)
+				ownNeurons.add(n);
+			Genome genome = new Genome(ownNeurons, true);
 			this.addChildToSpecies(genome);
 		}
 		
@@ -195,6 +204,24 @@ public class Pool {
 	}
 	
 	/**
+	 * Gibt die Liste der neuen Neuronen dieser Generation zuück.
+	 * @return Liste der neuen Neuronen
+	 */
+	public List<Neuron> getNewNeurons()
+	{
+		return newNeurons;
+	}
+
+	/**
+	 * Setzt die Liste der neuen Neuronen dieser Generation.
+	 * @param newNeurons neue Liste von Neuronen
+	 */
+	public void setNewNeurons(List<Neuron> newNeurons)
+	{
+		this.newNeurons = newNeurons;
+	}
+	
+	/**
 	 * Erhöht die aktuelle Innovationsnummer, da eine neue Verbindung vorkommt.
 	 * @return neue Innovationsnummer
 	 */
@@ -224,6 +251,20 @@ public class Pool {
 	{
 		if (!generationMarkings.contains(gen))
 			return generationMarkings.add(gen);
+		return false;
+	}
+	
+	/**
+	 * Fügt ein neues Neuron in die Liste aller neuen Neuronen dieser Generation
+	 * ein.
+	 * @param neuron neues Neuron
+	 * @return Wahrheitswert, ob das Neuron hinzugefügt werden konnte
+	 */
+	public boolean addNewNeuron(Neuron neuron)
+	{
+		log.debug("   adding new Neuron to this generation!");
+		if (!newNeurons.contains(neuron))
+			return newNeurons.add(neuron);
 		return false;
 	}
 	
@@ -330,6 +371,8 @@ public class Pool {
 		
 		/* erstes Auftreten der Verbindung: neue Innovationsnummer und einfügen
 		 * in Liste der neuen Verbindungen dieser Generation. */
+		log.debug("   new Link: " + gen.getOrigin().getInnovation() + " zu " + 
+		          gen.getInto().getInnovation());
 		gen.setHistoricalMarking(this.newInnovation());
 		this.addNewGene(gen);
 	}
@@ -371,8 +414,10 @@ public class Pool {
 		
 		for(Genome child : newGen)
 			this.addChildToSpecies(child);
-		
+                
+		/* TODO: Reset newNeurons / generationMarkings */
 		this.generation.set(this.generation.get()+1);
+
 		log.trace(" EXIT "+this.getClass().getName()+".newGeneration()");
 	}
 		

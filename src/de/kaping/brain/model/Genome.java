@@ -410,8 +410,8 @@ public class Genome implements Comparable<Genome>{
 	private void mutateLink(boolean bias)
 	{
 		Random rn = new Random();
-		Neuron neuron1 = neurons.get(rn.nextInt(neurons.size()));
-		Neuron neuron2 = neurons.get(rn.nextInt(neurons.size()));
+		Neuron neuron1 = this.neurons.get(rn.nextInt(this.neurons.size()));
+		Neuron neuron2 = this.neurons.get(rn.nextInt(this.neurons.size()));
 		
 		Type t1 = neuron1.getType();
 		Type t2 = neuron2.getType();
@@ -420,12 +420,13 @@ public class Genome implements Comparable<Genome>{
 		
 		/* wenn beide zufälligen Neuronen Input oder Output sind, dann Abbruch */
 		if((t1==Type.INPUT || t1==Type.BIAS) && (t2==Type.INPUT || t2==Type.BIAS) 
-				|| t1 == Type.OUTPUT && t2 == Type.OUTPUT)
+				|| (t1 == Type.OUTPUT && t2 == Type.OUTPUT))
 			return;
 		
 		/* sollte ein Neuron Input sein, so soll es der Origin werden, ein 
 		 * Outputneuron sollte das Ziel werden */
-		if(neuron2.getType() == Type.INPUT || neuron1.getType() == Type.OUTPUT)
+		if(neuron2.getType() == Type.INPUT || neuron1.getType() == Type.OUTPUT 
+				|| neuron2.getType() == Type.BIAS)
 		{
 			origin = neuron2;
 			into   = neuron1;
@@ -459,21 +460,37 @@ public class Genome implements Comparable<Genome>{
 	{
 		Random rn = new Random();
 		Gene gene = genes.get(rn.nextInt(genes.size()));
+		Pool pool = Pool.getInstance();
+		boolean neuronExists = false;
 		
 		/* bei inaktiver Verbindung wird die Mutierung abgebrochen */
-		if(gene.getEnabled() == false)
+		if (gene.getEnabled() == false)
 		{
 			return;
 		}
 			
 		gene.setEnabled(false);
-		Neuron newNeuron = new Neuron(Type.HIDDEN);
+		
+		Neuron newNeuron = null;
+		for (Neuron n : pool.getNewNeurons())
+			if (n.getInnovation() == gene.getHistoricalMarking())
+			{
+				newNeuron = n;
+				neuronExists = true;
+				break;
+			}
+		
+		if (!neuronExists)
+		{
+			newNeuron = new Neuron(Type.HIDDEN, gene.getHistoricalMarking());
+			pool.addNewNeuron(newNeuron);
+		}
 		
 		Gene newGene1 = new Gene(gene.getOrigin(), newNeuron, 1.0);
 		Gene newGene2 = new Gene(newNeuron, gene.getInto(), gene.getWeight());
 		
-		Pool.getInstance().defineHistoricalMarking(newGene1);
-		Pool.getInstance().defineHistoricalMarking(newGene2);
+		pool.defineHistoricalMarking(newGene1);
+		pool.defineHistoricalMarking(newGene2);
 		
 		this.addGene(newGene1);
 		this.addGene(newGene2);

@@ -369,6 +369,32 @@ public class Genome implements Comparable<Genome> {
 			}
 		}
 	}
+	
+	/**
+	 * Berechnet für alle Neuronen die Werte innerhalb dieses Netzwerkes. 
+	 * Verwendet hierbei die aktuell eingegebenen Werte innerhalb der Input 
+	 * Neuronen.
+	 */
+	public void simulateGenome()
+	{
+		
+		/* Zurücksetzen und erstellen der IncomingList aller Neuronen */
+		for (Neuron n : neurons)
+			n.resetIncoming();
+		
+		for (Gene g : genes)
+			if (g.getEnabled())
+			{
+				Neuron into = g.getInto();
+				into.addIncoming(g);
+			}
+		
+		/* neue Werte für Neuronen berechnen */
+		for (Neuron n : neurons)
+			if(!n.isCalculated())
+				n.calculateValue();
+		
+	}
 
 	/**
 	 * Berechnet einen Wert, in wieweit sich zwei Netzwerke in ihrer Struktur

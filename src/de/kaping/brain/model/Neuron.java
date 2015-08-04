@@ -31,6 +31,7 @@ public class Neuron {
 	private List<Gene> incoming;
 	private double value;
 	private int innovation;
+	private boolean calculated;
 
 	/**
 	 * Konstruktor
@@ -99,6 +100,7 @@ public class Neuron {
 		this.type = type;
 		this.value = value;
 		this.setInnovation(innovation);
+		this.calculated = false;
 
 		if (inc != null)
 			this.incoming = inc;
@@ -123,14 +125,16 @@ public class Neuron {
 	}
 
 	/**
-	 * Versucht eine bestehende Verbindung zu löschen, falls sie existiert.
+	 * Löscht alle eingehenden Verbindungen für dieses Netzwerk
 	 * 
-	 * @param inc Die zu löschende Verbindung
-	 * @return Wahrheitswert, ob die Verbindung gefunden und gelöscht wurde
+	 * @return Wahrheitswert, ob alle Verbindungen gelöscht werden konnten
 	 */
-	public boolean deleteIncoming(Gene inc)
+	public boolean resetIncoming()
 	{
-		return incoming.remove(inc);
+		incoming.clear();
+		this.calculated = false;
+		
+		return incoming.isEmpty();
 	}
 
 	/**
@@ -162,6 +166,7 @@ public class Neuron {
 	public void setValue(double value)
 	{
 		this.value = value;
+		this.calculated = true;
 	}
 
 	/**
@@ -215,5 +220,47 @@ public class Neuron {
 	public void setInnovation(int innovation)
 	{
 		this.innovation = innovation;
+	}
+	
+	/**
+	 * Gibt zurück, ob der Wert des Neurons innerhalb des letzten Resetzyklus 
+	 * schon neu berechnet wurde.
+	 * @return Wahrheitswert, ob Wert schon berechnet wurde
+	 */
+	public boolean isCalculated()
+	{
+		return this.calculated;
+	}
+	
+	/**
+	 * Berechnet alle eingehenden Neuronen und zuletzt dieses Neuron.
+	 */
+	public void calculateValue()
+	{
+		double sum = 0.;
+		
+		for (Gene g : incoming)
+		{
+			if (!g.getOrigin().isCalculated())
+				g.getOrigin().calculateValue();
+			
+			sum += g.getWeight() * g.getOrigin().getValue();
+		}
+		
+		this.setValue(Neuron.sigmoid(sum));
+	}
+	
+	/**
+	 * Verrechnet die Summe aller eingehenden Werte mit ihren Gewichtungen auf 
+	 * eine Sigmoid-Funktion.
+	 * TODO: Diese Funktion könnte auch von außen einstellbar sein.
+	 * @param value eingehender Wert
+	 * @return mit sigmoid-Funktion verrechneter Wert
+	 */
+	public static double sigmoid(double value)
+	{
+		double sig = 1/(1 + Math.pow(5., -1 * value));
+		
+		return sig;
 	}
 }

@@ -12,13 +12,14 @@ import javafx.collections.ObservableList;
 public class Function extends AbstractFunction {
 
 	private static Logger log = LogManager.getLogger();
+	private static Function instance;
 
 	/**
 	 * args Stelle 0 sollte den Pointer auf neurons beinhalten.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public double evaluateNetwork(Genome genome, Object[] args) {
+	public double evaluateNetwork(Genome genome, Object... args) {
 		double fit = 0.;
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
 
@@ -51,6 +52,19 @@ public class Function extends AbstractFunction {
 		result = 1 / Math.abs(outG - out1);
 
 		return result;
+	}
+	
+	private Function()
+	{
+		super();
+	}
+	
+	public static Function getInstance()
+	{
+		if (instance == null)
+			instance = new Function();
+		
+		return instance;
 	}
 
 }

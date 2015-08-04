@@ -11,6 +11,6 @@ package de.kaping.brain.model;
  */
 public abstract class AbstractFunction {
 	
-	public abstract double evaluateNetwork(Genome genome, Object[] args);
+	public abstract double evaluateNetwork(Genome genome, Object... args);
 
 }

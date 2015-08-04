@@ -9,7 +9,6 @@ import de.kaping.brain.model.Gene;
 import de.kaping.brain.model.Genome;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Species;
-import de.kaping.brain.model.Type;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -134,7 +133,7 @@ public class PoolOverviewController {
 			neuronsLabel.setText(String.valueOf(genome.getNeurons().size()));
 			genesLabel.setText(String.valueOf(genome.getGenes().size()));
 			fitnessCodeLabel
-				.setText(String.valueOf(genome.getAdjustedFitness()));
+				.setText(String.valueOf(genome.getFitness()));
 			renderGenome(genome, renderCanvas);
 		}
 	}
@@ -250,5 +249,12 @@ public class PoolOverviewController {
 	@FXML
 	private void handleNewGeneration() {
 		mainApp.execNewGeneration();
+	}
+	
+	/**
+	 * Testing purpose. Right now called by the "Edit" Button.
+	 */
+	@FXML void handleExecuteFunction() {
+		mainApp.execExecFunction();
 	}
 }

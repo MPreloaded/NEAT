@@ -541,9 +541,9 @@ public class Genome implements Comparable<Genome> {
 		pool.defineHistoricalMarking(newGene1);
 		pool.defineHistoricalMarking(newGene2);
 
+		this.addNeuron(newNeuron);
 		this.addGene(newGene1);
 		this.addGene(newGene2);
-		this.addNeuron(newNeuron);
 	}
 
 	/* (De-)Aktivieren einer (in-)aktiven Verbindung */

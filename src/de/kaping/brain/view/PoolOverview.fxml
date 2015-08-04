@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -22,7 +23,7 @@
                   </TableView>
                   <TableView fx:id="genomeTable" layoutX="136.0" layoutY="127.0" prefHeight="598.0" prefWidth="102.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="genomeDetailColumn" prefWidth="101.0" text="Genome ID" />
+                      <TableColumn fx:id="genomeDetailColumn" prefWidth="100.0" text="Genome ID" />
                     </columns>
                   </TableView>
                </children>
@@ -62,6 +63,7 @@
                   <Label layoutX="477.0" layoutY="6.0" text="Generation:" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="5.0" />
                   <Accordion layoutX="-96.0" layoutY="224.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Label fx:id="headLabel" layoutX="56.0" layoutY="5.0" text=" " AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="5.0" />
+                  <Canvas fx:id="renderCanvas" height="349.0" layoutX="7.0" layoutY="120.0" width="690.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                </children>
             </AnchorPane>
         </items>

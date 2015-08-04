@@ -52,7 +52,7 @@ public class Pool {
 		this.currentGenome = new SimpleIntegerProperty(0);
 		this.currentSpecies = new SimpleIntegerProperty(0);
 		this.topFitness = new SimpleDoubleProperty(0.0);
-		this.generation = new SimpleIntegerProperty(0);
+		this.generation = new SimpleIntegerProperty(1);
 		this.historicalMarking = new SimpleIntegerProperty(0);
 
 		this.species = FXCollections.observableArrayList();

@@ -1,12 +1,24 @@
 package de.kaping.brain.view;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.kaping.brain.MainApp;
+import de.kaping.brain.model.Gene;
 import de.kaping.brain.model.Genome;
+import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Species;
+import de.kaping.brain.model.Type;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.paint.Color;
 
 public class PoolOverviewController {
 	// Species Table:
@@ -37,6 +49,8 @@ public class PoolOverviewController {
 	private Label fitnessCodeLabel;
 	@FXML
 	private Label stalenessLabel;
+	@FXML
+	private Canvas renderCanvas;
 
 	// Reference to the main application.
 	private MainApp mainApp;
@@ -64,12 +78,14 @@ public class PoolOverviewController {
 		// Clear person details.
 		showSpeciesDetails(null);
 
-		// Listen for selection changes in poolTable and show the person details when
+		// Listen for selection changes in poolTable and show the person details
+		// when
 		// changed.
 		poolTable.getSelectionModel().selectedItemProperty().addListener(
 			(observable, oldValue, newValue) -> showSpeciesDetails(newValue));
-		
-		// Listen for selection changes in genomeTable and show the person details when
+
+		// Listen for selection changes in genomeTable and show the person
+		// details when
 		// changed.
 		genomeTable.getSelectionModel().selectedItemProperty().addListener(
 			(observable, oldValue, newValue) -> showGenomeDetails(newValue));
@@ -119,6 +135,95 @@ public class PoolOverviewController {
 			genesLabel.setText(String.valueOf(genome.getGenes().size()));
 			fitnessCodeLabel
 				.setText(String.valueOf(genome.getAdjustedFitness()));
+			renderGenome(genome, renderCanvas);
+		}
+	}
+
+	/**
+	 * Sortiert die NeuronenListe nach Type
+	 * (Undefined->Bias->Input->hidden->Output)
+	 * 
+	 * @param neurons
+	 *           Liste, welche sortiert werden soll
+	 */
+	private void sortNeurons(ObservableList<Neuron> neurons) {
+		neurons.sort(new Comparator<Neuron>() {
+			@Override
+			public int compare(Neuron o1, Neuron o2) {
+			return o1.getType().compareTo(o2.getType());
+			}
+		});
+	}
+
+	/**
+	 * Rendert ein Genom und zeigt es auf dem Canvas an, das Canvas sollte
+	 * Quadratisch sein
+	 * 
+	 * @param genome
+	 */
+	public void renderGenome(Genome genome, Canvas canvas) {
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		double w = canvas.getWidth();
+		double h = canvas.getHeight();
+		gc.clearRect(0, 0, w, h);
+		int div = (int) (Math.sqrt(genome.getNeurons().size())) + 1;
+		int x = 0;
+		int y = 0;
+		double Nwidth = Math.min(w / (div + 3), 25);
+		double Nheight = Math.min(h / (div + 3), 25);
+
+		// Neuronen so sortierem, dass sie in der Reihenfolge der Types
+		// angezeigt werden (undefined, bias, input, hidden, output)
+		sortNeurons(genome.getNeurons());
+
+		Map<Neuron, Point2D> GridPos = new HashMap<Neuron, Point2D>();
+
+		for (Neuron n : genome.getNeurons()) {
+			// Verschiedene Typen von Neuronen, werden eingefärbt
+			switch (n.getType()) {
+			case BIAS:
+			gc.setFill(Color.ORANGE);
+			break;
+			case HIDDEN:
+			gc.setFill(Color.BLUE);
+			break;
+			case INPUT:
+			gc.setFill(Color.GREEN);
+			break;
+			case OUTPUT:
+			gc.setFill(Color.LIGHTGREEN);
+			break;
+			default:
+			gc.setFill(Color.BLACK);
+			break;
+			}
+
+			// Neuronen zeichnen
+			gc.fillOval((w / div) * x, (h / div) * y, Nwidth, Nheight);
+
+			// Position des Neurons speichern
+			GridPos.put(n, new Point2D(x, y));
+
+			// Nächste Position im Grid ermitteln
+			x++;
+			if (x >= div) {
+			x = 0;
+			y++;
+			}
+		}
+		// Enabled Genes zeichnen
+		for (Gene g : genome.getGenes()) {
+			if (g.getEnabled() && GridPos.containsKey(g.getOrigin())
+				&& GridPos.containsKey(g.getInto())) {
+				// Die Neuronen der Verbindung existieren
+				gc.setStroke(Color.BLACK);
+				gc.setLineWidth(2);
+				double x1 = (w / div)*GridPos.get(g.getOrigin()).getX()+Nwidth/2;
+				double y1 = (h / div)*GridPos.get(g.getOrigin()).getY()+Nheight/2;
+				double x2 = (w / div)*GridPos.get(g.getInto()).getX()+Nwidth/2;
+				double y2 = (h / div)*GridPos.get(g.getInto()).getY()+Nheight/2;
+				gc.strokeLine(x1, y1, x2, y2);
+			}
 		}
 	}
 

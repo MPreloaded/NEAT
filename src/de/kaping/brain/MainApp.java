@@ -36,7 +36,7 @@ public class MainApp extends Application {
 	}
 
 	public MainApp() {
-		myPool.initializePool(2, 2);
+		myPool.initializePool(2, 1);
 		log.debug(
 			"Pool initialized with " + myPool.getSpecies().size() + " species");
 	}

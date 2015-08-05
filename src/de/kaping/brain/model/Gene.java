@@ -177,9 +177,25 @@ public class Gene implements Comparable<Gene> {
 	 */
 	public boolean isEqual(Gene gene2)
 	{
-		if ((this.origin == gene2.origin) && (this.into == gene2.into))
+		if ((this.origin == gene2.origin && this.into == gene2.into)
+			|| (this.origin == gene2.into && this.into == gene2.origin))
 			return true;
 		return false;
+	}
+
+	/**
+	 * Kopiert die Verbindung und gibt sie zurück
+	 * 
+	 * @return kopierte Verbindung
+	 */
+	public Gene copyGene()
+	{
+		Gene copy = new Gene(this.origin, this.into, this.weight);
+
+		copy.setHistoricalMarking(this.historicalMarking);
+		copy.setEnabled(this.enabled);
+
+		return copy;
 	}
 
 	@Override

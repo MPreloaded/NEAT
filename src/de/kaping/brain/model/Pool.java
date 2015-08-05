@@ -42,6 +42,7 @@ public class Pool {
 	private ObservableList<Species> species;
 	private ObservableList<Gene> generationMarkings;
 	private List<Neuron> newNeurons;
+	private List<Neuron> essentialNeurons;
 
 	/**
 	 * Konstruktor
@@ -105,11 +106,14 @@ public class Pool {
 			ObservableList<Neuron> ownNeurons = FXCollections
 				.observableArrayList();
 			for (Neuron n : neurons)
-				ownNeurons.add(n);
-			
+			ownNeurons.add(n);
+
 			Genome genome = new Genome(ownNeurons, true);
 			this.addChildToSpecies(genome);
 		}
+
+		/* Speichert die Liste der Neuronen als notwendige ab */
+		this.essentialNeurons = neurons;
 
 		log.trace(" EXIT " + this.getClass().getName() + ".initializePool()");
 		return neurons;
@@ -230,8 +234,9 @@ public class Pool {
 	{
 		this.generation.set(generation);
 	}
-	
-	public IntegerProperty getGenerationProperty() {
+
+	public IntegerProperty getGenerationProperty()
+	{
 		return this.generation;
 	}
 
@@ -243,6 +248,27 @@ public class Pool {
 	public List<Neuron> getNewNeurons()
 	{
 		return newNeurons;
+	}
+
+	/**
+	 * Setzt die Liste der Input, Bias und Outputneuronen, die jedes Netzwerk
+	 * braucht.
+	 * 
+	 * @param neurons Liste von notwendigen Neuronen
+	 */
+	public void setEssentialNeurons(List<Neuron> neurons)
+	{
+		this.essentialNeurons = neurons;
+	}
+
+	/**
+	 * Gibt die Liste der notwendigen Neuronen dieser Population zuück.
+	 * 
+	 * @return Liste der notwendigen Neuronen
+	 */
+	public List<Neuron> getEssentialNeurons()
+	{
+		return essentialNeurons;
 	}
 
 	/**
@@ -327,6 +353,8 @@ public class Pool {
 	 */
 	public void removeStaleSpecies()
 	{
+		List<Species> remove = new ArrayList<Species>();
+
 		for (Species spe : species)
 		{
 			spe.getGenomes().sort(null);
@@ -345,9 +373,12 @@ public class Pool {
 			if (spe.getStaleness() > StaleSpecies
 				&& !(spe.getTopFitness() >= this.topFitness.get()))
 			{
-			species.remove(spe);
+				remove.add(spe);
 			}
 		}
+		
+		for (Species s : remove)
+			species.remove(s);
 	}
 
 	/**
@@ -356,6 +387,7 @@ public class Pool {
 	public void removeWeakSpecies()
 	{
 		double total = getTotalAverageFitness();
+		List<Species> remove = new ArrayList<Species>();
 
 		for (Species spe : species)
 		{
@@ -367,8 +399,11 @@ public class Pool {
 			double strength = (spe.getAverageFitness() / total * Population);
 
 			if (strength < 1.)
-			species.remove(spe);
+				remove.add(spe);
 		}
+
+		for (Species s : remove)
+			species.remove(s);
 	}
 
 	/**

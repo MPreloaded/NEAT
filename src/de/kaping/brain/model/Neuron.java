@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Neuron {
 
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 
 	private Type type;
@@ -241,8 +241,11 @@ public class Neuron {
 		
 		for (Gene g : incoming)
 		{
-			if (!g.getOrigin().isCalculated())
+			if (!g.getOrigin().isCalculated() &&  g.getEnabled())
+			{
+				log.debug("wait for Neuron " + g.getOrigin().getInnovation());
 				g.getOrigin().calculateValue();
+			}
 			
 			sum += g.getWeight() * g.getOrigin().getValue();
 		}

@@ -28,7 +28,7 @@ import javafx.collections.ObservableList;
  */
 public class Genome implements Comparable<Genome> {
 
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	private static int maxID;
 
@@ -70,7 +70,7 @@ public class Genome implements Comparable<Genome> {
 	public Genome(ObservableList<Neuron> neurons, boolean basic)
 	{
 		super();
-		this.ID = new SimpleIntegerProperty(maxID+1);
+		this.ID = new SimpleIntegerProperty(maxID + 1);
 		maxID++;
 
 		/* TODO: Entfernen des Hardcoden */
@@ -100,16 +100,19 @@ public class Genome implements Comparable<Genome> {
 
 	/**
 	 * Gibt die eindeutige ID des Genoms zurück
+	 * 
 	 * @return
 	 */
-	public int getID(){
+	public int getID()
+	{
 		return this.ID.get();
 	}
-	
-	public IntegerProperty getIDProperty(){
+
+	public IntegerProperty getIDProperty()
+	{
 		return this.ID;
 	}
-	
+
 	/**
 	 * Setzt die aktuelle Bewertung des Netzwerkes neu.
 	 * 
@@ -251,6 +254,19 @@ public class Genome implements Comparable<Genome> {
 	{
 		Genome copy = new Genome();
 
+		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
+		ObservableList<Gene> genes = FXCollections.observableArrayList();
+		DoubleProperty[] rates = new SimpleDoubleProperty[6];
+
+		for (Neuron n : this.neurons)
+			neurons.add(n);
+
+		for (Gene g : this.genes)
+			genes.add(g.copyGene());
+
+		for (int i = 0; i < 6; i++)
+			rates[i] = new SimpleDoubleProperty(this.rates[i].doubleValue());;
+
 		copy.setNeurons(neurons);
 		copy.setGenes(genes);
 		copy.setRates(rates);
@@ -275,13 +291,22 @@ public class Genome implements Comparable<Genome> {
 		int size1 = h.genes.size();
 		int size2 = l.getGenes().size();
 
+		if (size1 == 0 && size2 == 0)
+		{
+			child = h.copyGenome();
+			log.debug("No Genes for matchup. Just copy the better one...");
+			return child;
+		}
+
 		h.getGenes().sort(null);
 		l.getGenes().sort(null);
 
 		/* Berechne die maximale Innovationsnummer */
-		int maxInn = Math.max(
-			h.getGenes().get(size1 - 1).getHistoricalMarking(),
-			l.getGenes().get(size2 - 1).getHistoricalMarking()) + 1;
+		int maxH = (size1 > 0)
+			? h.getGenes().get(size1 - 1).getHistoricalMarking() : 0;
+		int maxL = (size2 > 0)
+			? l.getGenes().get(size2 - 1).getHistoricalMarking() : 0;
+		int maxInn = Math.max(maxH, maxL) + 1;
 
 		Gene[] inn = new Gene[maxInn];
 
@@ -294,11 +319,16 @@ public class Genome implements Comparable<Genome> {
 			if (inn[g.getHistoricalMarking()] != null && Math.random() < 0.5
 				&& inn[g.getHistoricalMarking()].getEnabled())
 			{
-			child.addGene(inn[g.getHistoricalMarking()]);
+			child.addGene(inn[g.getHistoricalMarking()].copyGene());
 			}
 			else
-			child.addGene(g);
+			child.addGene(g.copyGene());
 
+		/* Fügt alle notwendigen Neuronen hinzu */
+		for(Neuron n : Pool.getInstance().getEssentialNeurons())
+			child.addNeuron(n);
+		
+		/* Fügt alle zusätzlichen Neuronen hinzu */
 		for (Gene g : child.getGenes())
 		{
 			child.addNeuron(g.getOrigin());
@@ -306,8 +336,11 @@ public class Genome implements Comparable<Genome> {
 		}
 
 		/* neues Netzwerk bekommt Mutationsraten vom besseren Netzwerk */
-		child.setRates(h.getRates());
-
+		DoubleProperty[] rates = new SimpleDoubleProperty[6];
+		DoubleProperty[] hrates = h.getRates();
+		for(int i = 0; i < 6; i++)
+			rates[i] = new SimpleDoubleProperty(hrates[i].doubleValue());
+		
 		return child;
 	}
 
@@ -369,31 +402,31 @@ public class Genome implements Comparable<Genome> {
 			}
 		}
 	}
-	
+
 	/**
-	 * Berechnet für alle Neuronen die Werte innerhalb dieses Netzwerkes. 
-	 * Verwendet hierbei die aktuell eingegebenen Werte innerhalb der Input 
+	 * Berechnet für alle Neuronen die Werte innerhalb dieses Netzwerkes.
+	 * Verwendet hierbei die aktuell eingegebenen Werte innerhalb der Input
 	 * Neuronen.
 	 */
 	public void simulateGenome()
 	{
-		
+
 		/* Zurücksetzen und erstellen der IncomingList aller Neuronen */
 		for (Neuron n : neurons)
 			n.resetIncoming();
-		
+
 		for (Gene g : genes)
 			if (g.getEnabled())
 			{
-				Neuron into = g.getInto();
-				into.addIncoming(g);
+			Neuron into = g.getInto();
+			into.addIncoming(g);
 			}
-		
+
 		/* neue Werte für Neuronen berechnen */
 		for (Neuron n : neurons)
-			if(!n.isCalculated())
-				n.calculateValue();
-		
+			if (!n.isCalculated())
+			n.calculateValue();
+
 	}
 
 	/**
@@ -487,6 +520,10 @@ public class Genome implements Comparable<Genome> {
 		Neuron neuron1 = this.neurons.get(rn.nextInt(this.neurons.size()));
 		Neuron neuron2 = this.neurons.get(rn.nextInt(this.neurons.size()));
 
+		/* Keine Verbindung auf das gleiche Neuron */
+		if(neuron1 == neuron2)
+			return;
+		
 		Type t1 = neuron1.getType();
 		Type t2 = neuron2.getType();
 

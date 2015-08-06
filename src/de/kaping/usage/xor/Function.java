@@ -49,9 +49,9 @@ public class Function extends AbstractFunction {
 		
 		outG = neurons.get(3).getValue();
 		
-		result = 1 / Math.abs(outG - out1);
+		result = Math.abs(outG - out1) <= 0.04 ? 0.04 : Math.abs(outG - out1);
 
-		return result;
+		return 1 / result;
 	}
 	
 	private Function()

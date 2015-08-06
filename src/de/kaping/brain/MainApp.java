@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.kaping.brain.model.Genome;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Pool;
 import de.kaping.brain.model.Species;
@@ -40,36 +39,27 @@ public class MainApp extends Application {
 	}
 
 	public MainApp() {
-		this.neurons = myPool.initializePool(2, 1);
+		this.neurons = myPool.initializePool(2, 1, Function.getInstance());
 		log.debug(
 			"Pool initialized with " + myPool.getSpecies().size() + " species");
+		
+		myPool.printBestGenome();
 	}
 
 	/**
 	 * Ruft newGeneration auf, nachdem der entsprechende Button geklickt wurde
-	 * (wird vom PoolOverviewController aufgerufen)
+	 * (wird vom PoolOverviewController aufgerufen).
+	 * Nach Abschluss werden alle Netzwerke bewertet.
 	 */
 	public void execNewGeneration() {
 		myPool.newGeneration();
+		myPool.evaluateGenomes(neurons);
 		for (Species s : myPool.getSpecies()) {
 			IntegerProperty i = s.countGenomesProperty();
 			log.debug("NewGen Count for "+s.getID()+": "+i.get());
 		}
-	}
-	
-	/**
-	 * Führt die ausgewählte Funktion aus.
-	 */
-	public void execExecFunction()
-	{
-		Function function = Function.getInstance();
 		
-		for (Species s : myPool.getSpecies())
-		{
-			for(Genome g : s.getGenomes())
-				g.setFitness(function.evaluateNetwork(g, this.neurons));			
-			s.calculateAverageFitness();
-		}
+		myPool.printBestGenome();
 	}
 
 	public ObservableList<Species> getPoolSpecies() {

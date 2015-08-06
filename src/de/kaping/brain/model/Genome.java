@@ -28,7 +28,7 @@ import javafx.collections.ObservableList;
  */
 public class Genome implements Comparable<Genome> {
 
-	// @SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	private static int maxID;
 
@@ -297,7 +297,6 @@ public class Genome implements Comparable<Genome> {
 		if (size1 == 0 && size2 == 0)
 		{
 			child = h.copyGenome();
-			log.debug("No Genes for matchup. Just copy the better one...");
 			return child;
 		}
 
@@ -413,7 +412,7 @@ public class Genome implements Comparable<Genome> {
 	 */
 	public void simulateGenome()
 	{
-
+		log.debug("Genome: "+ this.ID);
 		/* Zurücksetzen und erstellen der IncomingList aller Neuronen */
 		for (Neuron n : neurons)
 			n.resetIncoming();
@@ -759,5 +758,26 @@ public class Genome implements Comparable<Genome> {
 			return 1;
 		else
 			return 0;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String genome = new String();
+		String nline = "\n";
+		
+		genes.sort(null);
+		
+		genome = nline + "Netzwerk " + this.ID.intValue() + ", Fitness: " + 
+				String.format("%.3f", this.fitness.doubleValue());
+		
+		for(Neuron n : neurons)
+			genome = genome + nline + n;
+		
+		for(Gene g : genes)
+			genome = genome + nline + g;
+		
+		genome = genome + nline;
+		return genome;
 	}
 }

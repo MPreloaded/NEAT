@@ -251,10 +251,4 @@ public class PoolOverviewController {
 		mainApp.execNewGeneration();
 	}
 	
-	/**
-	 * Testing purpose. Right now called by the "Edit" Button.
-	 */
-	@FXML void handleExecuteFunction() {
-		mainApp.execExecFunction();
-	}
 }

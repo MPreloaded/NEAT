@@ -43,6 +43,7 @@ public class Pool {
 	private ObservableList<Gene> generationMarkings;
 	private List<Neuron> newNeurons;
 	private List<Neuron> essentialNeurons;
+	private AbstractFunction function;
 
 	/**
 	 * Konstruktor
@@ -60,6 +61,7 @@ public class Pool {
 		this.generationMarkings = FXCollections.observableArrayList();
 
 		this.newNeurons = new ArrayList<Neuron>();
+		this.function = null;
 	}
 
 	/**
@@ -75,9 +77,12 @@ public class Pool {
 	 * @return Liste der erstellten Neuronen, um Werte zu übertragen und zu
 	 *         empfangen
 	 */
-	public ObservableList<Neuron> initializePool(int input, int output)
+	public ObservableList<Neuron> initializePool(int input, int output, 
+			AbstractFunction function)
 	{
 		log.trace("ENTER " + this.getClass().getName() + ".initializePool()");
+		
+		this.function = function;
 
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
 		int inn = -1;
@@ -114,6 +119,14 @@ public class Pool {
 
 		/* Speichert die Liste der Neuronen als notwendige ab */
 		this.essentialNeurons = neurons;
+		
+		/* Führt die Bewertung der ersten Generation durch */
+		for (Species s : this.getSpecies())
+		{
+			for(Genome g : s.getGenomes())
+				g.setFitness(function.evaluateNetwork(g, neurons));			
+			s.calculateAverageFitness();
+		}
 
 		log.trace(" EXIT " + this.getClass().getName() + ".initializePool()");
 		return neurons;
@@ -121,17 +134,20 @@ public class Pool {
 
 	/**
 	 * Simuliert alle Netzwerke innerhalb der Population und weißt ihnen eine
-	 * Bewertung zu.
+	 * Bewertung zu. Danach werden für alle Spezies die durchschnittlichen 
+	 * Bewertungen durchgeführt.
 	 * 
-	 * @param function Implementierung einer Bewertungsfunktion
 	 * @param args weitere Argumente, die an die Bewertungsfunktion übergeben
 	 *           werden
 	 */
-	public void evaluateGenomes(AbstractFunction function, Object[] args)
+	public void evaluateGenomes(Object... args)
 	{
 		for (Species s : this.species)
+		{
 			for (Genome g : s.getGenomes())
-			g.setFitness(function.evaluateNetwork(g, args));
+				g.setFitness(function.evaluateNetwork(g, args));
+			s.calculateAverageFitness();
+		}
 	}
 
 	/**
@@ -288,7 +304,6 @@ public class Pool {
 	 */
 	public int newInnovation()
 	{
-		log.debug("   Neue Innovation!");
 		this.historicalMarking.set(this.historicalMarking.get() + 1);
 		return this.historicalMarking.get();
 	}
@@ -450,8 +465,6 @@ public class Pool {
 
 		/* erstes Auftreten der Verbindung: neue Innovationsnummer und einfügen
 		 * in Liste der neuen Verbindungen dieser Generation. */
-		log.debug("   new Link: " + gen.getOrigin().getInnovation() + " zu "
-			+ gen.getInto().getInnovation());
 		gen.setHistoricalMarking(this.newInnovation());
 		this.addNewGene(gen);
 	}
@@ -498,6 +511,22 @@ public class Pool {
 		this.generation.set(this.generation.get() + 1);
 
 		log.trace(" EXIT " + this.getClass().getName() + ".newGeneration()");
+	}
+	
+	/**
+	 * Gibt Informationen zum besten Netzwerk im Log aus.
+	 */
+	public void printBestGenome()
+	{
+		List<Genome> global = new ArrayList<Genome>();
+		
+		for(Species s : species)
+			for(Genome g : s.getGenomes())
+				global.add(g);
+		
+		global.sort(null);
+		
+		log.debug(global.get(0));
 	}
 
 	/* Berechnet die Summe aller durchschnittlichen Bewertungen */

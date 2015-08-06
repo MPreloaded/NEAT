@@ -266,4 +266,13 @@ public class Neuron {
 		
 		return sig;
 	}
+	
+	@Override 
+	public String toString() 
+	{
+		String neuron = new String();
+		
+		neuron = "InnNummer: " + this.innovation + ", Type: " + this.type;
+		return neuron;
+	}
 }

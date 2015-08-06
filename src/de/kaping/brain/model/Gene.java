@@ -218,4 +218,15 @@ public class Gene implements Comparable<Gene> {
 			return 0;
 
 	}
+	
+	@Override
+	public String toString()
+	{
+		String gene = new String();
+		
+		gene = String.format("%.6f",this.weight) + " Verbindung von " + this.origin.getInnovation() + 
+				" zu " + this.into.getInnovation() + ", " + this.enabled;
+		
+		return gene;
+	}
 }

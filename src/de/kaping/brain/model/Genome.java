@@ -28,7 +28,7 @@ import javafx.collections.ObservableList;
  */
 public class Genome implements Comparable<Genome> {
 
-	//@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	private static int maxID;
 
@@ -216,7 +216,8 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/**
-	 * Fügt eine einzelne Verbindung zum Netzwerk hinzu.
+	 * Fügt eine einzelne Verbindung zum Netzwerk hinzu, wenn dadurch kein
+	 * Zyklus entsteht.
 	 * 
 	 * @param gene neue Verbindung
 	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
@@ -226,7 +227,8 @@ public class Genome implements Comparable<Genome> {
 		if (!genes.contains(gene))
 			if (neurons.contains(gene.getInto())
 				&& neurons.contains(gene.getOrigin()))
-			return genes.add(gene);
+				if (!this.checkForLoop(gene))
+					return genes.add(gene);
 
 		return false;
 	}
@@ -265,7 +267,8 @@ public class Genome implements Comparable<Genome> {
 			genes.add(g.copyGene());
 
 		for (int i = 0; i < 6; i++)
-			rates[i] = new SimpleDoubleProperty(this.rates[i].doubleValue());;
+			rates[i] = new SimpleDoubleProperty(this.rates[i].doubleValue());
+		;
 
 		copy.setNeurons(neurons);
 		copy.setGenes(genes);
@@ -325,9 +328,9 @@ public class Genome implements Comparable<Genome> {
 			child.addGene(g.copyGene());
 
 		/* Fügt alle notwendigen Neuronen hinzu */
-		for(Neuron n : Pool.getInstance().getEssentialNeurons())
+		for (Neuron n : Pool.getInstance().getEssentialNeurons())
 			child.addNeuron(n);
-		
+
 		/* Fügt alle zusätzlichen Neuronen hinzu */
 		for (Gene g : child.getGenes())
 		{
@@ -338,9 +341,9 @@ public class Genome implements Comparable<Genome> {
 		/* neues Netzwerk bekommt Mutationsraten vom besseren Netzwerk */
 		DoubleProperty[] rates = new SimpleDoubleProperty[6];
 		DoubleProperty[] hrates = h.getRates();
-		for(int i = 0; i < 6; i++)
+		for (int i = 0; i < 6; i++)
 			rates[i] = new SimpleDoubleProperty(hrates[i].doubleValue());
-		
+
 		return child;
 	}
 
@@ -521,9 +524,9 @@ public class Genome implements Comparable<Genome> {
 		Neuron neuron2 = this.neurons.get(rn.nextInt(this.neurons.size()));
 
 		/* Keine Verbindung auf das gleiche Neuron */
-		if(neuron1 == neuron2)
+		if (neuron1 == neuron2)
 			return;
-		
+
 		Type t1 = neuron1.getType();
 		Type t2 = neuron2.getType();
 
@@ -634,9 +637,9 @@ public class Genome implements Comparable<Genome> {
 		 * Parameter einführen */
 		for (int i = 0; i < 6; i++)
 			if (Math.random() < 0.5)
-			rates[i].set(rates[i].get() * 0.95);
+				rates[i].set(rates[i].get() * 0.95);
 			else
-			rates[i].set(rates[i].get() * 1.05263);
+				rates[i].set(rates[i].get() * 1.05263);
 	}
 
 	/* Suchen des Biasneurons innerhalb des Netzwerkes */
@@ -649,8 +652,8 @@ public class Genome implements Comparable<Genome> {
 		for (int i = 0; i < neurons.size(); i++)
 			if (neurons.get(i).getType() == Type.BIAS)
 			{
-			bias = neurons.get(i);
-			break;
+				bias = neurons.get(i);
+				break;
 			}
 
 		/* Eigentlich nicht nötig, zur Sicherheit */
@@ -661,6 +664,81 @@ public class Genome implements Comparable<Genome> {
 		}
 
 		return bias;
+	}
+
+	/* Kontrolliert, ob durch das Hinzufügen dieser Verbindung ein Zyklus 
+	 * entsteht */
+	private boolean checkForLoop(Gene g)
+	{
+		/* Wenn nicht zwei Hiddenneuronen verbunden werden, so ist kein Zyklus 
+		 * möglich */
+		if (g.getOrigin().getType() != Type.HIDDEN
+				|| g.getInto().getType() != Type.HIDDEN)
+			return false;
+		
+		List<Gene> possibleLoopGenes = new ArrayList<Gene>();
+		List<Neuron> loopNeurons     = new ArrayList<Neuron>();
+
+		/* Alle möglichen Zyklusverbindungen in einer Liste zusammenfassen */
+		for (Gene gene : genes)
+			if (gene.getOrigin().getType() == Type.HIDDEN
+				&& gene.getInto().getType() == Type.HIDDEN)
+				possibleLoopGenes.add(gene);
+		possibleLoopGenes.add(g);
+
+		/* Erstellen einer Liste aller verbundenen Hiddenneurons */
+		for (Gene gene : possibleLoopGenes)
+		{
+			if (!loopNeurons.contains(gene.getOrigin()))
+			{
+				loopNeurons.add(gene.getOrigin());
+				gene.getOrigin().resetIncoming();
+			}
+			if (!loopNeurons.contains(gene.getInto()))
+			{
+				loopNeurons.add(gene.getInto());
+				gene.getInto().resetIncoming();
+			}
+			gene.getInto().addIncoming(gene);
+		}
+		
+		/* Zykluserkennung mittels Tiefensuche */
+		for (Neuron neuron : loopNeurons)
+		{
+			boolean[] visited  = new boolean[loopNeurons.size()];
+			boolean[] finished = new boolean[loopNeurons.size()];
+			
+			boolean cycl = checkLoopNeuron(neuron, loopNeurons, visited, finished);
+			
+			/* Zyklus erkannt */
+			if(cycl)
+				return true;
+		}
+	
+		return false;
+	}
+	
+	/* Benötigte Untermethode für checkForLoop 
+	 * Wird benutzt, um ein Neuron zu kontrollieren */
+	private boolean checkLoopNeuron(Neuron n, List<Neuron> list, 
+			boolean[] visited, boolean[] finished)
+	{
+		if (finished[list.indexOf(n)])
+			return false;
+		
+		/* Wenn schonmal besucht aber nicht beendet, dann kam ein Anruf von diesem 
+		 * Neuron: Zyklus!! */
+		if (visited[list.indexOf(n)])
+			return true; 
+		
+		visited[list.indexOf(n)] = true;
+		
+		for (Gene gene : n.getIncoming())
+			checkLoopNeuron(gene.getOrigin(), list, visited, finished);
+		
+		finished[list.indexOf(n)] = true;
+		
+		return false;
 	}
 
 	@Override

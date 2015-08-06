@@ -65,8 +65,11 @@ public class MainApp extends Application {
 		Function function = Function.getInstance();
 		
 		for (Species s : myPool.getSpecies())
+		{
 			for(Genome g : s.getGenomes())
-				g.setFitness(function.evaluateNetwork(g, this.neurons));
+				g.setFitness(function.evaluateNetwork(g, this.neurons));			
+			s.calculateAverageFitness();
+		}
 	}
 
 	public ObservableList<Species> getPoolSpecies() {

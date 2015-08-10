@@ -48,8 +48,7 @@ public class Pool {
 	/**
 	 * Konstruktor
 	 */
-	private Pool()
-	{
+	private Pool() {
 		super();
 		this.currentGenome = new SimpleIntegerProperty(0);
 		this.currentSpecies = new SimpleIntegerProperty(0);
@@ -72,24 +71,24 @@ public class Pool {
 	 * output)). Werte der Inputneuronen sind Standardmäßig auf 1, und die der
 	 * Outputneuronen auf 0 gesetzt.
 	 * 
-	 * @param input Anzahl Inputneuronen
-	 * @param output Anzahl Outputneuronen
+	 * @param input
+	 *           Anzahl Inputneuronen
+	 * @param output
+	 *           Anzahl Outputneuronen
 	 * @return Liste der erstellten Neuronen, um Werte zu übertragen und zu
 	 *         empfangen
 	 */
-	public ObservableList<Neuron> initializePool(int input, int output, 
-			AbstractFunction function)
-	{
+	public ObservableList<Neuron> initializePool(int input, int output,
+			AbstractFunction function) {
 		log.trace("ENTER " + this.getClass().getName() + ".initializePool()");
-		
+
 		this.function = function;
 
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
 		int inn = -1;
 
 		/* Inputneuronen */
-		for (int i = 0; i < input; i++)
-		{
+		for (int i = 0; i < input; i++) {
 			Neuron in = new Neuron(Type.INPUT, 1., null, inn--);
 			neurons.add(in);
 		}
@@ -99,14 +98,12 @@ public class Pool {
 		neurons.add(bias);
 
 		/* Outputneuronen */
-		for (int i = 0; i < output; i++)
-		{
+		for (int i = 0; i < output; i++) {
 			Neuron out = new Neuron(Type.OUTPUT, 0., null, inn--);
 			neurons.add(out);
 		}
 
-		for (int i = 0; i < Population; i++)
-		{
+		for (int i = 0; i < Population; i++) {
 			/* Erstelle eigene Liste für jedes Netzwerk */
 			ObservableList<Neuron> ownNeurons = FXCollections
 				.observableArrayList();
@@ -119,12 +116,11 @@ public class Pool {
 
 		/* Speichert die Liste der Neuronen als notwendige ab */
 		this.essentialNeurons = neurons;
-		
+
 		/* Führt die Bewertung der ersten Generation durch */
-		for (Species s : this.getSpecies())
-		{
-			for(Genome g : s.getGenomes())
-				g.setFitness(function.evaluateNetwork(g, neurons));			
+		for (Species s : this.getSpecies()) {
+			for (Genome g : s.getGenomes())
+			g.setFitness(function.evaluateNetwork(g, neurons));
 			s.calculateAverageFitness();
 		}
 
@@ -134,18 +130,17 @@ public class Pool {
 
 	/**
 	 * Simuliert alle Netzwerke innerhalb der Population und weißt ihnen eine
-	 * Bewertung zu. Danach werden für alle Spezies die durchschnittlichen 
+	 * Bewertung zu. Danach werden für alle Spezies die durchschnittlichen
 	 * Bewertungen durchgeführt.
 	 * 
-	 * @param args weitere Argumente, die an die Bewertungsfunktion übergeben
+	 * @param args
+	 *           weitere Argumente, die an die Bewertungsfunktion übergeben
 	 *           werden
 	 */
-	public void evaluateGenomes(Object... args)
-	{
-		for (Species s : this.species)
-		{
+	public void evaluateGenomes(Object... args) {
+		for (Species s : this.species) {
 			for (Genome g : s.getGenomes())
-				g.setFitness(function.evaluateNetwork(g, args));
+			g.setFitness(function.evaluateNetwork(g, args));
 			s.calculateAverageFitness();
 		}
 	}
@@ -155,8 +150,7 @@ public class Pool {
 	 * 
 	 * @return Liste aller Spezies
 	 */
-	public ObservableList<Species> getSpecies()
-	{
+	public ObservableList<Species> getSpecies() {
 		return species;
 	}
 
@@ -164,10 +158,10 @@ public class Pool {
 	 * Setzt die Liste aller Spezies für die Population neu. VORSICHT! Kann bei
 	 * falscher Anwendung die Population resetten.
 	 * 
-	 * @param species neue Liste von Spezies
+	 * @param species
+	 *           neue Liste von Spezies
 	 */
-	public void setSpecies(ObservableList<Species> species)
-	{
+	public void setSpecies(ObservableList<Species> species) {
 		this.species = species;
 	}
 
@@ -176,18 +170,17 @@ public class Pool {
 	 * 
 	 * @return zu simulierende Species
 	 */
-	public int getCurrentSpecies()
-	{
+	public int getCurrentSpecies() {
 		return currentSpecies.get();
 	}
 
 	/**
 	 * Setzt die aktuell zu simulierenden Spezies neu.
 	 * 
-	 * @param currentSpecies zu simulierende Species
+	 * @param currentSpecies
+	 *           zu simulierende Species
 	 */
-	public void setCurrentSpecies(int currentSpecies)
-	{
+	public void setCurrentSpecies(int currentSpecies) {
 		this.currentSpecies.set(currentSpecies);
 	}
 
@@ -196,18 +189,17 @@ public class Pool {
 	 * 
 	 * @return zu simulierendes Netzwerk
 	 */
-	public int getCurrentGenome()
-	{
+	public int getCurrentGenome() {
 		return currentGenome.get();
 	}
 
 	/**
 	 * Setzen des aktuell zu simulierende Netzwerk.
 	 * 
-	 * @param currentGenome zu simulierendes Netzwerk
+	 * @param currentGenome
+	 *           zu simulierendes Netzwerk
 	 */
-	public void setCurrentGenome(int currentGenome)
-	{
+	public void setCurrentGenome(int currentGenome) {
 		this.currentGenome.set(currentGenome);
 	}
 
@@ -216,18 +208,17 @@ public class Pool {
 	 * 
 	 * @return beste Bewertung eines Netzwerkes der Population
 	 */
-	public double getTopFitness()
-	{
+	public double getTopFitness() {
 		return topFitness.get();
 	}
 
 	/**
 	 * Setzt eine neue Bewertung als höchste innerhalb der Population.
 	 * 
-	 * @param topFitness neue höchste Bewertung
+	 * @param topFitness
+	 *           neue höchste Bewertung
 	 */
-	public void setTopFitness(double topFitness)
-	{
+	public void setTopFitness(double topFitness) {
 		this.topFitness.set(topFitness);
 	}
 
@@ -236,23 +227,21 @@ public class Pool {
 	 * 
 	 * @return Generationsnummer
 	 */
-	public int getGeneration()
-	{
+	public int getGeneration() {
 		return generation.get();
 	}
 
 	/**
 	 * Setzt die Generationsnummer neu.
 	 * 
-	 * @param generation neue Generationsnummer
+	 * @param generation
+	 *           neue Generationsnummer
 	 */
-	public void setGeneration(int generation)
-	{
+	public void setGeneration(int generation) {
 		this.generation.set(generation);
 	}
 
-	public IntegerProperty getGenerationProperty()
-	{
+	public IntegerProperty getGenerationProperty() {
 		return this.generation;
 	}
 
@@ -261,8 +250,7 @@ public class Pool {
 	 * 
 	 * @return Liste der neuen Neuronen
 	 */
-	public List<Neuron> getNewNeurons()
-	{
+	public List<Neuron> getNewNeurons() {
 		return newNeurons;
 	}
 
@@ -270,10 +258,10 @@ public class Pool {
 	 * Setzt die Liste der Input, Bias und Outputneuronen, die jedes Netzwerk
 	 * braucht.
 	 * 
-	 * @param neurons Liste von notwendigen Neuronen
+	 * @param neurons
+	 *           Liste von notwendigen Neuronen
 	 */
-	public void setEssentialNeurons(List<Neuron> neurons)
-	{
+	public void setEssentialNeurons(List<Neuron> neurons) {
 		this.essentialNeurons = neurons;
 	}
 
@@ -282,18 +270,17 @@ public class Pool {
 	 * 
 	 * @return Liste der notwendigen Neuronen
 	 */
-	public List<Neuron> getEssentialNeurons()
-	{
+	public List<Neuron> getEssentialNeurons() {
 		return essentialNeurons;
 	}
 
 	/**
 	 * Setzt die Liste der neuen Neuronen dieser Generation.
 	 * 
-	 * @param newNeurons neue Liste von Neuronen
+	 * @param newNeurons
+	 *           neue Liste von Neuronen
 	 */
-	public void setNewNeurons(List<Neuron> newNeurons)
-	{
+	public void setNewNeurons(List<Neuron> newNeurons) {
 		this.newNeurons = newNeurons;
 	}
 
@@ -302,8 +289,7 @@ public class Pool {
 	 * 
 	 * @return neue Innovationsnummer
 	 */
-	public int newInnovation()
-	{
+	public int newInnovation() {
 		this.historicalMarking.set(this.historicalMarking.get() + 1);
 		return this.historicalMarking.get();
 	}
@@ -313,8 +299,7 @@ public class Pool {
 	 * 
 	 * @return Innovationsnummer
 	 */
-	public int getHistoricalMarking()
-	{
+	public int getHistoricalMarking() {
 		return this.historicalMarking.get();
 	}
 
@@ -322,11 +307,11 @@ public class Pool {
 	 * Fügt eine neue Verbindung in die Liste aller neuen Verbindungen dieser
 	 * Generation ein.
 	 * 
-	 * @param gen neue Verbindung
+	 * @param gen
+	 *           neue Verbindung
 	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
 	 */
-	public boolean addNewGene(Gene gen)
-	{
+	public boolean addNewGene(Gene gen) {
 		if (!generationMarkings.contains(gen))
 			return generationMarkings.add(gen);
 		return false;
@@ -336,11 +321,11 @@ public class Pool {
 	 * Fügt ein neues Neuron in die Liste aller neuen Neuronen dieser Generation
 	 * ein.
 	 * 
-	 * @param neuron neues Neuron
+	 * @param neuron
+	 *           neues Neuron
 	 * @return Wahrheitswert, ob das Neuron hinzugefügt werden konnte
 	 */
-	public boolean addNewNeuron(Neuron neuron)
-	{
+	public boolean addNewNeuron(Neuron neuron) {
 		log.debug("   adding new Neuron to this generation!");
 		if (!newNeurons.contains(neuron))
 			return newNeurons.add(neuron);
@@ -351,11 +336,11 @@ public class Pool {
 	 * Fügt eine neue Spezies zur Population hinzu. TODO: Abfrage, ob
 	 * maxPopulation überschritten wird.
 	 * 
-	 * @param species neue Spezies
+	 * @param species
+	 *           neue Spezies
 	 * @return Wahrheitswert, ob Spezies hinzugefügt werden konnte
 	 */
-	public boolean addSpecies(Species species)
-	{
+	public boolean addSpecies(Species species) {
 		if (!this.species.contains(species))
 			return this.species.add(species);
 
@@ -366,32 +351,26 @@ public class Pool {
 	 * Entfernt stagnierende Spezies und setzt den Index für danach existierende
 	 * neu.
 	 */
-	public void removeStaleSpecies()
-	{
+	public void removeStaleSpecies() {
 		List<Species> remove = new ArrayList<Species>();
 
-		for (Species spe : species)
-		{
+		for (Species spe : species) {
 			spe.getGenomes().sort(null);
 
-			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness())
-			{
+			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness()) {
 			spe.setTopFitness(spe.getGenomes().get(0).getFitness());
 			spe.setStaleness(0);
-			}
-			else
-			{
+			} else {
 			spe.setStaleness(spe.getStaleness() + 1);
 			}
 
 			/* Entferne nur stagnierende, die nicht die beste Species sind */
 			if (spe.getStaleness() > StaleSpecies
-				&& !(spe.getTopFitness() >= this.topFitness.get()))
-			{
-				remove.add(spe);
+				&& !(spe.getTopFitness() >= this.topFitness.get())) {
+			remove.add(spe);
 			}
 		}
-		
+
 		for (Species s : remove)
 			species.remove(s);
 	}
@@ -399,13 +378,11 @@ public class Pool {
 	/**
 	 * Entfernt bei vielen Species die schwächsten.
 	 */
-	public void removeWeakSpecies()
-	{
+	public void removeWeakSpecies() {
 		double total = getTotalAverageFitness();
 		List<Species> remove = new ArrayList<Species>();
 
-		for (Species spe : species)
-		{
+		for (Species spe : species) {
 			spe.getGenomes().sort(null);
 
 			if (spe.getGenomes().get(0).getFitness() > spe.getTopFitness())
@@ -414,7 +391,7 @@ public class Pool {
 			double strength = (spe.getAverageFitness() / total * Population);
 
 			if (strength < 1.)
-				remove.add(spe);
+			remove.add(spe);
 		}
 
 		for (Species s : remove)
@@ -425,14 +402,12 @@ public class Pool {
 	 * Sucht innerhalb der Population nach einer geeigneten Species oder
 	 * erstellt gegebenenfalls eine neue.
 	 * 
-	 * @param child einzuteilendes Netzwerk
+	 * @param child
+	 *           einzuteilendes Netzwerk
 	 */
-	public void addChildToSpecies(Genome child)
-	{
-		for (Species s : species)
-		{
-			if (s.isSameSpecies(child))
-			{
+	public void addChildToSpecies(Genome child) {
+		for (Species s : species) {
+			if (s.isSameSpecies(child)) {
 			s.addGenome(child);
 			return;
 			}
@@ -449,22 +424,22 @@ public class Pool {
 	 * aufgetreten ist und verteilt die gleiche, oder eine neue
 	 * Innovationsnummer
 	 * 
-	 * @param gen neue Verbindung
+	 * @param gen
+	 *           neue Verbindung
 	 */
-	public void defineHistoricalMarking(Gene gen)
-	{
+	public void defineHistoricalMarking(Gene gen) {
 		/* durchsuche alle neuen Verbindungen dieser Generation */
-		for (Gene g : generationMarkings)
-		{
-			if (gen.isEqual(g))
-			{
+		for (Gene g : generationMarkings) {
+			if (gen.isEqual(g)) {
 			gen.setHistoricalMarking(g.getHistoricalMarking());
 			return;
 			}
 		}
 
-		/* erstes Auftreten der Verbindung: neue Innovationsnummer und einfügen
-		 * in Liste der neuen Verbindungen dieser Generation. */
+		/*
+		 * erstes Auftreten der Verbindung: neue Innovationsnummer und einfügen
+		 * in Liste der neuen Verbindungen dieser Generation.
+		 */
 		gen.setHistoricalMarking(this.newInnovation());
 		this.addNewGene(gen);
 	}
@@ -472,8 +447,7 @@ public class Pool {
 	/**
 	 * Leitet eine neue Generation ein.
 	 */
-	public void newGeneration()
-	{
+	public void newGeneration() {
 		log.trace("ENTER " + this.getClass().getName() + ".newGeneration()");
 		Random rn = new Random();
 
@@ -487,8 +461,7 @@ public class Pool {
 
 		double total = getTotalAverageFitness();
 
-		for (Species s : species)
-		{
+		for (Species s : species) {
 			int breed = (int) (s.getAverageFitness() / total * Population) - 1;
 			for (int i = 0; i < breed; i++)
 			newGen.add(s.breedChild());
@@ -498,8 +471,7 @@ public class Pool {
 			s.removeWeakGenomes(true);
 
 		/* Fülle restliche Plätze auf */
-		while (newGen.size() + species.size() < Population)
-		{
+		while (newGen.size() + species.size() < Population) {
 			Species s = species.get(rn.nextInt(species.size()));
 			newGen.add(s.breedChild());
 		}
@@ -512,38 +484,45 @@ public class Pool {
 
 		log.trace(" EXIT " + this.getClass().getName() + ".newGeneration()");
 	}
-	
+
 	/**
 	 * Gibt Informationen zum besten Netzwerk im Log aus.
 	 */
-	public void printBestGenome()
-	{
+	public void printBestGenome() {
 		List<Genome> global = new ArrayList<Genome>();
-		
-		for(Species s : species)
-			for(Genome g : s.getGenomes())
-				global.add(g);
-		
+
+		for (Species s : species)
+			for (Genome g : s.getGenomes())
+			global.add(g);
+
 		global.sort(null);
-		
+
 		log.debug(global.get(0));
 	}
 
-	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
-	private double getTotalAverageFitness()
-	{
-		double sum = 0.;
+	public Genome getBestGenome() {
+		List<Genome> global = new ArrayList<Genome>();
 
 		for (Species s : species)
-		{
+			for (Genome g : s.getGenomes())
+			global.add(g);
+
+		global.sort(null);
+		return global.get(0);
+	}
+
+	/* Berechnet die Summe aller durchschnittlichen Bewertungen */
+	private double getTotalAverageFitness() {
+		double sum = 0.;
+
+		for (Species s : species) {
 			sum += s.calculateAverageFitness();
 		}
 
 		return sum;
 	}
 
-	public static Pool getInstance()
-	{
+	public static Pool getInstance() {
 		if (instance == null)
 			instance = new Pool();
 

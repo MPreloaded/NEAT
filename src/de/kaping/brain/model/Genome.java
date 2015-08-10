@@ -716,8 +716,8 @@ public class Genome implements Comparable<Genome> {
 		visited[list.indexOf(n)] = true;
 		// log.debug("# of incoming Connections: "+n.getIncoming().size());
 		for (Gene gene : n.getIncoming()) {
-			if(checkLoopNeuron(gene.getOrigin(), list, visited, finished))
-				return true;
+			if (checkLoopNeuron(gene.getOrigin(), list, visited, finished))
+			return true;
 		}
 
 		finished[list.indexOf(n)] = true;

@@ -42,23 +42,23 @@ public class MainApp extends Application {
 		this.neurons = myPool.initializePool(2, 1, Function.getInstance());
 		log.debug(
 			"Pool initialized with " + myPool.getSpecies().size() + " species");
-		
+
 		myPool.printBestGenome();
 	}
 
 	/**
 	 * Ruft newGeneration auf, nachdem der entsprechende Button geklickt wurde
-	 * (wird vom PoolOverviewController aufgerufen).
-	 * Nach Abschluss werden alle Netzwerke bewertet.
+	 * (wird vom PoolOverviewController aufgerufen). Nach Abschluss werden alle
+	 * Netzwerke bewertet.
 	 */
 	public void execNewGeneration() {
 		myPool.newGeneration();
 		myPool.evaluateGenomes(neurons);
 		for (Species s : myPool.getSpecies()) {
 			IntegerProperty i = s.countGenomesProperty();
-			log.debug("NewGen Count for "+s.getID()+": "+i.get());
+			log.debug("NewGen Count for " + s.getID() + ": " + i.get());
 		}
-		
+
 		myPool.printBestGenome();
 	}
 

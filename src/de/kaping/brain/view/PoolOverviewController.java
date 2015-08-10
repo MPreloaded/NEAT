@@ -132,8 +132,7 @@ public class PoolOverviewController {
 			idLabel.setText(String.valueOf(genome.getID()));
 			neuronsLabel.setText(String.valueOf(genome.getNeurons().size()));
 			genesLabel.setText(String.valueOf(genome.getGenes().size()));
-			fitnessCodeLabel
-				.setText(String.valueOf(genome.getFitness()));
+			fitnessCodeLabel.setText(String.valueOf(genome.getFitness()));
 			renderGenome(genome, renderCanvas);
 		}
 	}
@@ -214,14 +213,18 @@ public class PoolOverviewController {
 		for (Gene g : genome.getGenes()) {
 			if (g.getEnabled() && GridPos.containsKey(g.getOrigin())
 				&& GridPos.containsKey(g.getInto())) {
-				// Die Neuronen der Verbindung existieren
-				gc.setStroke(Color.BLACK);
-				gc.setLineWidth(2);
-				double x1 = (w / div)*GridPos.get(g.getOrigin()).getX()+Nwidth/2;
-				double y1 = (h / div)*GridPos.get(g.getOrigin()).getY()+Nheight/2;
-				double x2 = (w / div)*GridPos.get(g.getInto()).getX()+Nwidth/2;
-				double y2 = (h / div)*GridPos.get(g.getInto()).getY()+Nheight/2;
-				gc.strokeLine(x1, y1, x2, y2);
+			// Die Neuronen der Verbindung existieren
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(2);
+			double x1 = (w / div) * GridPos.get(g.getOrigin()).getX()
+					+ Nwidth / 2;
+			double y1 = (h / div) * GridPos.get(g.getOrigin()).getY()
+					+ Nheight / 2;
+			double x2 = (w / div) * GridPos.get(g.getInto()).getX()
+					+ Nwidth / 2;
+			double y2 = (h / div) * GridPos.get(g.getInto()).getY()
+					+ Nheight / 2;
+			gc.strokeLine(x1, y1, x2, y2);
 			}
 		}
 	}
@@ -244,11 +247,19 @@ public class PoolOverviewController {
 	}
 
 	/**
+	 * Called when user clicks Show best Genome Button
+	 */
+	@FXML
+	private void showBestGenome() {
+		showGenomeDetails(mainApp.myPool.getBestGenome());
+	}
+
+	/**
 	 * Called when the user clicks on the "new generation" button.
 	 */
 	@FXML
 	private void handleNewGeneration() {
 		mainApp.execNewGeneration();
 	}
-	
+
 }

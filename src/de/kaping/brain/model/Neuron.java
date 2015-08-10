@@ -118,6 +118,10 @@ public class Neuron {
 	 */
 	public boolean addIncoming(Gene inc)
 	{
+		//TODO: Durch Exception ersetzen
+		if(this.type == Type.INPUT || this.type == Type.BIAS)
+			return false;
+		
 		if (!incoming.contains(inc))
 			return incoming.add(inc);
 
@@ -243,7 +247,7 @@ public class Neuron {
 		{
 			if (!g.getOrigin().isCalculated() &&  g.getEnabled())
 			{
-				log.debug("wait for Neuron " + g.getOrigin().getInnovation());
+				log.debug("wait for "+g.getOrigin().getType()+"-Neuron " + g.getOrigin().getInnovation());
 				g.getOrigin().calculateValue();
 			}
 			

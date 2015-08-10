@@ -28,7 +28,7 @@ import javafx.collections.ObservableList;
  */
 public class Genome implements Comparable<Genome> {
 
-	//@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	private static final Logger log = LogManager.getLogger();
 	private static int maxID;
 
@@ -45,18 +45,17 @@ public class Genome implements Comparable<Genome> {
 	/**
 	 * Konstruktor
 	 */
-	public Genome()
-	{
+	public Genome() {
 		this(FXCollections.observableArrayList(), false);
 	}
 
 	/**
 	 * Konstruktor mit Liste von Anfangsneuronen.
 	 * 
-	 * @param neurons Anfangsneuronen
+	 * @param neurons
+	 *           Anfangsneuronen
 	 */
-	public Genome(ObservableList<Neuron> neurons)
-	{
+	public Genome(ObservableList<Neuron> neurons) {
 		this(neurons, false);
 	}
 
@@ -67,8 +66,7 @@ public class Genome implements Comparable<Genome> {
 	 * @param neurons
 	 * @param basic
 	 */
-	public Genome(ObservableList<Neuron> neurons, boolean basic)
-	{
+	public Genome(ObservableList<Neuron> neurons, boolean basic) {
 		super();
 		this.ID = new SimpleIntegerProperty(maxID + 1);
 		maxID++;
@@ -103,23 +101,21 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return
 	 */
-	public int getID()
-	{
+	public int getID() {
 		return this.ID.get();
 	}
 
-	public IntegerProperty getIDProperty()
-	{
+	public IntegerProperty getIDProperty() {
 		return this.ID;
 	}
 
 	/**
 	 * Setzt die aktuelle Bewertung des Netzwerkes neu.
 	 * 
-	 * @param fitness neue Bewertung
+	 * @param fitness
+	 *           neue Bewertung
 	 */
-	public void setFitness(double fitness)
-	{
+	public void setFitness(double fitness) {
 		this.fitness.set(fitness);
 	}
 
@@ -128,18 +124,17 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return aktuelle Bewertung
 	 */
-	public double getFitness()
-	{
+	public double getFitness() {
 		return this.fitness.get();
 	}
 
 	/**
 	 * Setzt die tatsächliche Bewertung des Netzwerkes neu.
 	 * 
-	 * @param fitness neue Bewertung
+	 * @param fitness
+	 *           neue Bewertung
 	 */
-	public void setAdjustedFitness(double fitness)
-	{
+	public void setAdjustedFitness(double fitness) {
 		this.adjustedFitness.set(fitness);
 	}
 
@@ -148,8 +143,7 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return tatsächliche Bewertung
 	 */
-	public double getAdjustedFitness()
-	{
+	public double getAdjustedFitness() {
 		return this.adjustedFitness.get();
 	}
 
@@ -157,10 +151,10 @@ public class Genome implements Comparable<Genome> {
 	 * Setzt eine Liste von Neuronen des Netzwerkes. Praktisch, falls ein
 	 * Netzwerk kopiert werden soll.
 	 * 
-	 * @param neurons Liste von Neuronen
+	 * @param neurons
+	 *           Liste von Neuronen
 	 */
-	public void setNeurons(ObservableList<Neuron> neurons)
-	{
+	public void setNeurons(ObservableList<Neuron> neurons) {
 		this.neurons = neurons;
 	}
 
@@ -169,18 +163,17 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return Liste aller Neuronen
 	 */
-	public ObservableList<Neuron> getNeurons()
-	{
+	public ObservableList<Neuron> getNeurons() {
 		return this.neurons;
 	}
 
 	/**
 	 * Setzt eine Liste von Verbindungen des Netzwerkes.
 	 * 
-	 * @param genes Liste von Verbindungen
+	 * @param genes
+	 *           Liste von Verbindungen
 	 */
-	public void setGenes(ObservableList<Gene> genes)
-	{
+	public void setGenes(ObservableList<Gene> genes) {
 		this.genes = genes;
 	}
 
@@ -189,18 +182,17 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return Liste aller Verbindungen
 	 */
-	public ObservableList<Gene> getGenes()
-	{
+	public ObservableList<Gene> getGenes() {
 		return this.genes;
 	}
 
 	/**
 	 * Setzt die Mutationsraten für dieses Netzwerk neu.
 	 * 
-	 * @param rates neue Mutationsraten
+	 * @param rates
+	 *           neue Mutationsraten
 	 */
-	public void setRates(DoubleProperty[] rates)
-	{
+	public void setRates(DoubleProperty[] rates) {
 		if (rates.length == 6)
 			this.rates = rates;
 	}
@@ -210,8 +202,7 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return Mutationsraten
 	 */
-	public DoubleProperty[] getRates()
-	{
+	public DoubleProperty[] getRates() {
 		return rates;
 	}
 
@@ -219,16 +210,16 @@ public class Genome implements Comparable<Genome> {
 	 * Fügt eine einzelne Verbindung zum Netzwerk hinzu, wenn dadurch kein
 	 * Zyklus entsteht.
 	 * 
-	 * @param gene neue Verbindung
+	 * @param gene
+	 *           neue Verbindung
 	 * @return Wahrheitswert, ob Verbindung hinzugefügt werden konnte
 	 */
-	public boolean addGene(Gene gene)
-	{
+	public boolean addGene(Gene gene) {
 		if (!genes.contains(gene))
 			if (neurons.contains(gene.getInto())
 				&& neurons.contains(gene.getOrigin()))
-				if (!this.checkForLoop(gene))
-					return genes.add(gene);
+			if (!this.checkForLoop(gene))
+				return genes.add(gene);
 
 		return false;
 	}
@@ -236,11 +227,11 @@ public class Genome implements Comparable<Genome> {
 	/**
 	 * Fügt ein neues Neuron zum Netzwerk hinzu.
 	 * 
-	 * @param neuron neues Neuron
+	 * @param neuron
+	 *           neues Neuron
 	 * @return Wahrheitswert, ob Neuron hinzugefügt werden konnte
 	 */
-	public boolean addNeuron(Neuron neuron)
-	{
+	public boolean addNeuron(Neuron neuron) {
 		if (!neurons.contains(neuron))
 			return neurons.add(neuron);
 
@@ -252,8 +243,7 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @return kopiertes Objekt
 	 */
-	public Genome copyGenome()
-	{
+	public Genome copyGenome() {
 		Genome copy = new Genome();
 
 		ObservableList<Neuron> neurons = FXCollections.observableArrayList();
@@ -281,11 +271,11 @@ public class Genome implements Comparable<Genome> {
 	 * Kombiniert dieses Netzwerk mit einem zweiten, um ein neues Netzwerk zu
 	 * erzeugen.
 	 * 
-	 * @param gen2 zweites Netzwerk zur Kombination
+	 * @param gen2
+	 *           zweites Netzwerk zur Kombination
 	 * @return neu generiertes Netzwerk
 	 */
-	public Genome matchGenomes(Genome gen2)
-	{
+	public Genome matchGenomes(Genome gen2) {
 		Genome child = new Genome();
 		/* Bestimmung besseres und schlechteres Netzwerk */
 		Genome h = (this.fitness.get() > gen2.getFitness()) ? this : gen2;
@@ -294,8 +284,7 @@ public class Genome implements Comparable<Genome> {
 		int size1 = h.genes.size();
 		int size2 = l.getGenes().size();
 
-		if (size1 == 0 && size2 == 0)
-		{
+		if (size1 == 0 && size2 == 0) {
 			child = h.copyGenome();
 			return child;
 		}
@@ -315,15 +304,15 @@ public class Genome implements Comparable<Genome> {
 		for (Gene g : l.getGenes())
 			inn[g.getHistoricalMarking()] = g;
 
-		/* Füge Verbindungen aus beiden Netzwerken dem neuen hinzu. Disjoint-
-		 * und Excess-Verbindungen nur vom besseren */
+		/*
+		 * Füge Verbindungen aus beiden Netzwerken dem neuen hinzu. Disjoint-
+		 * und Excess-Verbindungen nur vom besseren
+		 */
 		for (Gene g : h.getGenes())
 			if (inn[g.getHistoricalMarking()] != null && Math.random() < 0.5
-				&& inn[g.getHistoricalMarking()].getEnabled())
-			{
+				&& inn[g.getHistoricalMarking()].getEnabled()) {
 			child.addGene(inn[g.getHistoricalMarking()].copyGene());
-			}
-			else
+			} else
 			child.addGene(g.copyGene());
 
 		/* Fügt alle notwendigen Neuronen hinzu */
@@ -331,8 +320,7 @@ public class Genome implements Comparable<Genome> {
 			child.addNeuron(n);
 
 		/* Fügt alle zusätzlichen Neuronen hinzu */
-		for (Gene g : child.getGenes())
-		{
+		for (Gene g : child.getGenes()) {
 			child.addNeuron(g.getOrigin());
 			child.addNeuron(g.getInto());
 		}
@@ -360,8 +348,7 @@ public class Genome implements Comparable<Genome> {
 	 * <li>Enablemutation (Aktivieren einer inaktiven Verbindung)</li>
 	 * </ul>
 	 */
-	public void mutateGenome()
-	{
+	public void mutateGenome() {
 		/* erst Raten modifizieren... */
 		this.alterRates();
 
@@ -369,16 +356,12 @@ public class Genome implements Comparable<Genome> {
 		if (Math.random() < rates[0].get())
 			this.mutateConnections();
 
-		for (int i = 1; i < 6; i++)
-		{
+		for (int i = 1; i < 6; i++) {
 			double rate = rates[i].get();
 
-			while (rate > 0.)
-			{
-			if (Math.random() < rate)
-			{
-				switch (i)
-				{
+			while (rate > 0.) {
+			if (Math.random() < rate) {
+				switch (i) {
 				case 1:
 					mutateLink(false);
 					break;
@@ -410,16 +393,14 @@ public class Genome implements Comparable<Genome> {
 	 * Verwendet hierbei die aktuell eingegebenen Werte innerhalb der Input
 	 * Neuronen.
 	 */
-	public void simulateGenome()
-	{
-		log.debug("Genome: "+ this.ID);
+	public void simulateGenome() {
+		log.debug("Genome: " + this.ID);
 		/* Zurücksetzen und erstellen der IncomingList aller Neuronen */
 		for (Neuron n : neurons)
 			n.resetIncoming();
 
 		for (Gene g : genes)
-			if (g.getEnabled())
-			{
+			if (g.getEnabled()) {
 			Neuron into = g.getInto();
 			into.addIncoming(g);
 			}
@@ -435,11 +416,11 @@ public class Genome implements Comparable<Genome> {
 	 * Berechnet einen Wert, in wieweit sich zwei Netzwerke in ihrer Struktur
 	 * unterscheiden.
 	 * 
-	 * @param gen2 zweites Netzwerk
+	 * @param gen2
+	 *           zweites Netzwerk
 	 * @return Strukturunterscheidungsgrad
 	 */
-	public double deltaStructure(Genome gen2)
-	{
+	public double deltaStructure(Genome gen2) {
 		int structuralDifferences = 0;
 		int size1 = this.genes.size();
 		int size2 = gen2.getGenes().size();
@@ -469,11 +450,11 @@ public class Genome implements Comparable<Genome> {
 	 * Berechnet einen Wert, in wieweit sich bei übereinstimmenden Verbindungen
 	 * zwischen zwei Netzwerken die Gewichtungen im Durchschnitt unterscheiden.
 	 * 
-	 * @param gen2 zweites Netzwerk
+	 * @param gen2
+	 *           zweites Netzwerk
 	 * @return durchschnittlicher Gewichtungsunterschied
 	 */
-	public double deltaWeight(Genome gen2)
-	{
+	public double deltaWeight(Genome gen2) {
 		double deltaWeight = 0.;
 		int n = 0;
 
@@ -486,8 +467,7 @@ public class Genome implements Comparable<Genome> {
 			inn[g.getHistoricalMarking()] = g;
 
 		for (Gene g : this.genes)
-			if (inn[g.getHistoricalMarking()] != null)
-			{
+			if (inn[g.getHistoricalMarking()] != null) {
 			Gene g2 = inn[g.getHistoricalMarking()];
 			deltaWeight += Math.abs(g.getWeight() - g2.getWeight());
 			n++;
@@ -499,14 +479,14 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/* Änderung aller Gewichtungen */
-	private void mutateConnections()
-	{
-		/* TODO: Vielleicht Hard Coding entfernen und einen Parameter einführen */
+	private void mutateConnections() {
+		/*
+		 * TODO: Vielleicht Hard Coding entfernen und einen Parameter einführen
+		 */
 		double step = 0.1;
 		double lowChange = 0.9;
 
-		for (int i = 0; i < genes.size(); i++)
-		{
+		for (int i = 0; i < genes.size(); i++) {
 			Gene gene = genes.get(i);
 			if (Math.random() < lowChange)
 			gene.setWeight(gene.getWeight() + Math.random() * 2 * step - step);
@@ -516,8 +496,7 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/* Hinzufügen einer neuen Verbindung */
-	private void mutateLink(boolean bias)
-	{
+	private void mutateLink(boolean bias) {
 		Random rn = new Random();
 		Neuron neuron1 = this.neurons.get(rn.nextInt(this.neurons.size()));
 		Neuron neuron2 = this.neurons.get(rn.nextInt(this.neurons.size()));
@@ -531,22 +510,23 @@ public class Genome implements Comparable<Genome> {
 
 		Neuron origin, into;
 
-		/* wenn beide zufälligen Neuronen Input oder Output sind, dann Abbruch */
+		/*
+		 * wenn beide zufälligen Neuronen Input oder Output sind, dann Abbruch
+		 */
 		if ((t1 == Type.INPUT || t1 == Type.BIAS)
 			&& (t2 == Type.INPUT || t2 == Type.BIAS)
 			|| (t1 == Type.OUTPUT && t2 == Type.OUTPUT))
 			return;
 
-		/* sollte ein Neuron Input sein, so soll es der Origin werden, ein
-		 * Outputneuron sollte das Ziel werden */
+		/*
+		 * sollte ein Neuron Input sein, so soll es der Origin werden, ein
+		 * Outputneuron sollte das Ziel werden
+		 */
 		if (neuron2.getType() == Type.INPUT || neuron1.getType() == Type.OUTPUT
-			|| neuron2.getType() == Type.BIAS)
-		{
+			|| neuron2.getType() == Type.BIAS) {
 			origin = neuron2;
 			into = neuron1;
-		}
-		else
-		{
+		} else {
 			origin = neuron1;
 			into = neuron2;
 		}
@@ -570,16 +550,14 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/* Trennen einer Verbindung durch Einfügen eines Neurons */
-	private void mutateNode()
-	{
+	private void mutateNode() {
 		Random rn = new Random();
 		Gene gene = genes.get(rn.nextInt(genes.size()));
 		Pool pool = Pool.getInstance();
 		boolean neuronExists = false;
 
 		/* bei inaktiver Verbindung wird die Mutierung abgebrochen */
-		if (gene.getEnabled() == false)
-		{
+		if (gene.getEnabled() == false) {
 			return;
 		}
 
@@ -587,15 +565,13 @@ public class Genome implements Comparable<Genome> {
 
 		Neuron newNeuron = null;
 		for (Neuron n : pool.getNewNeurons())
-			if (n.getInnovation() == gene.getHistoricalMarking())
-			{
+			if (n.getInnovation() == gene.getHistoricalMarking()) {
 			newNeuron = n;
 			neuronExists = true;
 			break;
 			}
 
-		if (!neuronExists)
-		{
+		if (!neuronExists) {
 			newNeuron = new Neuron(Type.HIDDEN, gene.getHistoricalMarking());
 			pool.addNewNeuron(newNeuron);
 		}
@@ -612,8 +588,7 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/* (De-)Aktivieren einer (in-)aktiven Verbindung */
-	private void mutateEnable(boolean enable)
-	{
+	private void mutateEnable(boolean enable) {
 		Random rn = new Random();
 		List<Gene> candidates = new ArrayList<Gene>();
 
@@ -630,34 +605,34 @@ public class Genome implements Comparable<Genome> {
 	}
 
 	/* Ändern der Raten zur Entwicklung verschiedenster Netzwerke */
-	private void alterRates()
-	{
-		/* 0.95 * 1.05263 ~= 1 TODO: Vielleicht Hardcoding entfernen und einen
-		 * Parameter einführen */
+	private void alterRates() {
+		/*
+		 * 0.95 * 1.05263 ~= 1 TODO: Vielleicht Hardcoding entfernen und einen
+		 * Parameter einführen
+		 */
 		for (int i = 0; i < 6; i++)
 			if (Math.random() < 0.5)
-				rates[i].set(rates[i].get() * 0.95);
+			rates[i].set(rates[i].get() * 0.95);
 			else
-				rates[i].set(rates[i].get() * 1.05263);
+			rates[i].set(rates[i].get() * 1.05263);
 	}
 
 	/* Suchen des Biasneurons innerhalb des Netzwerkes */
-	private Neuron getBias()
-	{
+	private Neuron getBias() {
 		Neuron bias = null;
 
-		/* Es sollte nur ein Biasneuron vorhanden sein. Sollten mehrere
-		 * existieren, so wird das erste ausgewählt. */
+		/*
+		 * Es sollte nur ein Biasneuron vorhanden sein. Sollten mehrere
+		 * existieren, so wird das erste ausgewählt.
+		 */
 		for (int i = 0; i < neurons.size(); i++)
-			if (neurons.get(i).getType() == Type.BIAS)
-			{
-				bias = neurons.get(i);
-				break;
+			if (neurons.get(i).getType() == Type.BIAS) {
+			bias = neurons.get(i);
+			break;
 			}
 
 		/* Eigentlich nicht nötig, zur Sicherheit */
-		if (bias == null)
-		{
+		if (bias == null) {
 			bias = new Neuron(Type.BIAS);
 			this.addNeuron(bias);
 		}
@@ -665,78 +640,88 @@ public class Genome implements Comparable<Genome> {
 		return bias;
 	}
 
-	/* Kontrolliert, ob durch das Hinzufügen dieser Verbindung ein Zyklus 
-	 * entsteht */
-	private boolean checkForLoop(Gene g)
-	{
-		/* Wenn nicht zwei Hiddenneuronen verbunden werden, so ist kein Zyklus 
-		 * möglich */
+	/*
+	 * Kontrolliert, ob durch das Hinzufügen dieser Verbindung ein Zyklus
+	 * entsteht
+	 */
+	private boolean checkForLoop(Gene g) {
+		/*
+		 * Wenn nicht zwei Hiddenneuronen verbunden werden, so ist kein Zyklus
+		 * möglich
+		 */
+		log.trace("ENTER checkForLoop() - " + this.getID());
 		if (g.getOrigin().getType() != Type.HIDDEN
-				|| g.getInto().getType() != Type.HIDDEN)
+			|| g.getInto().getType() != Type.HIDDEN) {
+			log.trace("EXIT checkForLoop() - Not both Neurons are HIDDEN");
 			return false;
-		
+		}
+
 		List<Gene> possibleLoopGenes = new ArrayList<Gene>();
-		List<Neuron> loopNeurons     = new ArrayList<Neuron>();
+		List<Neuron> loopNeurons = new ArrayList<Neuron>();
 
 		/* Alle möglichen Zyklusverbindungen in einer Liste zusammenfassen */
 		for (Gene gene : genes)
 			if (gene.getOrigin().getType() == Type.HIDDEN
 				&& gene.getInto().getType() == Type.HIDDEN)
-				possibleLoopGenes.add(gene);
+			possibleLoopGenes.add(gene);
 		possibleLoopGenes.add(g);
 
 		/* Erstellen einer Liste aller verbundenen Hiddenneurons */
-		for (Gene gene : possibleLoopGenes)
-		{
-			if (!loopNeurons.contains(gene.getOrigin()))
-			{
-				loopNeurons.add(gene.getOrigin());
-				gene.getOrigin().resetIncoming();
+		for (Gene gene : possibleLoopGenes) {
+			if (!loopNeurons.contains(gene.getOrigin())) {
+			loopNeurons.add(gene.getOrigin());
+			gene.getOrigin().resetIncoming();
 			}
-			if (!loopNeurons.contains(gene.getInto()))
-			{
-				loopNeurons.add(gene.getInto());
-				gene.getInto().resetIncoming();
+			if (!loopNeurons.contains(gene.getInto())) {
+			loopNeurons.add(gene.getInto());
+			gene.getInto().resetIncoming();
 			}
 			gene.getInto().addIncoming(gene);
 		}
-		
+
 		/* Zykluserkennung mittels Tiefensuche */
-		for (Neuron neuron : loopNeurons)
-		{
-			boolean[] visited  = new boolean[loopNeurons.size()];
+		for (Neuron neuron : loopNeurons) {
+			boolean[] visited = new boolean[loopNeurons.size()];
 			boolean[] finished = new boolean[loopNeurons.size()];
-			
-			boolean cycl = checkLoopNeuron(neuron, loopNeurons, visited, finished);
-			
+
+			boolean cycl = checkLoopNeuron(neuron, loopNeurons, visited,
+				finished);
+
 			/* Zyklus erkannt */
-			if(cycl)
-				return true;
+			if (cycl) {
+			log.trace("EXIT checkForLoop() - Zyklus erkannt");
+			return true;
+			}
 		}
-	
+		log.trace("EXIT checkForLoop() - End");
 		return false;
 	}
-	
-	/* Benötigte Untermethode für checkForLoop 
-	 * Wird benutzt, um ein Neuron zu kontrollieren */
-	private boolean checkLoopNeuron(Neuron n, List<Neuron> list, 
-			boolean[] visited, boolean[] finished)
-	{
+
+	/*
+	 * Benötigte Untermethode für checkForLoop Wird benutzt, um ein Neuron zu
+	 * kontrollieren
+	 */
+	private boolean checkLoopNeuron(Neuron n, List<Neuron> list,
+			boolean[] visited, boolean[] finished) {
 		if (finished[list.indexOf(n)])
 			return false;
-		
-		/* Wenn schonmal besucht aber nicht beendet, dann kam ein Anruf von diesem 
-		 * Neuron: Zyklus!! */
+
+		/*
+		 * Wenn schonmal besucht aber nicht beendet, dann kam ein Anruf von
+		 * diesem Neuron: Zyklus!!
+		 */
 		if (visited[list.indexOf(n)])
-			return true; 
-		
+			return true;
+
 		visited[list.indexOf(n)] = true;
-		
-		for (Gene gene : n.getIncoming())
-			checkLoopNeuron(gene.getOrigin(), list, visited, finished);
-		
+		// log.debug("# of incoming Connections: "+n.getIncoming().size());
+		for (Gene gene : n.getIncoming()) {
+			if(checkLoopNeuron(gene.getOrigin(), list, visited, finished))
+				return true;
+		}
+
 		finished[list.indexOf(n)] = true;
-		
+
 		return false;
 	}
 
@@ -747,8 +732,7 @@ public class Genome implements Comparable<Genome> {
 	 * schlechter und 0 wenn identisch. Somit wird sicher gestellt, dass die
 	 * höchste Fitness an erster Stelle steht.
 	 */
-	public int compareTo(Genome o)
-	{
+	public int compareTo(Genome o) {
 		/* TODO: fitness oder adjustedFitness ? */
 		double deltaFitness = this.fitness.get() - o.getFitness();
 
@@ -759,24 +743,23 @@ public class Genome implements Comparable<Genome> {
 		else
 			return 0;
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String genome = new String();
 		String nline = "\n";
-		
+
 		genes.sort(null);
-		
-		genome = nline + "Netzwerk " + this.ID.intValue() + ", Fitness: " + 
-				String.format("%.3f", this.fitness.doubleValue());
-		
-		for(Neuron n : neurons)
+
+		genome = nline + "Netzwerk " + this.ID.intValue() + ", Fitness: "
+			+ String.format("%.3f", this.fitness.doubleValue());
+
+		for (Neuron n : neurons)
 			genome = genome + nline + n;
-		
-		for(Gene g : genes)
+
+		for (Gene g : genes)
 			genome = genome + nline + g;
-		
+
 		genome = genome + nline;
 		return genome;
 	}

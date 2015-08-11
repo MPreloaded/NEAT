@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.kaping.brain.view.BrainOverviewController">
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="Infos">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="14.0" layoutY="31.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="123.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="77.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="ID" />
+                              <Label text="# Neurons" GridPane.rowIndex="1" />
+                              <Label text="# Genes/Genomes" GridPane.rowIndex="2" />
+                              <Label text="Avg. Fitness" GridPane.rowIndex="3" />
+                              <Label text="Best/Current Fitness" GridPane.rowIndex="4" />
+                              <Label text="Avg. Staleness" GridPane.rowIndex="5" />
+                              <Label text="Best/Current Staleness" GridPane.rowIndex="6" />
+                              <Label fx:id="idLabel" text="Label" GridPane.columnIndex="1" />
+                              <Label fx:id="neuronsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="genesLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label fx:id="avgFitnessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label fx:id="fitnessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label fx:id="avgStalenessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label fx:id="stalenessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                           </children>
+                        </GridPane>
+                        <Label layoutX="14.0" layoutY="14.0" text="Details: " />
+                        <Label fx:id="headLabel" layoutX="56.0" layoutY="14.0" text="Label" />
+                        <Canvas fx:id="infoCanvas" height="454.0" layoutX="214.0" layoutY="14.0" width="454.0" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Pool">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="poolTable" layoutX="6.0" layoutY="7.0" prefHeight="471.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="speciesColumn" prefWidth="110.0" text="Species ID" />
+                            <TableColumn fx:id="genomeColumn" prefWidth="77.0" text="# Genomes" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="genomeTable" layoutX="191.0" prefHeight="471.0" prefWidth="113.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="191.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="genomeDetailColumn" prefWidth="107.0" text="Genome ID" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="bestCanvas" height="200.0" layoutX="7.0" width="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0" />
+            <Label layoutX="891.0" layoutY="144.0" text="Generation: " />
+            <Label fx:id="generationLabel" layoutX="956.0" layoutY="144.0" text="Label" />
+            <Button layoutX="891.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleNewGeneration" prefHeight="25.0" prefWidth="95.0" text="Next Gen" />
+            <GridPane layoutX="200.0" prefHeight="84.0" prefWidth="200.0" AnchorPane.topAnchor="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="86.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="114.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="ID" GridPane.rowIndex="1" />
+                  <Label text="# Neurons" GridPane.rowIndex="2" />
+                  <Label text="# Genes" GridPane.rowIndex="3" />
+                  <Label text="Fitness" GridPane.rowIndex="4" />
+                  <Label GridPane.rowIndex="5" />
+                  <Label fx:id="bestIDLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="bestNeuronsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="bestGenesLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="bestFitnessLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label fx:id="bestStalenessLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label prefHeight="17.0" prefWidth="86.0" text="Best Genome" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <Line endX="900.0" layoutX="333.0" layoutY="102.0" startX="-100.0" AnchorPane.bottomAnchor="102.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

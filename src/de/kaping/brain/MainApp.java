@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Pool;
 import de.kaping.brain.model.Species;
+import de.kaping.brain.view.BrainOverviewController;
 import de.kaping.brain.view.PoolOverviewController;
 import de.kaping.usage.xor.Function;
 import javafx.application.Application;
@@ -94,14 +95,14 @@ public class MainApp extends Application {
 			// Load pool overview.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(
-				MainApp.class.getResource("view/PoolOverview.fxml"));
-			AnchorPane personOverview = (AnchorPane) loader.load();
+				MainApp.class.getResource("view/BrainOverview.fxml"));
+			BorderPane brainOverview = (BorderPane) loader.load();
 
 			// Set pool overview into the center of root layout.
-			rootLayout.setCenter(personOverview);
+			rootLayout.setCenter(brainOverview);
 
 			// Give the controller access to the main app.
-			PoolOverviewController controller = loader.getController();
+			BrainOverviewController controller = loader.getController();
 			controller.setMainApp(this);
 
 		} catch (IOException e) {

@@ -7,6 +7,7 @@ import java.util.Map;
 import de.kaping.brain.MainApp;
 import de.kaping.brain.model.Gene;
 import de.kaping.brain.model.Genome;
+import de.kaping.brain.model.GenomeHistory;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Species;
 import javafx.collections.ObservableList;
@@ -14,13 +15,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 
 public class BrainOverviewController {
 	// Species Table:
@@ -54,6 +54,10 @@ public class BrainOverviewController {
 	@FXML
 	private Label stalenessLabel; // Best Staleness in Spezies / Current
 									// Staleness in Genome
+	@FXML
+	private LineChart<int[], double[]> fitHistoryChart; // Canvas zum Anzeigen
+														// des Verlaufs der
+														// Fitness für das Genom
 	@FXML
 	private Canvas infoCanvas; // Canvas im Infotab
 	@FXML
@@ -144,10 +148,12 @@ public class BrainOverviewController {
 	}
 
 	/**
-	 * Zeigt Details zum ausgewählten Genome an
+	 * Zeigt Details zum ausgewählten Genome an sowie die History, falls
+	 * vorhanden
 	 * 
 	 * @param genome
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void showGenomeDetails(Genome genome) {
 		if (genome != null) {
 			// Labels mit Daten füllen, Genome zur Auswahl anzeigen
@@ -157,6 +163,21 @@ public class BrainOverviewController {
 			genesLabel.setText(String.valueOf(genome.getGenes().size()));
 			fitnessLabel.setText(String.valueOf(genome.getFitness()));
 			renderGenome(genome, infoCanvas);
+
+			// History anzeigen
+			fitHistoryChart.getData().clear();
+			XYChart.Series fitSeries = new XYChart.Series<>();
+			fitSeries.setName("Fitness");
+			int c = 0;
+			double[] histArray = GenomeHistory.INSTANCE
+				.getFitnessHistory(genome);
+			if (histArray != null) {
+			for (Double d : histArray) {
+				fitSeries.getData().add(new XYChart.Data("G" + (c+1), d));
+				c++;
+			}
+			fitHistoryChart.getData().add(fitSeries);
+			}
 		}
 	}
 
@@ -246,18 +267,17 @@ public class BrainOverviewController {
 			double y2 = (h / div) * GridPos.get(g.getInto()).getY()
 					+ Nheight / 2;
 			double dx = x2 - x1, dy = y2 - y1;
-         double angle = Math.toDegrees(Math.atan2(dy, dx));
-         //angle = (angle > 0 ? angle : (2*Math.PI + angle)) * 360 / (2*Math.PI);
-         int len = (int) Math.sqrt(dx*dx + dy*dy);
-         len=9;
-         double wingsAngleDeg = 30; // wingspan of arrow
-         double radB = Math.toRadians(angle + wingsAngleDeg+180);
-         double radC = Math.toRadians(angle - wingsAngleDeg+180);
-         //Line
+			double angle = Math.toDegrees(Math.atan2(dy, dx));
+			int len = (int) Math.sqrt(dx * dx + dy * dy);
+			len = 9;
+			double wingsAngleDeg = 30; // wingspan of arrow
+			double radB = Math.toRadians(angle + wingsAngleDeg + 180);
+			double radC = Math.toRadians(angle - wingsAngleDeg + 180);
+			// Line
 			gc.strokeLine(x1, y1, x2, y2);
-			//ArrowHead
+			// ArrowHead
 			gc.beginPath();
-			gc.moveTo(len* Math.cos(radB)+x2, len*Math.sin(radB)+y2);
+			gc.moveTo(len * Math.cos(radB) + x2, len * Math.sin(radB) + y2);
 			gc.lineTo(x2, y2);
 			gc.lineTo(len * Math.cos(radC) + x2, len * Math.sin(radC) + y2);
 			gc.stroke();
@@ -286,7 +306,6 @@ public class BrainOverviewController {
 	/**
 	 * Zeigt das beste Genome im unteren Bereich der GUI an
 	 */
-	@FXML
 	private void showBestGenome() {
 		Genome g = mainApp.myPool.getBestGenome();
 		renderGenome(g, bestCanvas);

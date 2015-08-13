@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.kaping.brain.model.Genome;
+import de.kaping.brain.model.GenomeHistory;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Pool;
 import de.kaping.brain.model.Species;
@@ -28,6 +30,7 @@ public class MainApp extends Application {
 	private ObservableList<Neuron> neurons;
 
 	public Pool myPool = Pool.getInstance();
+	public GenomeHistory myHistory = GenomeHistory.INSTANCE; 
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -48,11 +51,27 @@ public class MainApp extends Application {
 	}
 
 	/**
+	 * Speicher die History für Alle Genome
+	 */
+	public void saveHistory(){
+		for (Species s : myPool.getSpecies()) {
+			for (Genome g : s.getGenomes()){
+				myHistory.addGeneration(g);
+			}
+		}
+	}
+	
+	
+	/**
 	 * Ruft newGeneration auf, nachdem der entsprechende Button geklickt wurde
 	 * (wird vom PoolOverviewController aufgerufen). Nach Abschluss werden alle
 	 * Netzwerke bewertet.
+	 * Speichert ausserdem die History der Genomes
 	 */
 	public void execNewGeneration() {
+		// History speichern, bevor newGeneration aufgerufen wird
+		saveHistory();
+		
 		myPool.newGeneration();
 		myPool.evaluateGenomes(neurons);
 		for (Species s : myPool.getSpecies()) {

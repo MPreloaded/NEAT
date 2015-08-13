@@ -110,7 +110,7 @@ public class Pool {
 			for (Neuron n : neurons)
 			ownNeurons.add(n);
 
-			Genome genome = new Genome(ownNeurons, true);
+			Genome genome = new Genome(ownNeurons, true, null);
 			this.addChildToSpecies(genome);
 		}
 

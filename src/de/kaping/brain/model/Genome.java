@@ -46,7 +46,17 @@ public class Genome implements Comparable<Genome> {
 	 * Konstruktor
 	 */
 	public Genome() {
-		this(FXCollections.observableArrayList(), false);
+		this(FXCollections.observableArrayList(), false, null);
+	}
+
+	/**
+	 * Konstruktor, welcher von matchGenome aufgerufen wird, damit die ID des
+	 * alten Genomes in das neue Überführt wird (Wichtig für History)
+	 * 
+	 * @param ID
+	 */
+	public Genome(IntegerProperty ID) {
+		this(FXCollections.observableArrayList(), false, ID);
 	}
 
 	/**
@@ -54,9 +64,11 @@ public class Genome implements Comparable<Genome> {
 	 * 
 	 * @param neurons
 	 *           Anfangsneuronen
+	 *        ID
+	 *        	ID des Genomes (null, wenn dieses Genome nicht aus einem anderen hervorgeht)
 	 */
-	public Genome(ObservableList<Neuron> neurons) {
-		this(neurons, false);
+	public Genome(ObservableList<Neuron> neurons, IntegerProperty ID) {
+		this(neurons, false, ID);
 	}
 
 	/**
@@ -66,10 +78,14 @@ public class Genome implements Comparable<Genome> {
 	 * @param neurons
 	 * @param basic
 	 */
-	public Genome(ObservableList<Neuron> neurons, boolean basic) {
+	public Genome(ObservableList<Neuron> neurons, boolean basic, IntegerProperty ID) {
 		super();
+		if(ID == null){
 		this.ID = new SimpleIntegerProperty(maxID + 1);
 		maxID++;
+		}else{
+			this.ID = ID;
+		}
 
 		/* TODO: Entfernen des Hardcoden */
 		this.rates = new SimpleDoubleProperty[6];
@@ -269,14 +285,14 @@ public class Genome implements Comparable<Genome> {
 
 	/**
 	 * Kombiniert dieses Netzwerk mit einem zweiten, um ein neues Netzwerk zu
-	 * erzeugen.
+	 * erzeugen. Die ID wird dabei übernommen
 	 * 
 	 * @param gen2
 	 *           zweites Netzwerk zur Kombination
 	 * @return neu generiertes Netzwerk
 	 */
 	public Genome matchGenomes(Genome gen2) {
-		Genome child = new Genome();
+		Genome child = new Genome(this.ID);
 		/* Bestimmung besseres und schlechteres Netzwerk */
 		Genome h = (this.fitness.get() > gen2.getFitness()) ? this : gen2;
 		Genome l = (this.fitness.get() > gen2.getFitness()) ? gen2 : this;

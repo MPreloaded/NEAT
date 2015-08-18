@@ -7,9 +7,9 @@ import java.util.Map;
 import de.kaping.brain.MainApp;
 import de.kaping.brain.model.Gene;
 import de.kaping.brain.model.Genome;
-import de.kaping.brain.model.GenomeHistory;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Species;
+import de.kaping.brain.model.SpeciesHistory;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
@@ -125,6 +125,7 @@ public class BrainOverviewController {
 	 * @param species,
 	 *           welche die Daten bereitstellt
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void showSpeciesDetails(Species species) {
 		if (species != null) {
 			// Labels mit Daten füllen, Genome zur Auswahl anzeigen
@@ -135,6 +136,19 @@ public class BrainOverviewController {
 			fitnessLabel.setText(String.valueOf(species.getAverageFitness()));
 			stalenessLabel.setText(String.valueOf(species.getStaleness()));
 			genomeTable.setItems(species.getGenomes());
+			// History anzeigen
+			fitHistoryChart.getData().clear();
+			XYChart.Series fitSeries = new XYChart.Series<>();
+			fitSeries.setName("Avg. Fitness");
+			int c = 0;
+			double[] histArray = SpeciesHistory.INSTANCE.getHistory(species);
+			if (histArray != null) {
+			for (Double d : histArray) {
+				fitSeries.getData().add(new XYChart.Data("G" + (c + 1), d));
+				c++;
+			}
+			fitHistoryChart.getData().add(fitSeries);
+			}
 		} else {
 			// Labels und Listen clearen
 			headLabel.setText("");
@@ -145,6 +159,7 @@ public class BrainOverviewController {
 			stalenessLabel.setText("");
 			genomeTable.setItems(null);
 		}
+
 	}
 
 	/**
@@ -153,7 +168,6 @@ public class BrainOverviewController {
 	 * 
 	 * @param genome
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void showGenomeDetails(Genome genome) {
 		if (genome != null) {
 			// Labels mit Daten füllen, Genome zur Auswahl anzeigen
@@ -164,20 +178,6 @@ public class BrainOverviewController {
 			fitnessLabel.setText(String.valueOf(genome.getFitness()));
 			renderGenome(genome, infoCanvas);
 
-			// History anzeigen
-			fitHistoryChart.getData().clear();
-			XYChart.Series fitSeries = new XYChart.Series<>();
-			fitSeries.setName("Fitness");
-			int c = 0;
-			double[] histArray = GenomeHistory.INSTANCE
-				.getFitnessHistory(genome);
-			if (histArray != null) {
-			for (Double d : histArray) {
-				fitSeries.getData().add(new XYChart.Data("G" + (c+1), d));
-				c++;
-			}
-			fitHistoryChart.getData().add(fitSeries);
-			}
 		}
 	}
 

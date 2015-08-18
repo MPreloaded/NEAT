@@ -5,20 +5,17 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.kaping.brain.model.Genome;
-import de.kaping.brain.model.GenomeHistory;
 import de.kaping.brain.model.Neuron;
 import de.kaping.brain.model.Pool;
 import de.kaping.brain.model.Species;
+import de.kaping.brain.model.SpeciesHistory;
 import de.kaping.brain.view.BrainOverviewController;
-import de.kaping.brain.view.PoolOverviewController;
 import de.kaping.usage.xor.Function;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -30,7 +27,7 @@ public class MainApp extends Application {
 	private ObservableList<Neuron> neurons;
 
 	public Pool myPool = Pool.getInstance();
-	public GenomeHistory myHistory = GenomeHistory.INSTANCE; 
+	public SpeciesHistory myHistory = SpeciesHistory.INSTANCE; 
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -55,9 +52,7 @@ public class MainApp extends Application {
 	 */
 	public void saveHistory(){
 		for (Species s : myPool.getSpecies()) {
-			for (Genome g : s.getGenomes()){
-				myHistory.addGeneration(g);
-			}
+			myHistory.addEntry(s);
 		}
 	}
 	
